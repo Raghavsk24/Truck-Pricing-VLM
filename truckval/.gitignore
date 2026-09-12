@@ -5,3 +5,5 @@ data/*.parquet
 data/*.pkl
 data/*.sqlite
 .venv/
+.venv/
+*.pt
