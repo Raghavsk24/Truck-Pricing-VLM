@@ -1,158 +1,319 @@
-"""Label sample listings with the master VLM schema.
+"""Stage sample images and write empty batch templates for in-chat VLM labeling.
 
-Stages each image to JPEG with long edge = 1568px (downscale only; never
-upsamples), then calls the VLM. Writes resume-friendly labels.jsonl.
+This matches the input_image_filter_test workflow: Python does NOT call any API.
+A Cursor / Sonnet agent in chat reads the master schema + staged images and
+fills pricing/batches/batch_XX.json. Then run merge_batch_labels.py.
 
-Requires:
-  - ANTHROPIC_API_KEY in the environment
-  - vlm instructions/truck_feature_extraction_master_instructions.json
-    (or pass --schema)
+Steps:
+  1. python pricing/build_sample.py          # if sample.json missing
+  2. python pricing/label_sample.py          # stage + empty batches
+  3. In Cursor chat: ask the agent to label batches using the master schema
+  4. python pricing/merge_batch_labels.py    # -> labels.jsonl
 
 Usage:
     python pricing/label_sample.py
-    python pricing/label_sample.py --concurrency 8 --limit 20
+    python pricing/label_sample.py --batch-size 10 --limit 40
 """
 
 from __future__ import annotations
 
 import argparse
-import base64
-import concurrent.futures
-import io
 import json
-import os
-import sys
-import threading
-import time
+import math
+import shutil
 from pathlib import Path
+
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 SAMPLE_PATH = ROOT / "sample.json"
-LABELS_PATH = ROOT / "labels.jsonl"
+SCHEMA_PATH = REPO / "vlm_instructions" / "truck_feature_extraction_master_instructions.json"
 STAGED_DIR = ROOT / "staged_images"
-SCHEMA_PATH = REPO / "vlm instructions" / "truck_feature_extraction_master_instructions.json"
+BATCHES_DIR = ROOT / "batches"
+MANIFEST_PATH = ROOT / "staged_manifest.json"
+ID_MAP_PATH = ROOT / "opaque_id_map.json"
+AGENT_PROMPT_PATH = ROOT / "AGENT_LABEL_PROMPT.md"
 
 LONG_EDGE = 1568
+JPEG_QUALITY = 85
+DEFAULT_BATCH_SIZE = 10
 PRICEABLE_SUBJECTS = frozenset({"front", "side"})
-DEFAULT_MODEL = "claude-sonnet-4-20250514"
-DEFAULT_CONCURRENCY = 8
-
-_write_lock = threading.Lock()
 
 
-def resize_long_edge(src: Path, dest: Path, long_edge: int = LONG_EDGE) -> Path:
-    """Downscale so the longest side is `long_edge` px; write JPEG to dest."""
-    try:
-        from PIL import Image
-    except ImportError as exc:
-        raise SystemExit(
-            "Pillow is required for image staging. Install with: pip install Pillow"
-        ) from exc
-
+def resize_long_edge(src: Path, dest: Path, long_edge: int = LONG_EDGE) -> tuple[int, int, int, int]:
     dest.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(src) as im:
+        im = ImageOps.exif_transpose(im)
         im = im.convert("RGB")
-        w, h = im.size
-        longest = max(w, h)
+        src_w, src_h = im.size
+        longest = max(src_w, src_h)
         if longest > long_edge:
             scale = long_edge / longest
-            new_size = (max(1, int(w * scale)), max(1, int(h * scale)))
-            im = im.resize(new_size, Image.Resampling.LANCZOS)
-        im.save(dest, format="JPEG", quality=90, optimize=True)
-    return dest
+            im = im.resize(
+                (max(1, round(src_w * scale)), max(1, round(src_h * scale))),
+                Image.Resampling.LANCZOS,
+            )
+        dst_w, dst_h = im.size
+        im.save(dest, format="JPEG", quality=JPEG_QUALITY, optimize=True)
+    return src_w, src_h, dst_w, dst_h
 
 
-def image_to_data_url(path: Path) -> str:
-    data = path.read_bytes()
-    b64 = base64.standard_b64encode(data).decode("ascii")
-    return f"data:image/jpeg;base64,{b64}"
-
-
-def load_done_ids(labels_path: Path) -> set[str]:
-    done: set[str] = set()
-    if not labels_path.exists():
-        return done
-    for line in labels_path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            obj = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        lid = obj.get("listing_id")
-        if lid and obj.get("status") in ("ok", "rejected", "exhausted"):
-            done.add(lid)
-    return done
-
-
-def append_label(labels_path: Path, row: dict) -> None:
-    with _write_lock:
-        with labels_path.open("a", encoding="utf-8") as fh:
-            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-
-def _normalize_truck_type(value: str | None) -> str | None:
-    """Map VLM vehicle_cue / truck_type strings to day_cab | sleeper | dump."""
-    if not value:
-        return None
-    v = value.strip().lower().replace(" ", "_").replace("-", "_")
-    mapping = {
-        "day_cab": "day_cab",
-        "day_cab_tractor": "day_cab",
-        "sleeper": "sleeper",
-        "sleeper_tractor": "sleeper",
-        "dump": "dump",
-        "dumper": "dump",
-        "heavy_dump_truck": "dump",
-        "dump_truck": "dump",
-    }
-    if v in mapping:
-        return mapping[v]
-    if "dump" in v:
-        return "dump"
-    if "sleeper" in v:
-        return "sleeper"
-    if "day" in v and "cab" in v:
-        return "day_cab"
+def pick_candidate(listing: dict) -> dict | None:
+    for cand in listing.get("candidate_images") or []:
+        src = Path(cand["abs"])
+        if src.exists():
+            return cand
     return None
 
 
+def write_agent_prompt(
+    path: Path,
+    *,
+    schema: Path,
+    manifest: Path,
+    batches_dir: Path,
+    n_batches: int,
+    n_images: int,
+) -> None:
+    text = f"""# Pricing VLM labeling
+
+Python staged the images. Fill each batch JSON with master-schema predictions.
+
+## Schema
+
+`{schema.as_posix()}`
+
+Return one JSON object per image matching **TruckFeatureExtractionMaster**.
+
+## Staged data
+
+- Manifest: `{manifest.as_posix()}`
+- Images: `pricing/staged_images/img_NNN.jpg` (long edge <= {LONG_EDGE}px)
+- Batches: `{batches_dir.as_posix()}` ({n_batches} files, {n_images} images)
+
+Classify from **image pixels only**. Do not use listing brand, price, or folder names when filling VLM fields.
+
+## Batch format
+
+Each item starts as:
+
+```json
+{{
+  "opaque_id": "img_001",
+  "path": ".../staged_images/img_001.jpg",
+  "prediction": null
+}}
+```
+
+Replace `prediction` with the full master-schema object (`reasoning` + `output` with truck_type, primary_subject, brand, condition).
+
+Priceable images need `truck_type != none` and `primary_subject` in {{front, side}}. Otherwise still fill brand/condition with the schema skip placeholders.
+
+## Workflow
+
+1. Open one batch file.
+2. For each item, inspect the image at `path`.
+3. Write the full prediction.
+4. Save the batch.
+5. Repeat until every `prediction` is non-null.
+
+Then:
+
+```text
+python pricing/merge_batch_labels.py
+python pricing/fit_price_range.py
+```
+"""
+    path.write_text(text, encoding="utf-8")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--sample", type=Path, default=SAMPLE_PATH)
+    parser.add_argument("--schema", type=Path, default=SCHEMA_PATH)
+    parser.add_argument("--staged-dir", type=Path, default=STAGED_DIR)
+    parser.add_argument("--batches-dir", type=Path, default=BATCHES_DIR)
+    parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
+    parser.add_argument("--long-edge", type=int, default=LONG_EDGE)
+    parser.add_argument("--limit", type=int, default=0, help="stage at most N listings (0=all)")
+    parser.add_argument(
+        "--fresh",
+        action="store_true",
+        help="delete existing staged_images/ and batches/ before writing",
+    )
+    args = parser.parse_args()
+
+    if not args.sample.exists():
+        raise SystemExit(f"Sample not found: {args.sample}. Run build_sample.py first.")
+    if not args.schema.exists():
+        raise SystemExit(f"Master schema not found: {args.schema}")
+
+    sample = json.loads(args.sample.read_text(encoding="utf-8"))
+    listings = sample["listings"]
+    if args.limit > 0:
+        listings = listings[: args.limit]
+
+    if args.fresh:
+        if args.staged_dir.exists():
+            shutil.rmtree(args.staged_dir)
+        if args.batches_dir.exists():
+            shutil.rmtree(args.batches_dir)
+
+    args.staged_dir.mkdir(parents=True, exist_ok=True)
+    args.batches_dir.mkdir(parents=True, exist_ok=True)
+
+    staged_items = []
+    id_map: dict[str, str] = {}
+    skipped = 0
+
+    for i, listing in enumerate(listings, start=1):
+        cand = pick_candidate(listing)
+        if cand is None:
+            skipped += 1
+            continue
+        opaque_id = f"img_{len(staged_items) + 1:03d}"
+        dest = args.staged_dir / f"{opaque_id}.jpg"
+        src_w, src_h, dst_w, dst_h = resize_long_edge(
+            Path(cand["abs"]), dest, long_edge=args.long_edge
+        )
+        staged_items.append(
+            {
+                "opaque_id": opaque_id,
+                "listing_id": listing["listing_id"],
+                "listing_brand": listing["brand"],
+                "brand_cell": listing["brand_cell"],
+                "truck_type": listing.get("truck_type"),
+                "price": listing["price"],
+                "category": listing.get("category"),
+                "image_rel": cand.get("rel"),
+                "path": str(dest.resolve()),
+                "source_size": [src_w, src_h],
+                "staged_size": [dst_w, dst_h],
+            }
+        )
+        id_map[opaque_id] = listing["listing_id"]
+
+    n = len(staged_items)
+    n_batches = max(1, math.ceil(n / args.batch_size)) if n else 0
+
+    # Write empty batch templates (do not overwrite filled predictions unless --fresh)
+    for b in range(n_batches):
+        batch_path = args.batches_dir / f"batch_{b + 1:02d}.json"
+        chunk = staged_items[b * args.batch_size : (b + 1) * args.batch_size]
+        if batch_path.exists() and not args.fresh:
+            existing = json.loads(batch_path.read_text(encoding="utf-8"))
+            # Keep any already-filled predictions keyed by opaque_id
+            filled = {
+                it["opaque_id"]: it.get("prediction")
+                for it in existing.get("items", [])
+                if it.get("prediction") is not None
+            }
+        else:
+            filled = {}
+        items = []
+        for it in chunk:
+            items.append(
+                {
+                    "opaque_id": it["opaque_id"],
+                    "path": it["path"],
+                    "prediction": filled.get(it["opaque_id"]),
+                }
+            )
+        batch_path.write_text(
+            json.dumps({"items": items}, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
+    manifest = {
+        "instructions_schema": str(args.schema.resolve()),
+        "max_long_edge": args.long_edge,
+        "jpeg_quality": JPEG_QUALITY,
+        "batch_size": args.batch_size,
+        "n_images": n,
+        "n_batches": n_batches,
+        "note": (
+            "Staged copies for in-chat Sonnet labeling (no API key). "
+            "Fill pricing/batches/batch_XX.json prediction fields using the master schema. "
+            "Do not infer VLM labels from listing brand/price — those are only for merge/fit."
+        ),
+        "items": staged_items,
+    }
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    ID_MAP_PATH.write_text(json.dumps(id_map, indent=2) + "\n", encoding="utf-8")
+    write_agent_prompt(
+        AGENT_PROMPT_PATH,
+        schema=args.schema,
+        manifest=MANIFEST_PATH,
+        batches_dir=args.batches_dir,
+        n_batches=n_batches,
+        n_images=n,
+    )
+
+    filled_count = 0
+    for path in sorted(args.batches_dir.glob("batch_*.json")):
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        filled_count += sum(1 for it in doc["items"] if it.get("prediction") is not None)
+
+    print(f"Staged {n} images -> {args.staged_dir}")
+    if skipped:
+        print(f"Skipped {skipped} listings with no on-disk candidate image")
+    print(f"Wrote {n_batches} batch templates -> {args.batches_dir}")
+    print(f"Already filled predictions: {filled_count}/{n}")
+    print(f"Wrote {MANIFEST_PATH}")
+    print(f"Wrote {ID_MAP_PATH}")
+    print(f"Wrote {AGENT_PROMPT_PATH}")
+    print()
+    print("Next: in Cursor chat, ask the agent to label the batches")
+    print(f"  (follow {AGENT_PROMPT_PATH.name}), then run:")
+    print("  python pricing/merge_batch_labels.py")
+
+
+# --- helpers still imported by predict.py / merge ---
 def extract_fields(vlm_output: dict) -> dict:
     """Normalize master-schema (or nested) output into flat pricing fields."""
     out = vlm_output.get("output", vlm_output)
 
     validity = out.get("validity") or out
-    primary = out.get("primary_subject") or out
     brand = out.get("brand") or out
     condition = out.get("condition") or out
-    truck = out.get("truck_type") or out.get("truck") or out
 
-    if isinstance(primary, dict) and "primary_subject" in primary:
-        primary_subject = primary.get("primary_subject")
-        primary_user_message = primary.get("user_message", "")
+    if isinstance(out.get("primary_subject"), str):
+        primary_subject = out.get("primary_subject")
+        primary_user_message = out.get("primary_subject_user_message", "") or ""
+    elif isinstance(out.get("primary_subject"), dict):
+        primary_subject = out["primary_subject"].get("primary_subject")
+        primary_user_message = out["primary_subject"].get("user_message", "")
     else:
         primary_subject = out.get("primary_subject")
-        primary_user_message = out.get("user_message", "") if "primary_subject" in out else ""
+        primary_user_message = ""
 
-    is_valid = validity.get("is_valid_class_7_8")
-    if is_valid is None:
-        is_valid = out.get("is_valid_class_7_8")
+    raw_truck_type = out.get("truck_type") or (
+        validity.get("truck_type") if isinstance(validity, dict) else None
+    ) or out.get("vehicle_cue")
+    if isinstance(raw_truck_type, dict):
+        raw_truck_type = raw_truck_type.get("truck_type")
 
-    vehicle_cue = validity.get("vehicle_cue") or out.get("vehicle_cue")
-    raw_truck_type = None
-    if isinstance(truck, dict):
-        raw_truck_type = truck.get("truck_type") or truck.get("type") or truck.get("vehicle_cue")
-    if raw_truck_type is None:
-        raw_truck_type = out.get("truck_type") or vehicle_cue
     truck_type = _normalize_truck_type(
         raw_truck_type if isinstance(raw_truck_type, str) else None
     )
 
-    validity_msg = validity.get("user_message")
-    if validity_msg is None:
-        validity_msg = ""
+    is_valid = None
+    if isinstance(validity, dict):
+        is_valid = validity.get("is_valid_class_7_8")
+    if is_valid is None:
+        is_valid = out.get("is_valid_class_7_8")
+    if is_valid is None:
+        is_valid = (
+            isinstance(raw_truck_type, str)
+            and raw_truck_type.strip().lower() not in ("", "none")
+            and truck_type is not None
+        )
+
+    vehicle_cue = raw_truck_type
+    validity_msg = out.get("truck_type_user_message") or ""
+    if isinstance(validity, dict) and validity.get("user_message"):
+        validity_msg = validity_msg or validity.get("user_message") or ""
 
     has_brand = brand.get("has_brand") if isinstance(brand, dict) else out.get("has_brand")
     brand_name = brand.get("brand_name") if isinstance(brand, dict) else out.get("brand_name")
@@ -163,7 +324,7 @@ def extract_fields(vlm_output: dict) -> dict:
         brand.get("needs_user_input") if isinstance(brand, dict) else out.get("needs_user_input")
     )
 
-    if isinstance(condition, dict):
+    if isinstance(condition, dict) and "categories" in condition:
         overall_score = condition.get("overall_score")
         overall_label = condition.get("overall_condition_label")
         penalty = condition.get("total_penalty_percent")
@@ -192,230 +353,46 @@ def extract_fields(vlm_output: dict) -> dict:
     }
 
 
+def _normalize_truck_type(value: str | None) -> str | None:
+    if not value:
+        return None
+    v = value.strip().lower().replace(" ", "_")
+    v_hyphen = v.replace("_", "-")
+    mapping = {
+        "day_cab": "day_cab",
+        "day-cab": "day_cab",
+        "day_cab_tractor": "day_cab",
+        "day-cab-truck": "day_cab",
+        "day_cab_truck": "day_cab",
+        "sleeper": "sleeper",
+        "sleeper_tractor": "sleeper",
+        "sleeper-truck": "sleeper",
+        "sleeper_truck": "sleeper",
+        "dump": "dump",
+        "dumper": "dump",
+        "dump-truck": "dump",
+        "dump_truck": "dump",
+        "heavy_dump_truck": "dump",
+        "heavy-dump-truck": "dump",
+        "none": None,
+    }
+    if v in mapping:
+        return mapping[v]
+    if v_hyphen in mapping:
+        return mapping[v_hyphen]
+    if "dump" in v:
+        return "dump"
+    if "sleeper" in v:
+        return "sleeper"
+    if "day" in v and "cab" in v:
+        return "day_cab"
+    return None
+
+
 def is_priceable(fields: dict) -> bool:
     return (
         fields.get("is_valid_class_7_8") is True
         and fields.get("primary_subject") in PRICEABLE_SUBJECTS
-    )
-
-
-def call_vlm(
-    client,
-    model: str,
-    schema: dict,
-    staged_path: Path,
-    max_tokens: int = 4096,
-) -> dict:
-    schema_text = json.dumps(schema, ensure_ascii=False)
-    prompt = (
-        "Inspect this truck image and return ONE JSON object that matches the "
-        "provided JSON schema exactly. No markdown fences, no prose outside JSON.\n\n"
-        f"JSON schema:\n{schema_text}"
-    )
-    data_url = image_to_data_url(staged_path)
-    # Anthropic Messages API wants raw base64 + media_type, not data URLs
-    b64 = data_url.split(",", 1)[1]
-
-    response = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": "image/jpeg",
-                            "data": b64,
-                        },
-                    },
-                    {"type": "text", "text": prompt},
-                ],
-            }
-        ],
-    )
-    text_parts = [b.text for b in response.content if getattr(b, "type", None) == "text"]
-    text = "\n".join(text_parts).strip()
-    if text.startswith("```"):
-        text = text.strip("`")
-        if text.startswith("json"):
-            text = text[4:].strip()
-    return json.loads(text)
-
-
-def label_one_listing(
-    listing: dict,
-    *,
-    client,
-    model: str,
-    schema: dict,
-    staged_dir: Path,
-    long_edge: int,
-) -> dict:
-    listing_id = listing["listing_id"]
-    last_error = None
-    attempts = []
-
-    for cand in listing.get("candidate_images") or []:
-        src = Path(cand["abs"])
-        if not src.exists():
-            attempts.append({"rel": cand.get("rel"), "error": "missing_file"})
-            continue
-        staged = staged_dir / f"{listing_id}_{src.stem}.jpg"
-        try:
-            resize_long_edge(src, staged, long_edge=long_edge)
-            raw = call_vlm(client, model, schema, staged)
-            fields = extract_fields(raw)
-            attempt = {
-                "rel": cand.get("rel"),
-                "staged": str(staged),
-                "fields": fields,
-                "raw": raw,
-            }
-            attempts.append(attempt)
-            if is_priceable(fields):
-                truck_type = fields.get("truck_type") or listing.get("truck_type")
-                return {
-                    "listing_id": listing_id,
-                    "listing_brand": listing["brand"],
-                    "brand_cell": listing["brand_cell"],
-                    "truck_type": truck_type,
-                    "price": listing["price"],
-                    "category": listing.get("category"),
-                    "image_rel": cand.get("rel"),
-                    "staged_path": str(staged),
-                    "status": "ok",
-                    **fields,
-                    "truck_type": truck_type,  # listing fallback after fields spread
-                    "attempts": [
-                        {
-                            "rel": a.get("rel"),
-                            "error": a.get("error"),
-                            "primary_subject": (a.get("fields") or {}).get("primary_subject"),
-                            "is_valid_class_7_8": (a.get("fields") or {}).get(
-                                "is_valid_class_7_8"
-                            ),
-                            "truck_type": (a.get("fields") or {}).get("truck_type"),
-                        }
-                        for a in attempts
-                    ],
-                }
-        except Exception as exc:  # noqa: BLE001 - resume-friendly labeling loop
-            last_error = str(exc)
-            attempts.append({"rel": cand.get("rel"), "error": last_error})
-            continue
-
-    # All candidates rejected or failed
-    if attempts and any((a.get("fields") is not None) for a in attempts):
-        status = "rejected"
-    else:
-        status = "exhausted"
-    return {
-        "listing_id": listing_id,
-        "listing_brand": listing["brand"],
-        "brand_cell": listing["brand_cell"],
-        "price": listing["price"],
-        "category": listing.get("category"),
-        "status": status,
-        "error": last_error,
-        "attempts": [
-            {
-                "rel": a.get("rel"),
-                "error": a.get("error"),
-                "primary_subject": (a.get("fields") or {}).get("primary_subject"),
-                "is_valid_class_7_8": (a.get("fields") or {}).get("is_valid_class_7_8"),
-            }
-            for a in attempts
-        ],
-    }
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--sample", type=Path, default=SAMPLE_PATH)
-    parser.add_argument("--out", type=Path, default=LABELS_PATH)
-    parser.add_argument("--schema", type=Path, default=SCHEMA_PATH)
-    parser.add_argument("--staged-dir", type=Path, default=STAGED_DIR)
-    parser.add_argument("--long-edge", type=int, default=LONG_EDGE)
-    parser.add_argument("--model", default=os.environ.get("ANTHROPIC_MODEL", DEFAULT_MODEL))
-    parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
-    parser.add_argument("--limit", type=int, default=0, help="label at most N listings (0=all)")
-    args = parser.parse_args()
-
-    if not args.sample.exists():
-        raise SystemExit(f"Sample not found: {args.sample}. Run build_sample.py first.")
-    if not args.schema.exists():
-        raise SystemExit(
-            f"Master schema not found: {args.schema}\n"
-            "Create truck_feature_extraction_master_instructions.json first."
-        )
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise SystemExit("Set ANTHROPIC_API_KEY before running label_sample.py")
-
-    try:
-        import anthropic
-    except ImportError as exc:
-        raise SystemExit("Install anthropic: pip install anthropic") from exc
-
-    sample = json.loads(args.sample.read_text(encoding="utf-8"))
-    listings = sample["listings"]
-    if args.limit > 0:
-        listings = listings[: args.limit]
-
-    done = load_done_ids(args.out)
-    todo = [l for l in listings if l["listing_id"] not in done]
-    print(f"Sample listings: {len(listings)} | already labeled: {len(done)} | todo: {len(todo)}")
-    if not todo:
-        print("Nothing to do.")
-        return
-
-    schema = json.loads(args.schema.read_text(encoding="utf-8"))
-    client = anthropic.Anthropic(api_key=api_key)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.staged_dir.mkdir(parents=True, exist_ok=True)
-
-    ok = rejected = exhausted = errors = 0
-    t0 = time.time()
-
-    def work(listing: dict) -> dict:
-        return label_one_listing(
-            listing,
-            client=client,
-            model=args.model,
-            schema=schema,
-            staged_dir=args.staged_dir,
-            long_edge=args.long_edge,
-        )
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency) as pool:
-        futures = {pool.submit(work, l): l["listing_id"] for l in todo}
-        for fut in concurrent.futures.as_completed(futures):
-            lid = futures[fut]
-            try:
-                row = fut.result()
-            except Exception as exc:  # noqa: BLE001
-                row = {"listing_id": lid, "status": "error", "error": str(exc)}
-                errors += 1
-            else:
-                if row["status"] == "ok":
-                    ok += 1
-                elif row["status"] == "rejected":
-                    rejected += 1
-                else:
-                    exhausted += 1
-            append_label(args.out, row)
-            print(
-                f"[{ok + rejected + exhausted + errors}/{len(todo)}] "
-                f"{row['listing_id']} -> {row['status']}"
-            )
-
-    elapsed = time.time() - t0
-    print(
-        f"Done in {elapsed:.0f}s | ok={ok} rejected={rejected} "
-        f"exhausted={exhausted} errors={errors} -> {args.out}"
     )
 
 

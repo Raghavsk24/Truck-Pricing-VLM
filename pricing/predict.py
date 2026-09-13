@@ -1,6 +1,6 @@
 """Predict a truck price RANGE from master-schema VLM output (or an image).
 
-Features used (from the image via VLM):
+Features used (from the image via Cursor Sonnet VLM):
   - truck_type: day_cab | sleeper | dump
   - brand
   - condition (total_penalty_percent), if the fitted winner uses it
@@ -26,19 +26,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 MODEL_PATH = ROOT / "price_range_model.json"
-SCHEMA_PATH = REPO / "vlm instructions" / "truck_feature_extraction_master_instructions.json"
+SCHEMA_PATH = REPO / "vlm_instructions" / "truck_feature_extraction_master_instructions.json"
 STAGED_DIR = ROOT / "staged_images"
 LONG_EDGE = 1568
-DEFAULT_MODEL = "claude-sonnet-4-20250514"
+DEFAULT_MODEL = os.environ.get("CURSOR_MODEL", "claude-sonnet-5-thinking-high")
 
 sys.path.insert(0, str(ROOT))
 from label_sample import (  # noqa: E402
-    call_vlm,
     extract_fields,
     is_priceable,
     resize_long_edge,
 )
 from fit_price_range import brand_cell, normalize_truck_type  # noqa: E402
+from vlm_client import call_vlm_cursor  # noqa: E402
 
 
 def load_model(path: Path) -> dict:
@@ -100,21 +100,21 @@ def predict_from_features(
 
 
 def vlm_from_image(image: Path, schema_path: Path, model_name: str) -> dict:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise SystemExit("Set ANTHROPIC_API_KEY to predict from an image")
+    """Optional API path. Prefer --vlm-json from an in-chat agent labeling pass."""
     if not schema_path.exists():
         raise SystemExit(f"Master schema not found: {schema_path}")
-    try:
-        import anthropic
-    except ImportError as exc:
-        raise SystemExit("Install anthropic: pip install anthropic") from exc
-
     staged = STAGED_DIR / f"predict_{image.stem}.jpg"
+    STAGED_DIR.mkdir(parents=True, exist_ok=True)
     resize_long_edge(image, staged, long_edge=LONG_EDGE)
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    client = anthropic.Anthropic(api_key=api_key)
-    return call_vlm(client, model_name, schema, staged)
+    try:
+        return call_vlm_cursor(staged, schema, model=model_name, cwd=REPO)
+    except SystemExit as exc:
+        raise SystemExit(
+            f"{exc}\n\n"
+            "Or label the image in Cursor chat with the master schema and pass:\n"
+            "  python pricing/predict.py --vlm-json path/to/prediction.json"
+        ) from None
 
 
 def main() -> None:
@@ -128,7 +128,8 @@ def main() -> None:
     parser.add_argument("--schema", type=Path, default=SCHEMA_PATH)
     parser.add_argument(
         "--vlm-model",
-        default=os.environ.get("ANTHROPIC_MODEL", DEFAULT_MODEL),
+        default=DEFAULT_MODEL,
+        help="Cursor Sonnet model id for --image",
     )
     args = parser.parse_args()
 

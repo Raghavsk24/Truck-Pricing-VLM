@@ -70,6 +70,12 @@ CUE_TO_TYPE = {
     "sleeper": "sleeper",
     "dump": "dump",
     "dumper": "dump",
+    "day-cab-truck": "day_cab",
+    "sleeper-truck": "sleeper",
+    "dump-truck": "dump",
+    "day_cab_truck": "day_cab",
+    "sleeper_truck": "sleeper",
+    "dump_truck": "dump",
 }
 
 
@@ -83,11 +89,10 @@ def brand_cell(brand: str | None) -> str:
 def normalize_truck_type(value: str | None) -> str:
     if not value:
         return OTHER_TYPE
-    v = value.strip().lower().replace(" ", "_").replace("-", "_")
-    # already normalized
+    v = value.strip().lower().replace(" ", "_")
+    v_hyphen = v.replace("_", "-")
     if v in TRUCK_TYPES:
         return v
-    # folder slug with underscores
     dashed = value.strip().lower()
     if dashed in CATEGORY_TO_TYPE:
         return CATEGORY_TO_TYPE[dashed]
@@ -96,7 +101,10 @@ def normalize_truck_type(value: str | None) -> str:
         return CATEGORY_TO_TYPE[underscored]
     if v in CUE_TO_TYPE:
         return CUE_TO_TYPE[v]
-    # fuzzy
+    if v_hyphen in CUE_TO_TYPE:
+        return CUE_TO_TYPE[v_hyphen]
+    if v in ("none",) or v_hyphen == "none":
+        return OTHER_TYPE
     if "dump" in v:
         return "dump"
     if "sleeper" in v:
