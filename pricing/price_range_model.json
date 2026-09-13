@@ -1,0 +1,792 @@
+{
+  "formula": "mu = shrink((type,brand,era) -> (type,brand) -> type -> global); center = exp(mu + condition_scale*beta*(overall_score - score_bar)); low/high = center*(1 -/+ error_bound(type, era))",
+  "model_family": "type+brand+era+condition",
+  "shrinkage": {
+    "k_type": 8.0,
+    "k_brand": 8.0,
+    "k_era": 1.0
+  },
+  "era_trust": {
+    "high": 0.8,
+    "medium": 0.55,
+    "low": 0.34
+  },
+  "condition": {
+    "beta": 0.29902306705833237,
+    "beta_se": 0.1442628547344253,
+    "score_bar": 4.366666666666666,
+    "condition_scale": 1.0,
+    "n": 30
+  },
+  "error_table": {
+    "min_n": 8,
+    "percentile": 75.0,
+    "type_era": {
+      "sleeper|pre_2010": {
+        "n": 19,
+        "bound": 0.6800346360684917
+      },
+      "sleeper|2016_2020": {
+        "n": 34,
+        "bound": 0.6438773965047832
+      },
+      "sleeper|2021_plus": {
+        "n": 19,
+        "bound": 0.5222891716182252
+      },
+      "sleeper|2010_2015": {
+        "n": 14,
+        "bound": 1.0795939463591737
+      },
+      "day_cab|pre_2010": {
+        "n": 35,
+        "bound": 0.7515704959440068
+      },
+      "day_cab|2010_2015": {
+        "n": 22,
+        "bound": 0.9886979244240498
+      },
+      "day_cab|2021_plus": {
+        "n": 37,
+        "bound": 0.4948277411256742
+      },
+      "day_cab|2016_2020": {
+        "n": 36,
+        "bound": 0.3878691195825963
+      },
+      "dump|pre_2010": {
+        "n": 25,
+        "bound": 1.0937991669187328
+      },
+      "dump|2010_2015": {
+        "n": 19,
+        "bound": 0.39545874182024743
+      },
+      "dump|2016_2020": {
+        "n": 49,
+        "bound": 0.34691138470739247
+      },
+      "dump|2021_plus": {
+        "n": 49,
+        "bound": 0.30019682696057526
+      }
+    },
+    "types": {
+      "sleeper": {
+        "n": 86,
+        "bound": 0.6438773965047832
+      },
+      "day_cab": {
+        "n": 130,
+        "bound": 0.5714505685620446
+      },
+      "dump": {
+        "n": 142,
+        "bound": 0.3664585606162868
+      }
+    },
+    "global": {
+      "n": 358,
+      "bound": 0.5198047654104041
+    }
+  },
+  "error_percentile": 75.0,
+  "metrics": {
+    "population_loo_median_ape": 0.30019682696057526,
+    "population_loo_mean_ape": 0.49511472499924225,
+    "labeled_loo_median_ape": 0.31081147124246883,
+    "labeled_loo_mean_ape": 0.49381395243944265,
+    "labeled_range_coverage": 0.6666666666666666,
+    "labeled_n": 30,
+    "population_n": 358
+  },
+  "brand_weights": {
+    "by_type_brand": {
+      "day_cab|FREIGHTLINER": {
+        "n": 54,
+        "multiplier": 0.7358,
+        "baseline_usd": 22919.17
+      },
+      "day_cab|INTERNATIONAL": {
+        "n": 33,
+        "multiplier": 0.8945,
+        "baseline_usd": 27862.97
+      },
+      "dump|FREIGHTLINER": {
+        "n": 32,
+        "multiplier": 1.0162,
+        "baseline_usd": 82627.95
+      },
+      "dump|MACK": {
+        "n": 30,
+        "multiplier": 1.1005,
+        "baseline_usd": 89482.77
+      },
+      "sleeper|FREIGHTLINER": {
+        "n": 26,
+        "multiplier": 0.7847,
+        "baseline_usd": 28600.38
+      },
+      "dump|KENWORTH": {
+        "n": 23,
+        "multiplier": 1.442,
+        "baseline_usd": 117245.07
+      },
+      "dump|PETERBILT": {
+        "n": 20,
+        "multiplier": 0.9519,
+        "baseline_usd": 77396.63
+      },
+      "sleeper|KENWORTH": {
+        "n": 19,
+        "multiplier": 0.9715,
+        "baseline_usd": 35411.21
+      },
+      "day_cab|KENWORTH": {
+        "n": 16,
+        "multiplier": 1.5431,
+        "baseline_usd": 48066.15
+      },
+      "day_cab|PETERBILT": {
+        "n": 16,
+        "multiplier": 1.6572,
+        "baseline_usd": 51621.09
+      },
+      "dump|INTERNATIONAL": {
+        "n": 16,
+        "multiplier": 0.8557,
+        "baseline_usd": 69574.27
+      },
+      "sleeper|PETERBILT": {
+        "n": 16,
+        "multiplier": 1.7243,
+        "baseline_usd": 62848.04
+      },
+      "sleeper|INTERNATIONAL": {
+        "n": 12,
+        "multiplier": 0.9266,
+        "baseline_usd": 33773.03
+      },
+      "dump|WESTERN STAR": {
+        "n": 9,
+        "multiplier": 1.4185,
+        "baseline_usd": 115340.15
+      },
+      "sleeper|MACK": {
+        "n": 7,
+        "multiplier": 0.9593,
+        "baseline_usd": 34965.77
+      },
+      "day_cab|MACK": {
+        "n": 5,
+        "multiplier": 1.0735,
+        "baseline_usd": 33438.59
+      },
+      "day_cab|VOLVO": {
+        "n": 4,
+        "multiplier": 0.8447,
+        "baseline_usd": 26313.08
+      },
+      "dump|FORD": {
+        "n": 4,
+        "multiplier": 0.7402,
+        "baseline_usd": 60184.01
+      },
+      "sleeper|VOLVO": {
+        "n": 4,
+        "multiplier": 0.6798,
+        "baseline_usd": 24778.91
+      },
+      "dump|CHEVROLET": {
+        "n": 3,
+        "multiplier": 0.7084,
+        "baseline_usd": 57599.2
+      },
+      "dump|STERLING": {
+        "n": 3,
+        "multiplier": 0.7921,
+        "baseline_usd": 64405.19
+      },
+      "day_cab|FORD": {
+        "n": 1,
+        "multiplier": 0.8622,
+        "baseline_usd": 26855.97
+      },
+      "day_cab|WESTERN STAR": {
+        "n": 1,
+        "multiplier": 1.0193,
+        "baseline_usd": 31750.5
+      },
+      "dump|GMC": {
+        "n": 1,
+        "multiplier": 0.8347,
+        "baseline_usd": 67872.37
+      },
+      "dump|VOLVO": {
+        "n": 1,
+        "multiplier": 0.9452,
+        "baseline_usd": 76851.47
+      },
+      "sleeper|HINO": {
+        "n": 1,
+        "multiplier": 1.0958,
+        "baseline_usd": 39939.57
+      },
+      "sleeper|WESTERN STAR": {
+        "n": 1,
+        "multiplier": 0.9822,
+        "baseline_usd": 35798.83
+      }
+    },
+    "by_brand": {
+      "FREIGHTLINER": {
+        "n": 112,
+        "multiplier": 0.8372
+      },
+      "INTERNATIONAL": {
+        "n": 61,
+        "multiplier": 0.8918
+      },
+      "KENWORTH": {
+        "n": 58,
+        "multiplier": 1.293
+      },
+      "PETERBILT": {
+        "n": 52,
+        "multiplier": 1.3959
+      },
+      "MACK": {
+        "n": 42,
+        "multiplier": 1.0426
+      },
+      "WESTERN STAR": {
+        "n": 11,
+        "multiplier": 1.124
+      },
+      "VOLVO": {
+        "n": 9,
+        "multiplier": 0.8157
+      },
+      "FORD": {
+        "n": 5,
+        "multiplier": 0.7989
+      },
+      "CHEVROLET": {
+        "n": 3,
+        "multiplier": 0.7084
+      },
+      "STERLING": {
+        "n": 3,
+        "multiplier": 0.7921
+      },
+      "HINO": {
+        "n": 1,
+        "multiplier": 1.0958
+      },
+      "GMC": {
+        "n": 1,
+        "multiplier": 0.8347
+      }
+    }
+  },
+  "era_weights": {
+    "day_cab|2010_2015": {
+      "n": 22,
+      "multiplier": 0.4527,
+      "median_usd": 14000.0
+    },
+    "day_cab|2016_2020": {
+      "n": 36,
+      "multiplier": 0.9495,
+      "median_usd": 25248.76
+    },
+    "day_cab|2021_plus": {
+      "n": 37,
+      "multiplier": 1.888,
+      "median_usd": 51600.0
+    },
+    "day_cab|pre_2010": {
+      "n": 35,
+      "multiplier": 0.8866,
+      "median_usd": 24500.0
+    },
+    "dump|2010_2015": {
+      "n": 19,
+      "multiplier": 0.7754,
+      "median_usd": 69500.0
+    },
+    "dump|2016_2020": {
+      "n": 49,
+      "multiplier": 1.0367,
+      "median_usd": 89500.0
+    },
+    "dump|2021_plus": {
+      "n": 49,
+      "multiplier": 1.8505,
+      "median_usd": 176900.0
+    },
+    "dump|pre_2010": {
+      "n": 25,
+      "multiplier": 0.3384,
+      "median_usd": 27000.0
+    },
+    "sleeper|2010_2015": {
+      "n": 14,
+      "multiplier": 0.6671,
+      "median_usd": 20865.64
+    },
+    "sleeper|2016_2020": {
+      "n": 34,
+      "multiplier": 0.8627,
+      "median_usd": 28397.18
+    },
+    "sleeper|2021_plus": {
+      "n": 19,
+      "multiplier": 2.0426,
+      "median_usd": 68900.0
+    },
+    "sleeper|pre_2010": {
+      "n": 19,
+      "multiplier": 0.8592,
+      "median_usd": 34900.0
+    }
+  },
+  "cells": {
+    "global_mu": 10.761959512604628,
+    "types": {
+      "sleeper": {
+        "n": 86,
+        "mu": 10.503661632128587
+      },
+      "day_cab": {
+        "n": 130,
+        "mu": 10.34653763721045
+      },
+      "dump": {
+        "n": 142,
+        "mu": 11.306014309732248
+      }
+    },
+    "type_brand": {
+      "sleeper|FREIGHTLINER": {
+        "n": 26,
+        "mu": 10.261175122318294
+      },
+      "sleeper|VOLVO": {
+        "n": 4,
+        "mu": 10.117748236313233
+      },
+      "sleeper|KENWORTH": {
+        "n": 19,
+        "mu": 10.47478357875237
+      },
+      "sleeper|INTERNATIONAL": {
+        "n": 12,
+        "mu": 10.427417893939037
+      },
+      "sleeper|MACK": {
+        "n": 7,
+        "mu": 10.462124929971942
+      },
+      "sleeper|PETERBILT": {
+        "n": 16,
+        "mu": 11.048474958248512
+      },
+      "sleeper|HINO": {
+        "n": 1,
+        "mu": 10.595122865307218
+      },
+      "sleeper|WESTERN STAR": {
+        "n": 1,
+        "mu": 10.485670615610664
+      },
+      "day_cab|INTERNATIONAL": {
+        "n": 33,
+        "mu": 10.235053935147938
+      },
+      "day_cab|FREIGHTLINER": {
+        "n": 54,
+        "mu": 10.039728739416137
+      },
+      "day_cab|WESTERN STAR": {
+        "n": 1,
+        "mu": 10.365663809923328
+      },
+      "day_cab|VOLVO": {
+        "n": 4,
+        "mu": 10.177821294681465
+      },
+      "day_cab|KENWORTH": {
+        "n": 16,
+        "mu": 10.78033341982299
+      },
+      "day_cab|MACK": {
+        "n": 5,
+        "mu": 10.417465969362869
+      },
+      "day_cab|PETERBILT": {
+        "n": 16,
+        "mu": 10.851685558204819
+      },
+      "day_cab|FORD": {
+        "n": 1,
+        "mu": 10.198243392326214
+      },
+      "dump|CHEVROLET": {
+        "n": 3,
+        "mu": 10.961263894789013
+      },
+      "dump|FREIGHTLINER": {
+        "n": 32,
+        "mu": 11.322103313899406
+      },
+      "dump|INTERNATIONAL": {
+        "n": 16,
+        "mu": 11.150150046677833
+      },
+      "dump|MACK": {
+        "n": 30,
+        "mu": 11.40180138287887
+      },
+      "dump|KENWORTH": {
+        "n": 23,
+        "mu": 11.672021648146085
+      },
+      "dump|FORD": {
+        "n": 4,
+        "mu": 11.005161993528763
+      },
+      "dump|PETERBILT": {
+        "n": 20,
+        "mu": 11.256698493692813
+      },
+      "dump|GMC": {
+        "n": 1,
+        "mu": 11.125384275453323
+      },
+      "dump|VOLVO": {
+        "n": 1,
+        "mu": 11.249629902868516
+      },
+      "dump|STERLING": {
+        "n": 3,
+        "mu": 11.072949515882115
+      },
+      "dump|WESTERN STAR": {
+        "n": 9,
+        "mu": 11.65564090760265
+      }
+    },
+    "type_brand_era": {
+      "sleeper|FREIGHTLINER|pre_2010": {
+        "n": 4,
+        "mu": 9.981947755125034
+      },
+      "sleeper|VOLVO|2016_2020": {
+        "n": 1,
+        "mu": 9.552472528487602
+      },
+      "sleeper|FREIGHTLINER|2016_2020": {
+        "n": 13,
+        "mu": 10.130349627359037
+      },
+      "sleeper|KENWORTH|pre_2010": {
+        "n": 5,
+        "mu": 10.482457662841547
+      },
+      "sleeper|INTERNATIONAL|2016_2020": {
+        "n": 4,
+        "mu": 10.379595304515949
+      },
+      "sleeper|MACK|2016_2020": {
+        "n": 5,
+        "mu": 10.407796540931537
+      },
+      "sleeper|INTERNATIONAL|2021_plus": {
+        "n": 3,
+        "mu": 10.92014437387082
+      },
+      "sleeper|FREIGHTLINER|2010_2015": {
+        "n": 3,
+        "mu": 9.803488019557289
+      },
+      "sleeper|FREIGHTLINER|2021_plus": {
+        "n": 6,
+        "mu": 10.706682279169371
+      },
+      "sleeper|INTERNATIONAL|pre_2010": {
+        "n": 3,
+        "mu": 10.077182577035124
+      },
+      "sleeper|KENWORTH|2010_2015": {
+        "n": 3,
+        "mu": 10.352430539469161
+      },
+      "sleeper|KENWORTH|2016_2020": {
+        "n": 9,
+        "mu": 10.48526540946149
+      },
+      "sleeper|PETERBILT|2021_plus": {
+        "n": 6,
+        "mu": 11.772393089471723
+      },
+      "sleeper|VOLVO|pre_2010": {
+        "n": 1,
+        "mu": 9.664044304144708
+      },
+      "sleeper|VOLVO|2010_2015": {
+        "n": 2,
+        "mu": 9.76796560746839
+      },
+      "sleeper|HINO|2021_plus": {
+        "n": 1,
+        "mu": 10.960967798021741
+      },
+      "sleeper|WESTERN STAR|pre_2010": {
+        "n": 1,
+        "mu": 10.413706549538974
+      },
+      "sleeper|PETERBILT|2016_2020": {
+        "n": 2,
+        "mu": 11.317367251814531
+      },
+      "sleeper|PETERBILT|pre_2010": {
+        "n": 5,
+        "mu": 10.962811956177339
+      },
+      "sleeper|KENWORTH|2021_plus": {
+        "n": 2,
+        "mu": 10.510625218251322
+      },
+      "sleeper|MACK|2021_plus": {
+        "n": 1,
+        "mu": 10.732070717185216
+      },
+      "sleeper|MACK|2010_2015": {
+        "n": 1,
+        "mu": 10.189017501253314
+      },
+      "sleeper|INTERNATIONAL|2010_2015": {
+        "n": 2,
+        "mu": 10.113817357101567
+      },
+      "sleeper|PETERBILT|2010_2015": {
+        "n": 3,
+        "mu": 10.798070163779991
+      },
+      "day_cab|INTERNATIONAL|pre_2010": {
+        "n": 10,
+        "mu": 9.840213563617963
+      },
+      "day_cab|FREIGHTLINER|2010_2015": {
+        "n": 16,
+        "mu": 9.491445489359933
+      },
+      "day_cab|INTERNATIONAL|2021_plus": {
+        "n": 13,
+        "mu": 10.743900385317085
+      },
+      "day_cab|FREIGHTLINER|2021_plus": {
+        "n": 7,
+        "mu": 10.786149818046987
+      },
+      "day_cab|WESTERN STAR|pre_2010": {
+        "n": 1,
+        "mu": 10.442168500774844
+      },
+      "day_cab|FREIGHTLINER|2016_2020": {
+        "n": 20,
+        "mu": 10.157442858067121
+      },
+      "day_cab|VOLVO|2021_plus": {
+        "n": 1,
+        "mu": 10.684581567762116
+      },
+      "day_cab|KENWORTH|2021_plus": {
+        "n": 8,
+        "mu": 10.825756446209336
+      },
+      "day_cab|FREIGHTLINER|pre_2010": {
+        "n": 11,
+        "mu": 9.908310318406441
+      },
+      "day_cab|VOLVO|2016_2020": {
+        "n": 2,
+        "mu": 9.766737483284754
+      },
+      "day_cab|MACK|pre_2010": {
+        "n": 2,
+        "mu": 10.424425487423088
+      },
+      "day_cab|INTERNATIONAL|2016_2020": {
+        "n": 5,
+        "mu": 10.096505534838581
+      },
+      "day_cab|PETERBILT|2021_plus": {
+        "n": 8,
+        "mu": 11.330049443464013
+      },
+      "day_cab|VOLVO|pre_2010": {
+        "n": 1,
+        "mu": 9.612821368579937
+      },
+      "day_cab|INTERNATIONAL|2010_2015": {
+        "n": 5,
+        "mu": 9.761523030117564
+      },
+      "day_cab|PETERBILT|2016_2020": {
+        "n": 3,
+        "mu": 10.527118979979628
+      },
+      "day_cab|KENWORTH|pre_2010": {
+        "n": 4,
+        "mu": 11.241808786220732
+      },
+      "day_cab|MACK|2016_2020": {
+        "n": 3,
+        "mu": 10.554102995122541
+      },
+      "day_cab|KENWORTH|2016_2020": {
+        "n": 3,
+        "mu": 11.170010269108419
+      },
+      "day_cab|PETERBILT|pre_2010": {
+        "n": 5,
+        "mu": 11.024048010458644
+      },
+      "day_cab|FORD|pre_2010": {
+        "n": 1,
+        "mu": 9.605066412789279
+      },
+      "day_cab|KENWORTH|2010_2015": {
+        "n": 1,
+        "mu": 10.378070816969371
+      },
+      "dump|CHEVROLET|pre_2010": {
+        "n": 3,
+        "mu": 10.271763064902546
+      },
+      "dump|FREIGHTLINER|2010_2015": {
+        "n": 7,
+        "mu": 11.070424366713665
+      },
+      "dump|FREIGHTLINER|2016_2020": {
+        "n": 12,
+        "mu": 11.332916915426756
+      },
+      "dump|INTERNATIONAL|2021_plus": {
+        "n": 5,
+        "mu": 11.551622816769122
+      },
+      "dump|MACK|2010_2015": {
+        "n": 6,
+        "mu": 11.231580354945583
+      },
+      "dump|KENWORTH|2021_plus": {
+        "n": 13,
+        "mu": 12.144200179168314
+      },
+      "dump|FORD|2010_2015": {
+        "n": 1,
+        "mu": 10.768629102743631
+      },
+      "dump|INTERNATIONAL|2016_2020": {
+        "n": 7,
+        "mu": 11.244891977443938
+      },
+      "dump|FREIGHTLINER|2021_plus": {
+        "n": 11,
+        "mu": 11.675860956089489
+      },
+      "dump|FREIGHTLINER|pre_2010": {
+        "n": 2,
+        "mu": 10.57426167546159
+      },
+      "dump|PETERBILT|2021_plus": {
+        "n": 6,
+        "mu": 11.731893038543417
+      },
+      "dump|MACK|2021_plus": {
+        "n": 9,
+        "mu": 12.028978664818451
+      },
+      "dump|PETERBILT|2016_2020": {
+        "n": 6,
+        "mu": 11.315335443470941
+      },
+      "dump|INTERNATIONAL|pre_2010": {
+        "n": 4,
+        "mu": 10.267412812455454
+      },
+      "dump|MACK|2016_2020": {
+        "n": 12,
+        "mu": 11.373784875329267
+      },
+      "dump|KENWORTH|2016_2020": {
+        "n": 7,
+        "mu": 11.438317890331266
+      },
+      "dump|GMC|pre_2010": {
+        "n": 1,
+        "mu": 10.40286413833762
+      },
+      "dump|KENWORTH|pre_2010": {
+        "n": 2,
+        "mu": 11.075648608708649
+      },
+      "dump|MACK|pre_2010": {
+        "n": 3,
+        "mu": 10.414372772742645
+      },
+      "dump|FORD|pre_2010": {
+        "n": 2,
+        "mu": 10.324999906343432
+      },
+      "dump|VOLVO|2010_2015": {
+        "n": 1,
+        "mu": 11.024092275413587
+      },
+      "dump|PETERBILT|pre_2010": {
+        "n": 5,
+        "mu": 10.675971769699125
+      },
+      "dump|FORD|2021_plus": {
+        "n": 1,
+        "mu": 11.058528750277942
+      },
+      "dump|STERLING|pre_2010": {
+        "n": 3,
+        "mu": 10.60681992818185
+      },
+      "dump|WESTERN STAR|2016_2020": {
+        "n": 5,
+        "mu": 11.643563561428465
+      },
+      "dump|WESTERN STAR|2021_plus": {
+        "n": 4,
+        "mu": 12.229536279604314
+      },
+      "dump|PETERBILT|2010_2015": {
+        "n": 3,
+        "mu": 11.094951832004199
+      },
+      "dump|KENWORTH|2010_2015": {
+        "n": 1,
+        "mu": 11.66017587506126
+      }
+    }
+  },
+  "truck_types": [
+    "day_cab",
+    "sleeper",
+    "dump"
+  ],
+  "eras": [
+    "pre_2010",
+    "2010_2015",
+    "2016_2020",
+    "2021_plus"
+  ],
+  "unknown_brand": "UNKNOWN",
+  "unknown_era": "unknown"
+}
