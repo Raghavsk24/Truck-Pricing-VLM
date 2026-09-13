@@ -1,16 +1,18 @@
 """Scrape TruckPaper.com listing photos for a Class 7/8 truck image dataset.
 
-Positives are Class 7/8 trucks: sleeper, day cab and dump trucks, plus a slice of
-other heavy trucks (mixers, garbage, tow, ...). Negatives are Class 2-6 trucks.
-The weight class comes from TruckPaper's Gross Vehicle Weight Rating search filter
-and only decides which folder a listing lands in; it is not saved.
+Positives are Class 7/8 trucks from three TruckPaper categories only: sleeper,
+day cab, and dump. Negatives are Class 2-6 trucks from ten representative
+categories (pickups, vans, cutaways, box/stake/flatbed, service/utility).
+The weight class comes from TruckPaper's Gross Vehicle Weight Rating search
+filter and only decides which top-level folder a listing lands in; it is not
+saved. Every search is scoped to one of the allowlisted categories.
 
 Output (created before any request is made):
 
-    TruckPaper Scraped Images Dataset/
-      truckpaper_listings.json          id, brand, price, currency, image paths per listing
-      Positive (Class 7-8)/<category>/sleeper_truck_01/sleeper_truck_01_image_01.jpg ...
-      Negative (Class 2-6)/<category>/box_truck_01/box_truck_01_image_01.jpg ...
+    truckpaper_scraped_images_dataset/
+      truckpaper_scraped_listings.json  id, brand, price, currency, image paths per listing
+      positive (class 7 - 8)/<category>/sleeper_truck_01/sleeper_truck_01_image_01.jpg ...
+      negative (class 2 - 6)/<category>/box_truck_01/box_truck_01_image_01.jpg ...
       .state/                           search cache + progress, used to resume
 
 Listings are named by category, not by TruckPaper's numeric listing ID, so a folder or
@@ -19,9 +21,9 @@ truck saved, and its 3rd photo is "sleeper_truck_07_image_03.jpg". Auction-style
 listings (bid prices, not asking prices) are skipped entirely.
 
 Usage:
-    python scraper/truckpaper_scraper.py            # 300-image test run (200 positive, 100 negative)
-    python scraper/truckpaper_scraper.py --full     # 10,000 positive + 5,000 negative images
-    python scraper/truckpaper_scraper.py plan       # print strata and quotas, download nothing
+    python image_scraper/scripts/truckpaper_image_scraper.py            # 300-image test run
+    python image_scraper/scripts/truckpaper_image_scraper.py --full     # 10k positive + 5k negative
+    python image_scraper/scripts/truckpaper_image_scraper.py plan       # print strata and quotas
 
 Re-running resumes: listings that are already saved are skipped, so `--full` builds
 on top of the test run.
@@ -66,17 +68,31 @@ USER_AGENT = (
     "(KHTML, like Gecko) Chrome/128.0 Safari/537.36"
 )
 
-OUT_DIR = Path(__file__).resolve().parent.parent / "TruckPaper Scraped Images Dataset"
-POS_DIR = "Positive (Class 7-8)"
-NEG_DIR = "Negative (Class 2-6)"
-JSON_NAME = "truckpaper_listings.json"
+OUT_DIR = Path(__file__).resolve().parent.parent / "truckpaper_scraped_images_dataset"
+POS_DIR = "positive (class 7 - 8)"
+NEG_DIR = "negative (class 2 - 6)"
+JSON_NAME = "truckpaper_scraped_listings.json"
 
-CATEGORIES = {"sleeper-trucks": 16045, "day-cab-trucks": 16013, "dump-trucks": 16014}
-CORE_CATEGORY_IDS = set(CATEGORIES.values())
-POS_CLASS_SHARES = {7: 0.15, 8: 0.85}  # within sleeper / day cab / dump
-OTHER_POS_SHARE = 0.20  # share of positives from other Class 7/8 trucks
-OTHER_POS_CLASS_SHARES = {7: 0.25, 8: 0.75}
-NEG_SHARES = {6: 0.45, 5: 0.22, 4: 0.18, 3: 0.10, 2: 0.05}
+# Allowlisted TruckPaper categories only (slug -> CategoryId).
+POS_CATEGORIES = {
+    "sleeper-trucks": 16045,
+    "day-cab-trucks": 16013,
+    "dump-trucks": 16014,
+}
+NEG_CATEGORIES = {
+    "1-ton-pickup-trucks": 16035,
+    "3-4-ton-pickup-trucks": 16037,
+    "cargo-vans": 16072,
+    "step-vans": 16076,
+    "cutaway-cube-box-trucks": 16005,
+    "moving-box-trucks": 16008,
+    "cargo-straight-box-trucks": 16007,
+    "stake-trucks": 16046,
+    "flatbed-trucks": 16019,
+    "service-trucks-utility-trucks-mechanic-trucks": 16043,
+}
+POS_CLASS_SHARES = {7: 0.15, 8: 0.85}  # within each positive category
+NEG_CLASS_SHARES = {6: 0.45, 5: 0.22, 4: 0.18, 3: 0.10, 2: 0.05}  # within each negative category
 YEAR_BUCKETS = [(1900, 2012), (2013, 2017), (2018, 2021), (2022, date.today().year + 1)]
 
 TEST_TARGETS = (200, 100)
@@ -108,14 +124,23 @@ def log(msg: str) -> None:
 
 
 def write_json_atomic(path: Path, obj) -> None:
+    """Write JSON via a temp file, then replace. Retries on Windows lock/race failures."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(obj, indent=2, ensure_ascii=False)
     tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(json.dumps(obj, indent=2, ensure_ascii=False), encoding="utf-8")
-    for attempt in range(5):  # Windows refuses the rename while another process has the file open
+    for attempt in range(8):
         try:
+            tmp.write_text(payload, encoding="utf-8")
             os.replace(tmp, path)
             return
-        except PermissionError:
-            time.sleep(0.2 * (attempt + 1))
+        except (PermissionError, FileNotFoundError, OSError):
+            time.sleep(0.25 * (attempt + 1))
+            try:
+                if tmp.exists():
+                    tmp.unlink()
+            except OSError:
+                pass
+    tmp.write_text(payload, encoding="utf-8")
     os.replace(tmp, path)
 
 
@@ -207,16 +232,15 @@ def round_systematic(values: list[float], rng: random.Random) -> list[int]:
 
 @dataclass
 class Stratum:
-    """One search: a GVWR class and year range, within a category or site-wide."""
+    """One search: a GVWR class and year range within an allowlisted category."""
 
     key: str
     group: str  # POS_DIR or NEG_DIR
     gvwr_class: int
     years: tuple[int, int]
     weight: float
-    category_id: int | None = None  # None = site-wide search
-    folder: str | None = None  # fixed category folder for sleeper / day cab / dump
-    exclude_core: bool = False  # site-wide positives leave sleeper / day cab / dump to their own strata
+    category_id: int
+    folder: str  # fixed category folder slug
     count: int = 0
     total_pages: int = 0
     fetched_pages: list[int] = field(default_factory=list)
@@ -224,11 +248,11 @@ class Stratum:
     quota: int = 0  # listings to scrape
 
     def search_url(self, page: int = 1) -> str:
-        params = []
-        if self.category_id:
-            params.append(("Category", self.category_id))
-        params.append(("GrossVehicleWeightRating", f"Class {self.gvwr_class}"))
-        params.append(("Year", f"{self.years[0]}*{self.years[1]}"))
+        params = [
+            ("Category", self.category_id),
+            ("GrossVehicleWeightRating", f"Class {self.gvwr_class}"),
+            ("Year", f"{self.years[0]}*{self.years[1]}"),
+        ]
         if page > 1:
             params.append(("page", page))
         return f"{BASE_URL}/listings/search?{urlencode(params, quote_via=quote)}"
@@ -244,25 +268,22 @@ class Stratum:
 def build_strata() -> list[Stratum]:
     strata = []
     n_years = len(YEAR_BUCKETS)
-    core_share = (1 - OTHER_POS_SHARE) / len(CATEGORIES)
-    for slug, cat_id in CATEGORIES.items():
+    pos_cat_share = 1.0 / len(POS_CATEGORIES)
+    for slug, cat_id in POS_CATEGORIES.items():
         for cls, cls_share in POS_CLASS_SHARES.items():
             for years in YEAR_BUCKETS:
                 strata.append(Stratum(
                     f"pos:{slug}:class{cls}:{years[0]}-{years[1]}", POS_DIR, cls, years,
-                    core_share * cls_share / n_years, category_id=cat_id, folder=slug,
+                    pos_cat_share * cls_share / n_years, category_id=cat_id, folder=slug,
                 ))
-    for cls, cls_share in OTHER_POS_CLASS_SHARES.items():
-        for years in YEAR_BUCKETS:
-            strata.append(Stratum(
-                f"pos:other:class{cls}:{years[0]}-{years[1]}", POS_DIR, cls, years,
-                OTHER_POS_SHARE * cls_share / n_years, exclude_core=True,
-            ))
-    for cls, share in NEG_SHARES.items():
-        for years in YEAR_BUCKETS:
-            strata.append(Stratum(
-                f"neg:class{cls}:{years[0]}-{years[1]}", NEG_DIR, cls, years, share / n_years,
-            ))
+    neg_cat_share = 1.0 / len(NEG_CATEGORIES)
+    for slug, cat_id in NEG_CATEGORIES.items():
+        for cls, cls_share in NEG_CLASS_SHARES.items():
+            for years in YEAR_BUCKETS:
+                strata.append(Stratum(
+                    f"neg:{slug}:class{cls}:{years[0]}-{years[1]}", NEG_DIR, cls, years,
+                    neg_cat_share * cls_share / n_years, category_id=cat_id, folder=slug,
+                ))
     return strata
 
 
@@ -443,15 +464,18 @@ class Scraper:
 
     def is_truck(self, s: Stratum, stub: dict) -> bool:
         """A truck listing with enough photos and a real asking price. Trailers, bodies-only,
-        cranes and auctions (bid prices, not asking prices) are out."""
+        cranes and auctions (bid prices, not asking prices) are out. Also require the listing
+        to still belong to this stratum's allowlisted category."""
         if not stub["url"].startswith("/listing/for-sale/"):
             return False  # links out to an auction site (auctiontime.com, equipmentfacts.com, ...)
         if stub["base"] != TRUCKS_BASE_CATEGORY or stub["dismantled"] or stub["images"] < MIN_PHOTOS:
             return False
+        if stub["cat_id"] != s.category_id:
+            return False
         text = f"{self.cat_slugs.get(stub['cat_id'], '')} {stub['url']}".lower()
         if "trailer" in text or "bodies-only" in text:
             return False
-        return not (s.exclude_core and stub["cat_id"] in CORE_CATEGORY_IDS)
+        return True
 
     def capacity(self, s: Stratum) -> tuple[float, float]:
         """(listings we could take, average photos per listing), estimated from the pages fetched so far."""
@@ -555,10 +579,10 @@ class Scraper:
         return rng.choice(by_tercile[chosen])
 
     def category_slug(self, s: Stratum, stub: dict) -> str:
-        return s.folder or self.cat_slugs.get(stub["cat_id"]) or slugify(stub["cat_name"]) or "other-trucks"
+        return s.folder
 
     def folder_for(self, s: Stratum, stub: dict) -> str:
-        return f"{s.group}/{self.category_slug(s, stub)}"
+        return f"{s.group}/{s.folder}"
 
     def next_code(self, label: str) -> str:
         """"sleeper_truck_01", "sleeper_truck_02", ... - stable and unique across the whole dataset,
@@ -724,7 +748,7 @@ class Scraper:
         print(f"Measured: {sec_per_listing:.1f} s per listing, {avg_images:.0f} photos per listing.")
         print(f"Projected full run ({full_targets[0]:,} + {full_targets[1]:,} images): "
               f"~{minutes:.0f} min more for ~{remaining_listings:.0f} listings. "
-              f"Start it with: python scraper/truckpaper_scraper.py --full")
+              f"Start it with: python image_scraper/scripts/truckpaper_image_scraper.py --full")
 
 
 def ensure_output_dirs(out_dir: Path) -> None:
