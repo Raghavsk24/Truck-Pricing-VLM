@@ -1,0 +1,7 @@
+# Scraped images and scraper state (~5 GB for a full run)
+TruckPaper Scraped Images Dataset/*
+TruckPaper Scraped Images Dataset.zip
+!TruckPaper Scraped Images Dataset/truckpaper_listings.json
+
+__pycache__/
+*.pyc
