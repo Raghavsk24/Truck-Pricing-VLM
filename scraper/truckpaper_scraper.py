@@ -7,10 +7,10 @@ and only decides which folder a listing lands in; it is not saved.
 
 Output (created before any request is made):
 
-    TruckPaper Scraped Images/
+    TruckPaper Scraped Images Dataset/
       truckpaper_listings.json          id, brand, price, currency, image paths per listing
-      Positive Classes (Class 7-8)/<category>/sleeper_truck_01/sleeper_truck_01_image_01.jpg ...
-      Negative Examples (Class 2-6)/<category>/box_truck_01/box_truck_01_image_01.jpg ...
+      Positive (Class 7-8)/<category>/sleeper_truck_01/sleeper_truck_01_image_01.jpg ...
+      Negative (Class 2-6)/<category>/box_truck_01/box_truck_01_image_01.jpg ...
       .state/                           search cache + progress, used to resume
 
 Listings are named by category, not by TruckPaper's numeric listing ID, so a folder or
@@ -66,9 +66,9 @@ USER_AGENT = (
     "(KHTML, like Gecko) Chrome/128.0 Safari/537.36"
 )
 
-OUT_DIR = Path(__file__).resolve().parent.parent / "TruckPaper Scraped Images"
-POS_DIR = "Positive Classes (Class 7-8)"
-NEG_DIR = "Negative Examples (Class 2-6)"
+OUT_DIR = Path(__file__).resolve().parent.parent / "TruckPaper Scraped Images Dataset"
+POS_DIR = "Positive (Class 7-8)"
+NEG_DIR = "Negative (Class 2-6)"
 JSON_NAME = "truckpaper_listings.json"
 
 CATEGORIES = {"sleeper-trucks": 16045, "day-cab-trucks": 16013, "dump-trucks": 16014}
