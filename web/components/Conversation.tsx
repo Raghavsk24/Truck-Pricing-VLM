@@ -25,7 +25,6 @@ export function Conversation({
   onChip,
   onFiles,
   onOpenReport,
-  onBack,
 }: {
   messages: ChatMessage[];
   result: AnalyzeOk | null;
@@ -37,7 +36,6 @@ export function Conversation({
   onChip: (label: string) => void;
   onFiles: (files: FileList | null) => void;
   onOpenReport: () => void;
-  onBack: () => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -59,11 +57,6 @@ export function Conversation({
             boxSizing: "border-box",
           }}
         >
-          <div>
-            <button type="button" className="btn btn-secondary" onClick={onBack} style={{ fontSize: 13 }}>
-              Back
-            </button>
-          </div>
           {messages.map((m) =>
             m.role === "user" ? (
               <UserBubble key={m.id} message={m} />

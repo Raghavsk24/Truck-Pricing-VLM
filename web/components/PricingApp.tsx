@@ -266,7 +266,6 @@ export function PricingApp() {
             setSample(false);
             setScreen("report");
           }}
-          onBack={() => setScreen("landing")}
         />
       )}
       {screen === "report" && (
