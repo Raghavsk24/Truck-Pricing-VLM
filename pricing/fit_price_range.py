@@ -768,10 +768,6 @@ def _display_truck_type(truck_type: str) -> str:
     }.get(truck_type, truck_type.replace("_", " ").title())
 
 
-def _display_brand(brand: str) -> str:
-    return " ".join(part.capitalize() for part in brand.split())
-
-
 def render_bar_chart(
     preds: list[dict],
     error_table: dict,
@@ -792,7 +788,6 @@ def render_bar_chart(
 
     rows = sorted(preds, key=lambda r: r["actual"])
     type_labels: list[str] = []
-    brand_labels: list[str] = []
     actuals: list[float] = []
     centers: list[float] = []
     lo_err: list[float] = []
@@ -805,7 +800,6 @@ def render_bar_chart(
         low = max(0.0, center * (1.0 - bound))
         high = center * (1.0 + bound)
         type_labels.append(_display_truck_type(r["truck_type"]))
-        brand_labels.append(_display_brand(r["brand"]))
         actuals.append(r["actual"])
         centers.append(center)
         lo_err.append(center - low)
@@ -838,31 +832,8 @@ def render_bar_chart(
     )
 
     ax.set_xticks(x)
-    ax.set_xticklabels([""] * n)
-    # Bold truck type on the first line, brand underneath in regular weight.
-    for i, (tt, brand) in enumerate(zip(type_labels, brand_labels)):
-        ax.text(
-            x[i],
-            -0.02,
-            tt,
-            transform=ax.get_xaxis_transform(),
-            ha="center",
-            va="top",
-            fontsize=8,
-            fontweight="bold",
-            clip_on=False,
-        )
-        ax.text(
-            x[i],
-            -0.08,
-            brand,
-            transform=ax.get_xaxis_transform(),
-            ha="center",
-            va="top",
-            fontsize=7.5,
-            fontweight="normal",
-            clip_on=False,
-        )
+    ax.set_xticklabels(type_labels, fontsize=8, fontweight="bold", rotation=45, ha="right")
+    ax.tick_params(axis="x", pad=2)
 
     ax.set_ylabel("USD price")
     ax.set_title(
@@ -877,7 +848,6 @@ def render_bar_chart(
     ax.set_ylim(bottom=0)
     ax.yaxis.set_major_locator(mticker.MultipleLocator(20_000))
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _p: f"${v / 1000:.0f}k"))
-    fig.subplots_adjust(bottom=0.16)
     fig.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, dpi=140, bbox_inches="tight")
