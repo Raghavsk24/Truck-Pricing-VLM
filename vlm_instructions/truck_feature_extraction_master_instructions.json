@@ -1,0 +1,637 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://54hackathon.local/schemas/truck-feature-extraction-master.json",
+  "title": "TruckFeatureExtractionMaster",
+  "description": "MASTER structured output for a Sonnet 5 VLM agent that performs ALL truck image feature extraction in ONE call. On every call: write reasoning first (covering all stages below in order), then return output. STAGE ORDER (mandatory): (1) TRUCK TYPE / VALIDITY — using the Class 7/8 day-cab / dump / sleeper vs none rules from the filter schema. truck_type in {day-cab-truck, dump-truck, sleeper-truck} means VALID Class 7/8 input; truck_type=none means INVALID. (2) PRIMARY SUBJECT — center-weighted composition: front|side|back|engine|container|interior|dashboard|tires|unusable. (3) BRAND — only if truck_type is not none AND primary_subject is front or side; otherwise set has_brand false, brand_name null, needs_user_input false, user_prompt null, visible_identifier_type none, identifier_location null, brand_list_verified false, confidence low, and note skipped in brand.reasoning. (4) CONDITION — only if truck_type is not none AND primary_subject is front or side; otherwise set every category score to null, penalty_percent 0, overall_score null, overall_condition_label null, total_penalty_percent 0, and explain skipped. PRICEABLE images (used by the pricing pipeline) require truck_type != none AND primary_subject in {front, side}. Do NOT guess brand from shape/paint. Do NOT infer condition for parts not visible. Background trucks are normal and do not by themselves invalidate an image. Filter rule summary: Required structured output for a Sonnet 5 VLM agent that filters invalid input images by naming the Class 7/8 truck type. On every call, return reasoning first, then output. The only allowed truck_type values are day-cab-truck, dump-truck, sleeper-truck, and none. day-cab-truck, dump-truck, or sleeper-truck means the image is VALID input (a Class 7/8 truck or a part of one). none means the image is INVALID input (Class 2–6, a non-truck, or a part that belongs only to those lighter vehicles). Do not emit any other type label and do not emit a separate validity boolean -- validity is exactly whether truck_type is not none. Class 7/8 means GVWR of 26,001 lb and up. Class 2–6 means pickups (including 3/4-ton and 1-ton Super Duty / Ram / Silverado chassis-cabs), cargo vans, step vans, cutaway cube trucks, moving and cargo straight box trucks on a medium chassis, medium-duty stake and flatbed trucks, and service/utility/mechanic bodies on a pickup or medium chassis. Rule 1 (WHAT TO LOOK FOR ON CLASS 7/8): a tall, deep commercial tractor cab; a long conventional hood and large grille; a sleeper bunk or raised sleeper box behind the cab; a fifth-wheel plate; a heavy dump/hopper/grain body on a commercial chassis; tandem or tridem rear axles; dual drive wheels; 22.5-inch commercial tires on a 10-lug hub; West Coast twin-arm mirrors; vertical exhaust/air-intake stacks; dual air-brake reservoirs; a large diesel (charge-air pipe with silicone coupler, air dryer, oversized intake); a commercial analog cluster (0–3000 RPM tach, dual primary/secondary AIR PSI gauges); a Class 7/8 OEM mark (Freightliner, Peterbilt, Kenworth, Mack, International/Navistar, Volvo, Western Star, Sterling); diamond-quilt commercial vinyl seats and door panels; a sleeper mattress with overhead cabinet/netted shelf; a driver-info LCD that shows gear as N (not PRND/PRNDM), a parking-brake telltale, and typically very high mileage. Rule 2 (WHAT TO LOOK FOR ON CLASS 2–6 / none): a pickup bed or pickup-proportion cab; Super Duty / F-450 / F-550 / Ram 3500 / Silverado 3500 / GMC C4500-style door badges; consumer bucket seats, a Ford/Chevy/Ram oval wheel with car-like cruise buttons, or a PRNDM gear display; a cargo van or step-van body; a cutaway or cab-over cube/box (Isuzu, Hino, UD, Ford E-series/Transit, Chevy Express); a wood-plank stake or short medium flatbed on a single rear axle with single (non-dual) wheels; a service/utility/mechanic body on a pickup chassis; an empty cargo-box interior (plywood walls, E-track, roll-up or barn rear doors) with no Class 7/8 cab or chassis in frame; a door-jamb sticker whose printed GVWR is below 26,001 lb; a car, SUV, motorcycle, equipment, or scenery with no truck cues. Rule 3 (HOW TO CHOOSE AMONG THE THREE VALID TYPES): use sleeper-truck when a sleeper box, raised bunk wall, sleeper side window, or sleeper-compartment interior (mattress, overhead cabinet, netted shelf) is visible. Use dump-truck when a dump, hopper, or grain body is visible, including a rear-only dump tailgate or hoist even if the wheels or cab are out of frame. Use day-cab-truck when the vehicle is a Class 7/8 highway tractor or heavy conventional cab whose cab ends at the rear wall with no sleeper bunk -- including a fifth-wheel day cab, a Class 7/8 conventional cab with a van/box body mounted (heavy straight truck, not a medium cutaway), and Class 7/8 part close-ups (dash, engine bay, 10-lug commercial wheel, riveted cab plate, diamond-quilt vinyl interior) that show no sleeper and no dump body. If more than one type cue is present, pick the body that the shot is composed around. Rule 4 (CLOSE-UPS ARE FIRST-CLASS EVIDENCE): listing photos of Class 7/8 trucks routinely crop to one part. Do NOT require a full exterior. Do NOT set truck_type to none merely because the shot is tight, interior-only, under-hood, or a single component. If any Rule 1 cue is present, you MUST pick day-cab-truck, dump-truck, or sleeper-truck -- never none. Rule 5 (A BOX BODY DOES NOT AUTOMATICALLY MEAN none): a cutaway, cab-over, or Super Duty/C4500-scale box is none. A full-size Class 7/8 conventional cab remains valid even with a van or box mounted; type that as day-cab-truck unless a sleeper or dump body is also visible. Rule 6 (PRIMARY SUBJECT ONLY): judge only the vehicle or vehicle-part the frame is composed around. Background trucks do not change the label. Rule 7 (WHEN UNCERTAIN): if any Rule 1 cue is present and no Rule 2 cue contradicts it, pick one of the three valid types (default day-cab-truck when sleeper and dump cues are absent). If a Rule 2 cue is present and no Rule 1 cue is present, use none. Never use none as a stand-in for 'I cannot tell which of the three Class 7/8 types this is.'",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reasoning",
+    "output"
+  ],
+  "properties": {
+    "reasoning": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Single consolidated step-by-step analysis written BEFORE output. Cover in order: (1) Class 7/8 vs Class 2-6 cues and chosen truck_type; (2) center-weighted primary_subject; (3) brand evidence or why brand was skipped/not found; (4) condition evidence per category or why condition was skipped. Do not skip this field."
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "truck_type",
+        "truck_type_user_message",
+        "primary_subject",
+        "primary_subject_user_message",
+        "brand",
+        "condition"
+      ],
+      "description": "All feature-extraction results. Must follow from reasoning.",
+      "properties": {
+        "truck_type": {
+          "type": "string",
+          "enum": [
+            "day-cab-truck",
+            "dump-truck",
+            "sleeper-truck",
+            "none"
+          ],
+          "description": "Exactly one value. day-cab-truck: Class 7/8 day-cab tractor or heavy conventional cab with no sleeper and no dump body, or a Class 7/8 part close-up that is not a sleeper interior and not a dump body. dump-truck: Class 7/8 dump, hopper, or grain body, including a dump tailgate/hoist close-up. sleeper-truck: Class 7/8 tractor with a sleeper box, or a sleeper-compartment interior. none: not a Class 7/8 day-cab, dump, or sleeper truck -- Class 2–6 vehicles and their parts, cargo-box interiors, printed GVWR under 26,001 lb, or non-trucks. none MUST NOT be used when Class 7/8 cues are visible."
+        },
+        "truck_type_user_message": {
+          "type": "string",
+          "description": "When truck_type is day-cab-truck, dump-truck, or sleeper-truck, this MUST be an empty string. When truck_type is none, this MUST be a short message telling the user the photo is not a Class 7/8 truck and asking them to upload a day-cab, dump, or sleeper Class 7/8 truck photo."
+        },
+        "primary_subject": {
+          "type": "string",
+          "enum": [
+            "front",
+            "side",
+            "back",
+            "engine",
+            "container",
+            "interior",
+            "dashboard",
+            "tires",
+            "unusable"
+          ],
+          "description": "The single primary subject of the image. Use exactly one value, chosen by CENTER-WEIGHTED composition (what the frame is centered/framed on, expanding outward), not raw pixel area or camera distance alone. front: cab face, grille, bumper, headlights, windshield, or hood exterior, where the grille/very front of the truck is actually visible and dominant. side: a broadside or shallow three-quarter profile view of the truck where the length of the cab and/or body/frame runs across the frame, and the grille and very front of the truck (bumper, headlights, grille face) are NOT the dominant visible feature -- e.g. a photo taken from alongside the truck showing the door, cab side panel, fuel tank, frame rails, or the flank of the cargo body/box running lengthwise through the frame. back: rear of the tractor or trailer, taillights, rear bumper, DOT tape, rear cargo doors, or an exposed rear chassis/frame-rail area (e.g. a cab-and-chassis with no body mounted, hitch plate, frame rails) when that is what the shot is centered on. engine: engine bay, diesel powertrain, or under-hood components as the dominant subject. container: trailer body / cargo box / tanker / flatbed load area as the dominant subject, viewed such that the body itself (not the truck's side profile) is the clear focus (e.g. straight-on or close-up of the box/tank, not a lengthwise side view of the whole truck). interior: a general cab or sleeper view showing the cabin as a space -- seats, steering wheel, door panels, headliner, sleeper area -- OR any close-up of the dash/center-console CONTROLS (radio/infotainment screen, rocker switches, air vents, climate control knobs, cup holders, shifter, phone mounts, warning decals) that does NOT prominently show the actual gauge instruments (speedometer, tachometer, odometer/hour-meter). dashboard: reserved specifically for shots where the ANALOG OR DIGITAL GAUGE INSTRUMENTS are clearly visible and are the subject -- speedometer, tachometer, odometer/hour-meter readout, fuel/temp/oil-pressure gauges, or the full instrument cluster -- whether as a tight close-up or as part of a wider dash view. If no speedometer/tachometer/odometer/gauge-needle display is visible in the shot, it must be classified as interior, not dashboard, even if it is a tight close-up of other dash controls like a radio or switches. tires: wheels, tires, rims, or axles as the dominant subject -- but only when a wheel/tire is what the frame is actually centered on, not merely large because it sits close to the camera along a bottom/side edge while a different part occupies the frame's center. unusable: not clearly one of the eight allowed parts, the image is too low quality to classify, or the truck's own part cannot be confidently isolated because it genuinely overlaps/fuses with another vehicle's part of similar size in the immediate foreground. Background trucks, parked vehicles, or a busy yard/lot setting are NOT by themselves grounds for unusable -- this is normal and expected in real trucker photos; the threshold for rejecting on clutter grounds is high. If the closest/foreground truck has one clearly identifiable dominant part at the center of the frame, pick that part even if other trucks are visible farther back in the frame."
+        },
+        "primary_subject_user_message": {
+          "type": "string",
+          "description": "When primary_subject is one of front, side, back, engine, container, interior, dashboard, or tires, this must be an empty string. When primary_subject is unusable, this must be a short message asking the user to upload a clearer photo of the truck that shows the front, side, back, engine, container, interior, dashboard, or tires."
+        },
+        "brand": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "has_brand",
+            "brand_name",
+            "visible_identifier_type",
+            "identifier_location",
+            "brand_list_verified",
+            "confidence",
+            "reasoning",
+            "needs_user_input",
+            "user_prompt"
+          ],
+          "description": "Strict output schema for the Sonnet 5 VLM agent task: inspect a single truck image and determine whether a brand can be identified from it. Rule 1 (WHERE to look first): the primary places to look for a brand identifier are cab doors, cargo box/side panels, tailgate/rear doors, air deflectors/roof caps, the steering wheel, or the front center/grille. Rule 2 (WHAT counts): if the truck has ANY visible identifier in one of those primary locations (a manufacturer logo/emblem, hood ornament, badge, or wordmark), the agent MUST read the brand name directly off it rather than guessing from the truck's shape, color, or other non-branding cues. Rule 3 (OTHER LOCATIONS NEED VALIDATION, NOT AUTOMATIC REJECTION): a legible manufacturer nameplate/decal/placard found somewhere else in the image (e.g. a builder's plate on the dash) is NOT automatically rejected just because of its location, and it is NOT automatically accepted either -- it MUST be cross-checked against an extensive reference list of truck manufacturers/brands actually sold or operated in the US domestic market. This list must go beyond the handful of famous highway-tractor OEMs (Freightliner, Peterbilt, Kenworth, Mack, International/Navistar, Volvo, Western Star, Ford, Chevrolet/GMC, Ram, Isuzu, Hino, UD/Nissan Diesel) and also include vocational/specialty truck builders (e.g. Sterling, Autocar, Crane Carrier, Oshkosh, McNeilus, Pierce, E-One, Rosenbauer, Spartan, Terex, Dennis Eagle, Peterson, Load King, and similar). If the name matches a genuine truck manufacturer on that extensive list, accept it (has_brand true) even if it was found outside the primary locations. If the name is not a truck manufacturer at all -- a component supplier, vehicle upfitter/body builder credited only on a compliance plate in a 'MFD. BY' field, equipment/shop-tool brand (e.g. a 'Hunter' wheel-alignment sticker), or dealer name -- reject it regardless of where it was found. Rule 4 (NO GUESSING, NO CROSS-IMAGE MEMORY): if no identifier passes Rule 2 or Rule 3 anywhere in the image, the agent MUST NOT guess or infer a brand from context (fleet livery, truck body style, region, or a brand identified in a *different* image of what might be the same vehicle). Instead it must set has_brand to false, needs_user_input to true, and populate user_prompt with a short, specific question that redirects the workflow to ask the human user for the brand name.",
+          "properties": {
+            "has_brand": {
+              "type": "boolean",
+              "description": "true if the image shows any visible brand identifier (logo, emblem, badge, hood ornament, or wordmark) from which a brand name can be read. false only if no such identifier is visible anywhere in the image."
+            },
+            "brand_name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "The brand/manufacturer name read directly from a visible logo, emblem, badge, wordmark, or nameplate, and confirmed via brand_list_verified. Must be null when has_brand is false. Must never be a guess inferred from truck shape or paint alone, never inferred from another image, and never a non-brand name (component supplier, upfitter, equipment maker, shop sticker, dealer) even if it was the first or only legible text found."
+            },
+            "visible_identifier_type": {
+              "type": "string",
+              "enum": [
+                "logo_emblem",
+                "hood_ornament",
+                "wordmark_text",
+                "badge",
+                "none"
+              ],
+              "description": "The type of visual evidence used to determine the brand. Use 'none' only when has_brand is false."
+            },
+            "identifier_location": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "cab_door",
+                "cargo_box_side_panel",
+                "tailgate_rear_door",
+                "air_deflector_roof_cap",
+                "steering_wheel",
+                "front_center_grille",
+                "other_manufacturer_nameplate",
+                null
+              ],
+              "description": "Where the identifier was seen. Use one of the six primary locations (cab_door, cargo_box_side_panel, tailgate_rear_door, air_deflector_roof_cap, steering_wheel, front_center_grille) when found there. Use 'other_manufacturer_nameplate' for a legible manufacturer nameplate/decal/placard found elsewhere (e.g. a builder's plate on the dash) that passed the brand_list_verified cross-check. Null when has_brand is false."
+            },
+            "brand_list_verified": {
+              "type": "boolean",
+              "description": "true only if brand_name was cross-checked against an extensive reference list of truck manufacturers/brands sold or operated in the US domestic market (major highway OEMs plus vocational/specialty builders such as Autocar, Crane Carrier, Oshkosh, McNeilus, Pierce, E-One, Rosenbauer, Spartan, Terex, Dennis Eagle, etc.) and confirmed to be a genuine truck brand match -- not a component supplier, upfitter, equipment brand, or dealer name. Must be true whenever has_brand is true. Must be false when has_brand is false."
+            },
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "description": "Confidence in the brand determination. 'high' = identifier is clearly legible; 'medium' = identifier is present but partially obscured, angled, or low-resolution; 'low' = identifier is barely discernible. Not applicable in the same way when has_brand is false, but still report how confident the agent is that no identifier is visible."
+            },
+            "reasoning": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One or two sentences citing the specific visual evidence (or lack thereof) that led to the determination, e.g. 'Oval chrome badge reading FREIGHTLINER visible on the front grille.'"
+            },
+            "needs_user_input": {
+              "type": "boolean",
+              "description": "true when the agent could not find any visible brand identifier and is redirecting to the human user for the answer, instead of guessing. Must be false whenever has_brand is true."
+            },
+            "user_prompt": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "The exact question to pose back to the user when needs_user_input is true, e.g. 'I couldn't find a visible logo, badge, or nameplate on this truck -- do you know the brand/manufacturer?'. Must be null when needs_user_input is false."
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "has_brand": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "has_brand"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "brand_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "visible_identifier_type": {
+                    "enum": [
+                      "logo_emblem",
+                      "hood_ornament",
+                      "wordmark_text",
+                      "badge"
+                    ]
+                  },
+                  "identifier_location": {
+                    "enum": [
+                      "cab_door",
+                      "cargo_box_side_panel",
+                      "tailgate_rear_door",
+                      "air_deflector_roof_cap",
+                      "steering_wheel",
+                      "front_center_grille",
+                      "other_manufacturer_nameplate"
+                    ]
+                  },
+                  "brand_list_verified": {
+                    "const": true
+                  },
+                  "needs_user_input": {
+                    "const": false
+                  },
+                  "user_prompt": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "brand_name",
+                  "visible_identifier_type",
+                  "identifier_location",
+                  "brand_list_verified",
+                  "needs_user_input",
+                  "user_prompt"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "has_brand": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "has_brand"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "brand_name": {
+                    "type": "null"
+                  },
+                  "visible_identifier_type": {
+                    "const": "none"
+                  },
+                  "identifier_location": {
+                    "type": "null"
+                  },
+                  "brand_list_verified": {
+                    "const": false
+                  },
+                  "needs_user_input": {
+                    "const": true
+                  },
+                  "user_prompt": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "brand_name",
+                  "visible_identifier_type",
+                  "identifier_location",
+                  "brand_list_verified",
+                  "needs_user_input",
+                  "user_prompt"
+                ]
+              }
+            }
+          ]
+        },
+        "condition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "categories",
+            "overall_score",
+            "overall_condition_label",
+            "total_penalty_percent",
+            "explanation"
+          ],
+          "description": "Output schema and grading rubric for a vision-language model (VLM) that inspects one or more images of a commercial truck and produces a structured condition assessment. The model must inspect the images against each category below, assign a 1-5 score per category using the stated visual criteria, and compute a rounded overall condition score. Scores are integers from 1 (worst) to 5 (best). If a category cannot be evaluated because no image shows that part of the truck, set score to null and disregard it from the overall_score calculation — explain the disregard in the single 'explanation' field rather than guessing.",
+          "properties": {
+            "categories": {
+              "type": "object",
+              "description": "Per-category scores. Score each category independently based only on visual evidence in the provided images.",
+              "additionalProperties": false,
+              "required": [
+                "chassis_and_frame",
+                "front_end_engine_compartment_hood",
+                "tires_wheels_suspension",
+                "cab_sleeper_aero_fairings"
+              ],
+              "properties": {
+                "chassis_and_frame": {
+                  "$ref": "#/definitions/categoryScore",
+                  "description": "Weight: 35% (highest priority). Inspect the frame rails, crossmembers, and structural chassis components visible in the images, AND the suspension hardware attached to the frame — leaf springs, spring hangers, U-bolts, axle seats, and shackles. Suspension hardware is structurally part of the chassis for this category, so rust or wear found there counts against this score even if the painted frame rails themselves look clean. (Tire tread and wheel/rim condition are scored separately under tires_wheels_suspension — do not double-count tread wear here.)",
+                  "properties": {
+                    "weight": {
+                      "const": 0.35
+                    },
+                    "score": {
+                      "$ref": "#/definitions/score1to5"
+                    },
+                    "penalty_percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 30,
+                      "description": "Deduction percentage implied by the score, per the rubric below."
+                    }
+                  },
+                  "instructions": {
+                    "5": "Reserve this score for a flawless or near-flawless chassis: clean frame rails with original paint fully intact AND leaf springs/hangers/U-bolts/shackles that show no visible rust, staining, or corrosion either. Nothing visible shows any sign of age or use — not even light surface discoloration on the suspension hardware. Judge this purely on the quality of what IS visible, not how much of the chassis is visible: even if only a portion of the frame/suspension can be seen in the image(s) (e.g. a partial angle, one side, or a sliver between other components), score it a 5 as long as that visible portion is completely flawless. Do not automatically knock the score down to a 4 just because the view is partial or the angle is limited — only drop below a 5 when the visible evidence actually shows some rust, staining, or corrosion, not merely because more of the chassis could theoretically be hiding damage out of frame.",
+                    "4": "Frame rails are clean with original paint fully intact and no rust on the frame itself. This is also the correct score — not a 3 — when the frame rails are otherwise pristine and the only rust present is slight/light surface rust confined to the suspension hardware (leaf springs, hangers, U-bolts, shackles), not spread onto the frame rails themselves. An otherwise-excellent frame should not be dragged down to a 3 for one localized area of light suspension rust. Deduction: 0%.",
+                    "3": "Minor surface oxidation or light rust is visible on the frame rails themselves (not just the suspension), OR rust on the suspension hardware is more than slight/localized — e.g. spread across multiple suspension components or accompanied by any staining bleeding onto the frame rails. This tier also covers heavy/dark rust that fully coats a component, AS LONG AS it is confined to a single small, isolated chassis component (e.g. just the rear crossmember, just the hitch/pintle assembly, just one bracket) while the rest of the visible frame rails and suspension are otherwise clean — one heavily rusted small part does not need to drag an otherwise-good frame down to a 2. No pitting, flaking, or structural concern yet. Deduction: -2% to -4% (use the higher end of this range, e.g. -4%, when the isolated component's rust is heavy rather than light).",
+                    "2": "Be harsh here: this is the correct score — not a 3 — whenever heavy, dark, or extensive rust is not confined to one isolated small component but instead is spread across multiple chassis/suspension components or a large portion of the visible frame, making the overall chassis look aged, neglected, or undesirable, even without pitting, flaking, or bent components. Signs include heavy rust on two or more separate components, heavy orange/brown discoloration covering a large continuous area of the frame, or an overall worn/deteriorated look across most of the visible chassis. Do not require deep pitting or structural scaling to assign a 2 — widespread heavy surface rust across multiple parts of the chassis is enough on its own. Deduction: -15% to -30%.",
+                    "1": "Severe structural scaling, deep pitting, heavy flaking rust, and/or visibly bent or damaged frame rails or suspension components. Deduction: -15% to -30% (use the high end of the range)."
+                  }
+                },
+                "front_end_engine_compartment_hood": {
+                  "$ref": "#/definitions/categoryScore",
+                  "description": "Weight: 25%. Inspect the grille, front bumper, hood, and visible engine compartment.",
+                  "properties": {
+                    "weight": {
+                      "const": 0.25
+                    },
+                    "score": {
+                      "$ref": "#/definitions/score1to5"
+                    },
+                    "penalty_percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 10,
+                      "description": "Deduction percentage implied by the score, per the rubric below."
+                    }
+                  },
+                  "instructions": {
+                    "5": "Grille, bumper, and hood fully intact with no visible damage, cracks, wear, or rust of any kind.",
+                    "4": "Grille, bumper, and hood are structurally intact and undamaged. A single small, isolated blemish is still a 4, not a 3 — e.g. one small patch of rust or staining on the bumper or step, a light scuff, a couple of rock chips, or slightly dulled chrome, as long as it does not extend across multiple components or areas. Deduction: 0%.",
+                    "3": "Cosmetic wear is now widespread or affects multiple areas at once — e.g. scuffing AND rock chips AND dull chrome all present together, or rust/staining spread across more than one component (not just one small spot). Only drop to a 3 when the wear is cumulative/noticeable across the front end, not for a single minor blemish. Deduction: -1% to -2%.",
+                    "2": "Cracked fiberglass hood and/or visible front-end collision damage (dented bumper, misaligned grille, etc.). Deduction: -5% to -10%.",
+                    "1": "Significant cracked fiberglass hood and/or clear front collision damage affecting multiple components. Deduction: -5% to -10% (use the high end of the range)."
+                  }
+                },
+                "tires_wheels_suspension": {
+                  "$ref": "#/definitions/categoryScore",
+                  "description": "Weight: 20%. Inspect tire tread depth and wear pattern, rim condition, and visible suspension components.",
+                  "properties": {
+                    "weight": {
+                      "const": 0.2
+                    },
+                    "score": {
+                      "$ref": "#/definitions/score1to5"
+                    },
+                    "penalty_percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 8,
+                      "description": "Deduction percentage implied by the score, per the rubric below."
+                    }
+                  },
+                  "instructions": {
+                    "5": "Deep tread depth on all visible tires, clean rims with no damage or corrosion.",
+                    "4": "Deep tread depth on all visible tires. Rims count as 4 even with light road dust, dirt, or minor surface rust/discoloration on the rim, hub, or lug nuts — that is normal for a working truck and is not a defect. Deduction: 0%.",
+                    "3": "Mild, even tread wear, roughly 50% tread life remaining. Only drop to a 3 for actual tread wear or a rim with real corrosion/damage (not just dirt or light surface rust). Deduction: -2%.",
+                    "2": "Bald or capped drive tires and/or uneven shoulder wear visible on one or more tires. Deduction: -5% to -8%.",
+                    "1": "Multiple bald/capped drive tires and/or pronounced uneven shoulder wear across the axle set. Deduction: -5% to -8% (use the high end of the range)."
+                  }
+                },
+                "cab_sleeper_aero_fairings": {
+                  "$ref": "#/definitions/categoryScore",
+                  "description": "Weight: 20%. This category has two independent parts: (a) the cab/sleeper INTERIOR (seats, dash, sleeper berth) and (b) the exterior aerodynamic components (side skirts, cab extenders, roof fairing). The interior can only be judged from a photo that actually shows the interior — a windshield reflection, a closed door, or an exterior-only walk-around photo is NOT evidence of interior condition. If no image shows the interior, do not assume it is clean: score this category using only the exterior aero fairings, and note in 'notes' that the interior was not visible and was excluded from the score. Never infer a 4 or 5 interior score from a pristine-looking exterior — exterior and interior condition are independent and must each be backed by their own visual evidence.",
+                  "properties": {
+                    "weight": {
+                      "const": 0.2
+                    },
+                    "score": {
+                      "$ref": "#/definitions/score1to5"
+                    },
+                    "penalty_percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 5,
+                      "description": "Deduction percentage implied by the score, per the rubric below."
+                    }
+                  },
+                  "instructions": {
+                    "5": "Interior (only if actually visible in an image) is clean, AND side skirts and cab extenders are intact with no visible damage. If the interior is not visible, this score may only be based on the aero fairings/exterior cab panels being fully intact and undamaged.",
+                    "4": "Interior (only if visible) is clean, aero fairings intact. If the interior is not visible, base this on aero fairings/exterior cab panels alone. Deduction: 0%.",
+                    "3": "Minor interior wear (light seat wear, small scuffs) when the interior is visible, and/or small scuffs or scrapes on aero fairings/exterior cab panels. Deduction: -1%.",
+                    "2": "Torn seats, heavy sleeper degradation (only scoreable when the interior is actually visible), and/or missing side skirts. Deduction: -3% to -5%.",
+                    "1": "Severe interior damage (multiple torn seats, heavily degraded sleeper — only scoreable when visible) and/or multiple missing aero components. Deduction: -3% to -5% (use the high end of the range)."
+                  }
+                }
+              }
+            },
+            "overall_score": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 5,
+              "description": "Weighted average of the scored (non-null) categories — (chassis_and_frame * 0.35) + (front_end_engine_compartment_hood * 0.25) + (tires_wheels_suspension * 0.20) + (cab_sleeper_aero_fairings * 0.20), renormalizing weights over whichever categories are non-null — rounded to the nearest integer (round 0.5 up). This is a single integer 1-5, not a decimal. Null when condition assessment was skipped because the image is not priceable."
+            },
+            "overall_condition_label": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "Excellent",
+                "Good",
+                "Fair",
+                "Poor",
+                "Very Poor",
+                null
+              ],
+              "description": "Human-readable label derived from the rounded overall_score integer: 5 = Excellent, 4 = Good, 3 = Fair, 2 = Poor, 1 = Very Poor. Null when skipped."
+            },
+            "total_penalty_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Sum of each scored category's penalty_percent, each already scaled by that category's (renormalized) weight (e.g. a -10% front-end penalty contributes -2.5% at 25% weight). Represents the estimated total value deduction from a pristine baseline truck. Categories disregarded for lack of data contribute 0."
+            },
+            "explanation": {
+              "type": "string",
+              "description": "ONE consolidated plain-language explanation covering every category — this is the only place reasoning is written; there are no separate per-category evidence/notes fields. For each of the four categories, briefly state the score and the specific visual evidence behind it (or, if a category could not be assessed because the relevant part of the truck was not visible in any provided image, say so explicitly and state that it was disregarded from the overall_score calculation for lack of data — never silently omit a category or guess its condition). Close by naming which category most drove the overall score."
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "score1to5": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "description": "1 = worst condition, 5 = best condition. Use null only if the relevant part of the truck is not visible in any provided image — that category is then disregarded (excluded, not defaulted) from the overall_score calculation, and the reason must be stated in the top-level 'explanation' field."
+    },
+    "categoryScore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "score",
+        "weight",
+        "penalty_percent"
+      ],
+      "properties": {
+        "score": {
+          "$ref": "#/definitions/score1to5"
+        },
+        "weight": {
+          "type": "number",
+          "description": "Fixed category weight used in the overall_score calculation. Do not change this value."
+        },
+        "penalty_percent": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Value deduction percentage implied by the assigned score, chosen from the range given in this category's instructions. 0 if the category's score is null."
+        }
+      }
+    }
+  },
+  "grading_instructions": {
+    "role": "You are inspecting truck listing photos to produce a standardized condition assessment used for pricing and quality control.",
+    "process": [
+      "1. Review all provided images of the truck before scoring any category.",
+      "2. For each of the four categories, identify the images (if any) that show that part of the truck.",
+      "3. Compare what you observe against the 1-5 criteria for that category and select the single best-fitting score. Do not average or split between two score levels.",
+      "4. Choose a penalty_percent within the range specified for the assigned score; use judgment based on the severity of what is visible (e.g. a single small rock chip vs. widespread scuffing both count as score 3, but the latter should sit toward -2% rather than -1%).",
+      "5. If a category's relevant parts are not visible in any image, set score to null and penalty_percent to 0, disregard it entirely from the weighted overall_score calculation (renormalize the remaining weights to sum to 1.0), and explain the disregard in the single 'explanation' field — do not guess and do not silently drop it without explanation.",
+      "6. Compute the weighted average of the non-null category scores, then round to the nearest whole integer (round 0.5 up) to produce overall_score.",
+      "7. Compute total_penalty_percent as the sum of each non-null category's (penalty_percent * renormalized weight).",
+      "8. Derive overall_condition_label from the rounded overall_score integer using the mapping in its schema description.",
+      "9. Write the single 'explanation' field covering all four categories: the score and evidence for each assessed category, an explicit note (and reason) for any category disregarded for lack of data, and which category most drove the overall score.",
+      "10. Never infer condition of a part that is not visible; base every score strictly on visible evidence in the provided images."
+    ],
+    "category_weights": {
+      "chassis_and_frame": 0.35,
+      "front_end_engine_compartment_hood": 0.25,
+      "tires_wheels_suspension": 0.2,
+      "cab_sleeper_aero_fairings": 0.2
+    }
+  },
+  "process": [
+    "1. Determine truck_type (day-cab-truck | dump-truck | sleeper-truck | none) using the filter rules.",
+    "2. Determine primary_subject using center-weighted composition.",
+    "3. If truck_type is none OR primary_subject is not front/side: skip brand and condition with the null/skip rules in the top-level description; still fill required brand/condition fields with skip placeholders.",
+    "4. Otherwise extract brand (no guessing) and score condition per category rubrics; compute overall_score, overall_condition_label, total_penalty_percent.",
+    "5. Return reasoning then output as one JSON object matching this schema exactly."
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "output": {
+            "properties": {
+              "truck_type": {
+                "enum": [
+                  "day-cab-truck",
+                  "dump-truck",
+                  "sleeper-truck"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "output": {
+            "properties": {
+              "truck_type_user_message": {
+                "const": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "output": {
+            "properties": {
+              "truck_type": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "output": {
+            "properties": {
+              "truck_type_user_message": {
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "reasoning": "Tall commercial day-cab tractor with tandem duals and chrome grille; frame centered on grille/bumper so primary_subject is front. FREIGHTLINER badge on grille. Visible chassis rails clean; front end intact; tires look deep tread; aero fairings intact (interior not visible).",
+      "output": {
+        "truck_type": "day-cab-truck",
+        "truck_type_user_message": "",
+        "primary_subject": "front",
+        "primary_subject_user_message": "",
+        "brand": {
+          "has_brand": true,
+          "brand_name": "FREIGHTLINER",
+          "visible_identifier_type": "badge",
+          "identifier_location": "front_center_grille",
+          "brand_list_verified": true,
+          "confidence": "high",
+          "reasoning": "FREIGHTLINER wordmark/badge clearly readable on the front grille.",
+          "needs_user_input": false,
+          "user_prompt": null
+        },
+        "condition": {
+          "categories": {
+            "chassis_and_frame": {
+              "score": 4,
+              "weight": 0.35,
+              "penalty_percent": 0
+            },
+            "front_end_engine_compartment_hood": {
+              "score": 4,
+              "weight": 0.25,
+              "penalty_percent": 0
+            },
+            "tires_wheels_suspension": {
+              "score": 4,
+              "weight": 0.2,
+              "penalty_percent": 0
+            },
+            "cab_sleeper_aero_fairings": {
+              "score": 4,
+              "weight": 0.2,
+              "penalty_percent": 0
+            }
+          },
+          "overall_score": 4,
+          "overall_condition_label": "Good",
+          "total_penalty_percent": 0,
+          "explanation": "Chassis visible portion looks clean with only light suspension discoloration (4). Front end intact with minor scuffs (4). Tires show deep tread (4). Exterior cab/aero intact; interior not visible so scored on exterior only (4). Front-end and chassis drove the Good overall."
+        }
+      }
+    },
+    {
+      "reasoning": "Primary vehicle is a full-size pickup with a consumer bed — Class 2-6. truck_type=none. Brand/condition skipped.",
+      "output": {
+        "truck_type": "none",
+        "truck_type_user_message": "This photo shows a pickup, not a Class 7/8 truck. Please upload a day-cab, dump, or sleeper Class 7/8 truck photo.",
+        "primary_subject": "unusable",
+        "primary_subject_user_message": "Please upload a clearer Class 7/8 truck photo showing the front or side.",
+        "brand": {
+          "has_brand": false,
+          "brand_name": null,
+          "visible_identifier_type": "none",
+          "identifier_location": null,
+          "brand_list_verified": false,
+          "confidence": "low",
+          "reasoning": "Brand extraction skipped because truck_type is none.",
+          "needs_user_input": false,
+          "user_prompt": null
+        },
+        "condition": {
+          "categories": {
+            "chassis_and_frame": {
+              "score": null,
+              "weight": 0.35,
+              "penalty_percent": 0
+            },
+            "front_end_engine_compartment_hood": {
+              "score": null,
+              "weight": 0.25,
+              "penalty_percent": 0
+            },
+            "tires_wheels_suspension": {
+              "score": null,
+              "weight": 0.2,
+              "penalty_percent": 0
+            },
+            "cab_sleeper_aero_fairings": {
+              "score": null,
+              "weight": 0.2,
+              "penalty_percent": 0
+            }
+          },
+          "overall_score": null,
+          "overall_condition_label": null,
+          "total_penalty_percent": 0,
+          "explanation": "Condition assessment skipped because truck_type is none (not a Class 7/8 truck)."
+        }
+      }
+    }
+  ]
+}
