@@ -1,0 +1,5 @@
+# Scraped images and scraper state (~2 GB for a full run)
+TruckPaper Scraped Images/
+
+__pycache__/
+*.pyc
