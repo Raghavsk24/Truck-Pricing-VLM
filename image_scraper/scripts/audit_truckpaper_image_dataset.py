@@ -43,8 +43,8 @@ try:
 except ImportError:
     tqdm = None
 
-OUT_DIR = Path(__file__).resolve().parent.parent / "TruckPaper Scraped Images Dataset"
-JSON_NAME = "truckpaper_listings.json"
+OUT_DIR = Path(__file__).resolve().parent.parent / "truckpaper_scraped_images_dataset"
+JSON_NAME = "truckpaper_scraped_listings.json"
 GOOD_CURRENCY = "USD"
 HASH_CHUNK = 1024 * 1024
 
