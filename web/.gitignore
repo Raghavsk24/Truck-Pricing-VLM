@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# design-canvas extract (source zip is gitignored)
+/_ui_ref/
+
 # vercel
 .vercel
 

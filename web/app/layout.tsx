@@ -1,31 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { AppToaster } from "@/components/AppToaster";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
   subsets: ["latin"],
+  weight: ["400", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "Kamion — Truck pricing from a photo",
+  title: "Blueoop — Truck appraisal",
   description:
-    "Upload a Class 7/8 truck photo. Kamion extracts type, brand, era, and condition, then returns a USD asking range.",
+    "Free Class 7 and 8 truck appraisal from photographs. A range, a condition breakdown, and an asking price you can defend.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0b1016] text-slate-100">
+      <body className="h-full">
         {children}
         <AppToaster />
       </body>

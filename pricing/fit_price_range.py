@@ -622,13 +622,29 @@ def tune_condition(
 # adaptive range
 # --------------------------------------------------------------------------
 
+# Keep the published range useful for a buyer: wide enough to be honest about
+# photo-only uncertainty, but never so wide that low collapses to $0 or the
+# interval tries to swallow every outlier in a tiny noisy cell.
+MIN_ERROR_BOUND = 0.15  # never claim tighter than ±15%
+MAX_ERROR_BOUND = 0.40  # never publish wider than ±40%
+MIN_CELL_N = 20  # below this, prefer the coarser type/global bound
+
+
+def _clamp_bound(bound: float) -> float:
+    return max(MIN_ERROR_BOUND, min(MAX_ERROR_BOUND, float(bound)))
+
 
 def build_error_table(
     population: list[dict],
     k: dict[str, float],
     error_percentile: float,
 ) -> dict:
-    """Per-(type, era) APE percentile from population LOO, with fallbacks."""
+    """Per-(type, era) APE percentile from population LOO, with fallbacks.
+
+    Each cell is also compared to its type and the global pool: if a small
+    noisy cell is wider than its parents, we store the tighter parent instead.
+    Bounds are then clamped to [MIN_ERROR_BOUND, MAX_ERROR_BOUND].
+    """
     loo = population_loo(population, k)
     by_type_era: dict[tuple, list[float]] = defaultdict(list)
     by_type: dict[str, list[float]] = defaultdict(list)
@@ -638,22 +654,52 @@ def build_error_table(
         by_type[p["truck_type"]].append(p["ape"])
         allv.append(p["ape"])
 
-    MIN_N = 8  # below this a percentile is too noisy to trust; fall back
-    type_era = {
-        f"{t}|{e}": {"n": len(v), "bound": percentile(sorted(v), error_percentile)}
-        for (t, e), v in by_type_era.items()
-        if len(v) >= MIN_N
-    }
-    types = {
-        t: {"n": len(v), "bound": percentile(sorted(v), error_percentile)}
+    global_raw = percentile(sorted(allv), error_percentile)
+    types_raw = {
+        t: {"n": len(v), "bound_raw": percentile(sorted(v), error_percentile)}
         for t, v in by_type.items()
     }
+    type_era_raw = {
+        f"{t}|{e}": {"n": len(v), "bound_raw": percentile(sorted(v), error_percentile)}
+        for (t, e), v in by_type_era.items()
+        if e != UNKNOWN_ERA and len(v) >= 8
+    }
+
+    types = {
+        t: {
+            "n": info["n"],
+            "bound": _clamp_bound(min(info["bound_raw"], global_raw)),
+            "bound_raw": info["bound_raw"],
+        }
+        for t, info in types_raw.items()
+    }
+    type_era = {}
+    for key, info in type_era_raw.items():
+        t = key.split("|", 1)[0]
+        parent = types.get(t, {}).get("bound_raw", global_raw)
+        # Small or wild cells inherit the tighter parent instead of owning a
+        # ±100% whisker that collapses the low end to $0.
+        chosen = info["bound_raw"]
+        if info["n"] < MIN_CELL_N or chosen > parent:
+            chosen = min(chosen, parent, global_raw)
+        type_era[key] = {
+            "n": info["n"],
+            "bound": _clamp_bound(chosen),
+            "bound_raw": info["bound_raw"],
+        }
+
     return {
-        "min_n": MIN_N,
+        "min_n": MIN_CELL_N,
         "percentile": error_percentile,
+        "min_bound": MIN_ERROR_BOUND,
+        "max_bound": MAX_ERROR_BOUND,
         "type_era": type_era,
         "types": types,
-        "global": {"n": len(allv), "bound": percentile(sorted(allv), error_percentile)},
+        "global": {
+            "n": len(allv),
+            "bound": _clamp_bound(global_raw),
+            "bound_raw": global_raw,
+        },
     }
 
 
@@ -666,13 +712,15 @@ def lookup_error_bound(
     """Error bound for one truck, averaged over the era posterior.
 
     A shaky era call therefore widens the range on its own, because mass lands
-    on neighboring buckets that may carry larger errors.
+    on neighboring buckets that may carry larger errors. Final value is always
+    clamped so the published low never goes to $0 from a >100% whisker.
     """
 
     def flat(e: str) -> float | None:
         hit = table.get("type_era", {}).get(f"{truck_type}|{e}")
         return float(hit["bound"]) if hit else None
 
+    bound: float | None = None
     if era_confidence is not None:
         post = era_posterior(era, era_confidence)
         if post:
@@ -684,16 +732,20 @@ def lookup_error_bound(
                     num += w * b
                     den += w
             if den > 0:
-                return num / den
+                bound = num / den
     else:
         direct = flat(era)
         if direct is not None:
-            return direct
+            bound = direct
 
-    hit = table.get("types", {}).get(truck_type)
-    if hit:
-        return float(hit["bound"])
-    return float(table["global"]["bound"])
+    if bound is None:
+        hit = table.get("types", {}).get(truck_type)
+        if hit:
+            bound = float(hit["bound"])
+        else:
+            bound = float(table["global"]["bound"])
+
+    return _clamp_bound(bound)
 
 
 # --------------------------------------------------------------------------
@@ -861,9 +913,9 @@ def main() -> None:
     parser.add_argument("--labels", type=Path, default=LABELS_PATH)
     parser.add_argument("--out", type=Path, default=MODEL_OUT)
     parser.add_argument("--plot", type=Path, default=PLOT_OUT)
-    # p75 keeps the range near ±50% while holding the true price ~70% of the
-    # time; p50 halves the width but only covers ~45%.
-    parser.add_argument("--error-percentile", type=float, default=75.0)
+    # p50 = typical miss. Wider percentiles try to cover outliers and produce
+    # ±100% ranges that collapse the low end to $0 on thin noisy cells.
+    parser.add_argument("--error-percentile", type=float, default=50.0)
     parser.add_argument("--no-tune", action="store_true", help="use default shrinkage")
     args = parser.parse_args()
 

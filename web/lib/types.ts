@@ -101,6 +101,7 @@ export type PriceResult = {
   brand: string;
   era: string;
   model_series: string | null;
+  primary_subject?: string;
   overall_score: number | null;
   overall_condition_label: string | null;
   center: number;
@@ -125,6 +126,7 @@ export type AnalyzeNeedsBrand = {
   truck_type: string;
   era: string;
   model_series: string | null;
+  primary_subject?: string;
   condition: ConditionOutput;
 };
 

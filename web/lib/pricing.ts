@@ -117,13 +117,20 @@ function lookupMus(
   return { globalMu, muType, muBrand, muEra };
 }
 
+const MIN_ERROR_BOUND = 0.15;
+const MAX_ERROR_BOUND = 0.4;
+
+function clampErrorBound(bound: number): number {
+  return Math.max(MIN_ERROR_BOUND, Math.min(MAX_ERROR_BOUND, bound));
+}
+
 export function lookupErrorBound(truckType: string, era: string): number {
   const table = model.error_table;
   const hit = table.type_era?.[`${truckType}|${era}`];
-  if (hit) return hit.bound;
+  if (hit) return clampErrorBound(hit.bound);
   const byType = table.types?.[truckType];
-  if (byType) return byType.bound;
-  return table.global.bound;
+  if (byType) return clampErrorBound(byType.bound);
+  return clampErrorBound(table.global.bound);
 }
 
 function splitConditionUsd(

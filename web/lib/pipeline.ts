@@ -124,6 +124,7 @@ export async function persistAndRespond(
       truck_type: String(output.truck_type),
       era: output.age?.era ?? "unknown",
       model_series: output.age?.model_series ?? null,
+      primary_subject: String(output.primary_subject),
       condition: output.condition,
     };
   }
@@ -154,6 +155,7 @@ export async function persistAndRespond(
   return {
     status: "ok",
     analysisId: id,
+    primary_subject: String(output.primary_subject),
     ...priced,
   };
 }

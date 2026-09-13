@@ -5,3 +5,5 @@ image_scraper/truckpaper_scraped_images_dataset.zip
 
 __pycache__/
 *.pyc
+
+.env.local
