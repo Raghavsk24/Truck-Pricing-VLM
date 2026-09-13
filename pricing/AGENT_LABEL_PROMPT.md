@@ -4,15 +4,15 @@ Python staged the images. Fill each batch JSON with master-schema predictions.
 
 ## Schema
 
-`vlm_instructions/truck_feature_extraction_master_instructions.json`
+`C:/Users/senth/54hackathon/vlm_instructions/truck_feature_extraction_master_instructions.json`
 
 Return one JSON object per image matching **TruckFeatureExtractionMaster**.
 
 ## Staged data
 
-- Manifest: `pricing/staged_manifest.json`
-- Images: `pricing/staged_images/img_NNN.jpg` (long edge ≤ 1568px)
-- Batches: `pricing/batches/batch_XX.json`
+- Manifest: `C:/Users/senth/54hackathon/pricing/staged_manifest.json`
+- Images: `pricing/staged_images/img_NNN.jpg` (long edge <= 1568px)
+- Batches: `C:/Users/senth/54hackathon/pricing/batches` (3 files, 30 images)
 
 Classify from **image pixels only**. Do not use listing brand, price, or folder names when filling VLM fields.
 
@@ -30,7 +30,7 @@ Each item starts as:
 
 Replace `prediction` with the full master-schema object (`reasoning` + `output` with truck_type, primary_subject, brand, condition).
 
-Priceable images need `truck_type != none` and `primary_subject` in `{front, side}`. Otherwise still fill brand/condition with the schema skip placeholders.
+Priceable images need `truck_type != none` and `primary_subject` in {front, side}. Otherwise still fill brand/condition with the schema skip placeholders.
 
 ## Workflow
 

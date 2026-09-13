@@ -1,17 +1,13 @@
-"""Predict a truck price RANGE from master-schema VLM output (or an image).
+"""Predict a truck price RANGE from image-derived features.
 
-Features used (from the image via Cursor Sonnet VLM):
-  - truck_type: day_cab | sleeper | dump
-  - brand
-  - condition (total_penalty_percent), if the fitted winner uses it
+Features used: truck type, brand, era (age bucket), condition score — all of
+which the master VLM schema returns for a single photo.
 
-Range is center ± error_bound, where error_bound is the model's measured
-prediction error (LOO APE percentile), not a wide brand-spread band.
+Uses the weights saved in price_range_model.json by fit_price_range.py.
 
 Usage:
-    python pricing/predict.py --image path/to/truck.jpg
-    python pricing/predict.py --vlm-json path/to/vlm_output.json
-    python pricing/predict.py --truck-type day_cab --brand FREIGHTLINER --penalty 4.0
+    python pricing/predict.py --truck-type dump --brand MACK --era 2021_plus --score 4
+    python pricing/predict.py --vlm-json path/to/prediction.json
 """
 
 from __future__ import annotations
@@ -19,7 +15,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import os
 import sys
 from pathlib import Path
 
@@ -27,18 +22,17 @@ ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 MODEL_PATH = ROOT / "price_range_model.json"
 SCHEMA_PATH = REPO / "vlm_instructions" / "truck_feature_extraction_master_instructions.json"
-STAGED_DIR = ROOT / "staged_images"
-LONG_EDGE = 1568
-DEFAULT_MODEL = os.environ.get("CURSOR_MODEL", "claude-sonnet-5-thinking-high")
 
 sys.path.insert(0, str(ROOT))
-from label_sample import (  # noqa: E402
-    extract_fields,
-    is_priceable,
-    resize_long_edge,
+from fit_price_range import (  # noqa: E402
+    UNKNOWN_BRAND,
+    UNKNOWN_ERA,
+    canonical_brand,
+    era_posterior,
+    normalize_era,
+    normalize_truck_type,
 )
-from fit_price_range import brand_cell, normalize_truck_type  # noqa: E402
-from vlm_client import call_vlm_cursor  # noqa: E402
+from label_sample import extract_fields, is_priceable  # noqa: E402
 
 
 def load_model(path: Path) -> dict:
@@ -47,172 +41,159 @@ def load_model(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def lookup_mu(tables: dict, truck_type: str, brand_cell_name: str, use_brand: bool) -> float:
-    if use_brand:
-        key = f"{truck_type}|{brand_cell_name}"
-        cell = tables.get("cells", {}).get(key)
-        if cell is not None:
-            return cell["mu"]
-    t = tables.get("types", {}).get(truck_type)
-    if t is not None:
-        return t["mu"]
-    return tables["global_mu"]
+def _mu_from_tables(model: dict, truck_type: str, brand: str, era: str) -> float:
+    """Walk the saved hierarchy: (type,brand,era) -> (type,brand) -> type -> global."""
+    cells = model["cells"]
+    if era != UNKNOWN_ERA:
+        hit = cells["type_brand_era"].get(f"{truck_type}|{brand}|{era}")
+        if hit:
+            return float(hit["mu"])
+    hit = cells["type_brand"].get(f"{truck_type}|{brand}")
+    if hit:
+        return float(hit["mu"])
+    hit = cells["types"].get(truck_type)
+    if hit:
+        return float(hit["mu"])
+    return float(cells["global_mu"])
+
+
+def _mu_soft(model: dict, truck_type: str, brand: str, era: str, conf: str | None) -> float:
+    if conf is None:
+        return _mu_from_tables(model, truck_type, brand, era)
+    post = era_posterior(era, conf)
+    if not post:
+        return _mu_from_tables(model, truck_type, brand, UNKNOWN_ERA)
+    return sum(w * _mu_from_tables(model, truck_type, brand, e) for e, w in post.items())
+
+
+def _error_bound(model: dict, truck_type: str, era: str, conf: str | None) -> float:
+    table = model["error_table"]
+
+    def flat(e: str) -> float | None:
+        hit = table.get("type_era", {}).get(f"{truck_type}|{e}")
+        return float(hit["bound"]) if hit else None
+
+    if conf is not None:
+        post = era_posterior(era, conf)
+        if post:
+            num = den = 0.0
+            for e, w in post.items():
+                b = flat(e)
+                if b is not None:
+                    num += w * b
+                    den += w
+            if den > 0:
+                return num / den
+    else:
+        direct = flat(era)
+        if direct is not None:
+            return direct
+
+    hit = table.get("types", {}).get(truck_type)
+    return float(hit["bound"]) if hit else float(table["global"]["bound"])
 
 
 def predict_from_features(
     model: dict,
     truck_type: str,
     brand: str | None,
-    penalty: float | None,
+    era: str | None = None,
+    era_confidence: str | None = None,
+    overall_score: float | None = None,
 ) -> dict:
-    winner = model["winner"]
-    tables = model["tables"]
-    beta_info = model["beta"]
-    error_bound = winner["error_bound"]
-
     t = normalize_truck_type(truck_type)
-    bcell = brand_cell(brand) if winner.get("use_brand") and brand else model.get("other_brand", "OTHER")
+    b = canonical_brand(brand) if brand else UNKNOWN_BRAND
+    e = normalize_era(era)
 
-    mu = lookup_mu(tables, t, bcell, use_brand=bool(winner.get("use_brand")))
-    if winner.get("use_condition") and penalty is not None:
-        center = math.exp(mu + beta_info["beta"] * (penalty - beta_info["penalty_bar"]))
-    else:
-        center = math.exp(mu)
+    mu = _mu_soft(model, t, b, e, era_confidence)
 
-    low = max(0.0, center * (1.0 - error_bound))
-    high = center * (1.0 + error_bound)
+    cond = model["condition"]
+    effect = 0.0
+    if overall_score is not None and int(cond.get("n", 0)) >= 3:
+        effect = (
+            float(cond["condition_scale"])
+            * float(cond["beta"])
+            * (float(overall_score) - float(cond["score_bar"]))
+        )
+
+    center = math.exp(mu + effect)
+    bound = _error_bound(model, t, e, era_confidence)
+    low = max(0.0, center * (1.0 - bound))
+    high = center * (1.0 + bound)
+
     return {
         "truck_type": t,
-        "brand_input": brand,
-        "brand_cell": bcell if winner.get("use_brand") else None,
-        "total_penalty_percent": penalty,
+        "brand": b,
+        "era": e,
+        "era_confidence": era_confidence,
+        "overall_score": overall_score,
         "center": round(center, 2),
         "low": round(low, 2),
         "high": round(high, 2),
         "range": [round(low, 2), round(high, 2)],
-        "error_bound": error_bound,
-        "error_bound_pct": round(100 * error_bound, 1),
-        "variant": winner["id"],
-        "use_brand": bool(winner.get("use_brand")),
-        "use_condition": bool(winner.get("use_condition")),
-        "beta": beta_info.get("beta"),
+        "error_bound_pct": round(100 * bound, 1),
+        "condition_effect_pct": round(100 * (math.exp(effect) - 1), 1),
+        "model_family": model.get("model_family"),
     }
-
-
-def vlm_from_image(image: Path, schema_path: Path, model_name: str) -> dict:
-    """Optional API path. Prefer --vlm-json from an in-chat agent labeling pass."""
-    if not schema_path.exists():
-        raise SystemExit(f"Master schema not found: {schema_path}")
-    staged = STAGED_DIR / f"predict_{image.stem}.jpg"
-    STAGED_DIR.mkdir(parents=True, exist_ok=True)
-    resize_long_edge(image, staged, long_edge=LONG_EDGE)
-    schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    try:
-        return call_vlm_cursor(staged, schema, model=model_name, cwd=REPO)
-    except SystemExit as exc:
-        raise SystemExit(
-            f"{exc}\n\n"
-            "Or label the image in Cursor chat with the master schema and pass:\n"
-            "  python pricing/predict.py --vlm-json path/to/prediction.json"
-        ) from None
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", type=Path, default=MODEL_PATH, help="fitted model JSON")
-    parser.add_argument("--image", type=Path, help="truck image to price")
-    parser.add_argument("--vlm-json", type=Path, help="precomputed master-schema VLM output")
+    parser.add_argument("--model", type=Path, default=MODEL_PATH)
+    parser.add_argument("--vlm-json", type=Path, help="a filled master-schema prediction")
     parser.add_argument("--truck-type", type=str, help="day_cab | sleeper | dump")
-    parser.add_argument("--brand", type=str, help="override / direct brand")
-    parser.add_argument("--penalty", type=float, help="override / direct total_penalty_percent")
-    parser.add_argument("--schema", type=Path, default=SCHEMA_PATH)
-    parser.add_argument(
-        "--vlm-model",
-        default=DEFAULT_MODEL,
-        help="Cursor Sonnet model id for --image",
-    )
+    parser.add_argument("--brand", type=str)
+    parser.add_argument("--era", type=str, help="pre_2010 | 2010_2015 | 2016_2020 | 2021_plus")
+    parser.add_argument("--era-confidence", type=str, default="medium",
+                        help="high | medium | low (how sure the era call is)")
+    parser.add_argument("--score", type=float, help="condition overall_score, 1-5")
     args = parser.parse_args()
 
     model = load_model(args.model)
     fields = None
 
-    if args.truck_type is not None or args.brand is not None or args.penalty is not None:
-        if not args.truck_type:
-            raise SystemExit("Provide --truck-type (day_cab | sleeper | dump)")
-        truck_type = args.truck_type
-        brand = args.brand
-        penalty = args.penalty
-        if model["winner"].get("use_brand") and not brand:
-            raise SystemExit("This model uses brand; provide --brand")
-        if model["winner"].get("use_condition") and penalty is None:
-            raise SystemExit("This model uses condition; provide --penalty")
-    elif args.vlm_json or args.image:
-        if args.vlm_json:
-            raw = json.loads(args.vlm_json.read_text(encoding="utf-8"))
-        else:
-            raw = vlm_from_image(args.image, args.schema, args.vlm_model)
+    if args.vlm_json:
+        raw = json.loads(args.vlm_json.read_text(encoding="utf-8"))
         fields = extract_fields(raw)
         if not is_priceable(fields):
-            result = {
+            print(json.dumps({
                 "status": "rejected",
                 "user_message": (
                     fields.get("validity_user_message")
                     or fields.get("primary_user_message")
                     or "Image is not a priceable Class 7/8 front or side view."
                 ),
-                "fields": fields,
-            }
-            print(json.dumps(result, indent=2, ensure_ascii=False))
+            }, indent=2, ensure_ascii=False))
             raise SystemExit(2)
-
         truck_type = fields.get("truck_type")
-        if not truck_type:
-            result = {
-                "status": "needs_truck_type",
-                "user_message": (
-                    "Could not tell if this is a day cab, sleeper, or dump truck. "
-                    "Re-run with --truck-type day_cab|sleeper|dump."
-                ),
-                "fields": fields,
-            }
-            print(json.dumps(result, indent=2, ensure_ascii=False))
-            raise SystemExit(4)
-
         brand = fields.get("vlm_brand")
-        if model["winner"].get("use_brand") and (
-            not brand or fields.get("needs_user_input")
-        ):
-            result = {
+        era = fields.get("era")
+        era_conf = fields.get("era_confidence") or "medium"
+        score = fields.get("overall_score")
+        if not brand or fields.get("needs_user_input"):
+            print(json.dumps({
                 "status": "needs_brand",
-                "user_message": (
-                    "Could not read a brand from the image. "
-                    "Provide --brand (and --penalty if needed)."
-                ),
-                "fields": fields,
+                "user_message": "Could not read the brand from the photo — re-run with --brand.",
                 "truck_type": truck_type,
-                "partial_penalty": fields.get("total_penalty_percent"),
-            }
-            print(json.dumps(result, indent=2, ensure_ascii=False))
+            }, indent=2, ensure_ascii=False))
             raise SystemExit(3)
-
-        penalty = fields.get("total_penalty_percent")
-        if model["winner"].get("use_condition") and penalty is None:
-            raise SystemExit("VLM did not return total_penalty_percent")
+    elif args.truck_type:
+        truck_type = args.truck_type
+        brand = args.brand
+        era = args.era
+        era_conf = args.era_confidence if args.era else None
+        score = args.score
     else:
-        raise SystemExit(
-            "Provide --image, --vlm-json, or --truck-type/--brand/--penalty"
-        )
+        raise SystemExit("Provide --vlm-json, or --truck-type with --brand/--era/--score")
 
-    pred = predict_from_features(model, truck_type, brand, penalty)
+    pred = predict_from_features(model, truck_type, brand, era, era_conf, score)
     result = {"status": "ok", **pred}
     if fields is not None:
         result["vlm_fields"] = {
             "primary_subject": fields.get("primary_subject"),
-            "vehicle_cue": fields.get("vehicle_cue"),
-            "truck_type": fields.get("truck_type"),
+            "model_series": fields.get("model_series"),
+            "era_evidence": fields.get("era_evidence"),
             "overall_condition_label": fields.get("overall_condition_label"),
-            "overall_score": fields.get("overall_score"),
-            "brand_confidence": fields.get("brand_confidence"),
         }
     print(json.dumps(result, indent=2, ensure_ascii=False))
 

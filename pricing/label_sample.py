@@ -324,6 +324,12 @@ def extract_fields(vlm_output: dict) -> dict:
         brand.get("needs_user_input") if isinstance(brand, dict) else out.get("needs_user_input")
     )
 
+    age = out.get("age") if isinstance(out.get("age"), dict) else {}
+    era = age.get("era") if age else out.get("era")
+    era_confidence = age.get("era_confidence") if age else out.get("era_confidence")
+    era_evidence = age.get("era_evidence") if age else out.get("era_evidence")
+    model_series = age.get("model_series") if age else out.get("model_series")
+
     if isinstance(condition, dict) and "categories" in condition:
         overall_score = condition.get("overall_score")
         overall_label = condition.get("overall_condition_label")
@@ -346,6 +352,10 @@ def extract_fields(vlm_output: dict) -> dict:
         "vlm_brand": brand_name,
         "brand_confidence": brand_confidence,
         "needs_user_input": needs_user_input,
+        "model_series": model_series,
+        "era": era or "unknown",
+        "era_confidence": era_confidence,
+        "era_evidence": era_evidence or "",
         "overall_score": overall_score,
         "overall_condition_label": overall_label,
         "total_penalty_percent": penalty,

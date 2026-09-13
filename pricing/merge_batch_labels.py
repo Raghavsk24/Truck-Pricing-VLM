@@ -20,6 +20,12 @@ LABELS_PATH = ROOT / "labels.jsonl"
 
 # Reuse field normalizers from label_sample
 from label_sample import extract_fields, is_priceable  # noqa: E402
+from fit_price_range import (  # noqa: E402
+    PROGRESS_JSON,
+    SEARCH_CACHE_JSON,
+    era_from_year,
+    load_year_map,
+)
 
 
 def main() -> None:
@@ -51,6 +57,9 @@ def main() -> None:
         print(f"Warning: {len(missing)} images still unlabeled (will skip):")
         print(" ", ", ".join(missing[:20]) + (" ..." if len(missing) > 20 else ""))
 
+    # True model years let us score the VLM's photo-based era guess afterward.
+    year_map = load_year_map(PROGRESS_JSON, SEARCH_CACHE_JSON)
+
     ok = rejected = 0
     rows_out: list[dict] = []
     for opaque_id, meta in sorted(by_opaque.items(), key=lambda kv: kv[0]):
@@ -80,6 +89,8 @@ def main() -> None:
                 "status": status,
                 **fields,
                 "truck_type": truck_type,
+                "true_year": year_map.get(meta["listing_id"]),
+                "true_era": era_from_year(year_map.get(meta["listing_id"])),
                 "raw": raw,
             }
         )

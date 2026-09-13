@@ -1,5 +1,15 @@
 # Scraped images (~10 GB for a full run)
-image_scraper/truckpaper_scraped_images-dataset/
+image_scraper/truckpaper_scraped_images_dataset/
+
+# Pricing run artifacts
+pricing/staged_images/
+pricing/batches/
+pricing/labels.jsonl
+pricing/sample.json
+pricing/staged_manifest.json
+pricing/opaque_id_map.json
+pricing/price_range_model.json
+pricing/price_range_plot.png
 
 __pycache__/
 *.pyc

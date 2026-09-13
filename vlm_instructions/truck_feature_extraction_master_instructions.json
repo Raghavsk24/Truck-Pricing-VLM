@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://54hackathon.local/schemas/truck-feature-extraction-master.json",
   "title": "TruckFeatureExtractionMaster",
-  "description": "MASTER structured output for a Sonnet 5 VLM agent that performs ALL truck image feature extraction in ONE call. On every call: write reasoning first (covering all stages below in order), then return output. STAGE ORDER (mandatory): (1) TRUCK TYPE / VALIDITY — using the Class 7/8 day-cab / dump / sleeper vs none rules from the filter schema. truck_type in {day-cab-truck, dump-truck, sleeper-truck} means VALID Class 7/8 input; truck_type=none means INVALID. (2) PRIMARY SUBJECT — center-weighted composition: front|side|back|engine|container|interior|dashboard|tires|unusable. (3) BRAND — only if truck_type is not none AND primary_subject is front or side; otherwise set has_brand false, brand_name null, needs_user_input false, user_prompt null, visible_identifier_type none, identifier_location null, brand_list_verified false, confidence low, and note skipped in brand.reasoning. (4) CONDITION — only if truck_type is not none AND primary_subject is front or side; otherwise set every category score to null, penalty_percent 0, overall_score null, overall_condition_label null, total_penalty_percent 0, and explain skipped. PRICEABLE images (used by the pricing pipeline) require truck_type != none AND primary_subject in {front, side}. Do NOT guess brand from shape/paint. Do NOT infer condition for parts not visible. Background trucks are normal and do not by themselves invalidate an image. Filter rule summary: Required structured output for a Sonnet 5 VLM agent that filters invalid input images by naming the Class 7/8 truck type. On every call, return reasoning first, then output. The only allowed truck_type values are day-cab-truck, dump-truck, sleeper-truck, and none. day-cab-truck, dump-truck, or sleeper-truck means the image is VALID input (a Class 7/8 truck or a part of one). none means the image is INVALID input (Class 2–6, a non-truck, or a part that belongs only to those lighter vehicles). Do not emit any other type label and do not emit a separate validity boolean -- validity is exactly whether truck_type is not none. Class 7/8 means GVWR of 26,001 lb and up. Class 2–6 means pickups (including 3/4-ton and 1-ton Super Duty / Ram / Silverado chassis-cabs), cargo vans, step vans, cutaway cube trucks, moving and cargo straight box trucks on a medium chassis, medium-duty stake and flatbed trucks, and service/utility/mechanic bodies on a pickup or medium chassis. Rule 1 (WHAT TO LOOK FOR ON CLASS 7/8): a tall, deep commercial tractor cab; a long conventional hood and large grille; a sleeper bunk or raised sleeper box behind the cab; a fifth-wheel plate; a heavy dump/hopper/grain body on a commercial chassis; tandem or tridem rear axles; dual drive wheels; 22.5-inch commercial tires on a 10-lug hub; West Coast twin-arm mirrors; vertical exhaust/air-intake stacks; dual air-brake reservoirs; a large diesel (charge-air pipe with silicone coupler, air dryer, oversized intake); a commercial analog cluster (0–3000 RPM tach, dual primary/secondary AIR PSI gauges); a Class 7/8 OEM mark (Freightliner, Peterbilt, Kenworth, Mack, International/Navistar, Volvo, Western Star, Sterling); diamond-quilt commercial vinyl seats and door panels; a sleeper mattress with overhead cabinet/netted shelf; a driver-info LCD that shows gear as N (not PRND/PRNDM), a parking-brake telltale, and typically very high mileage. Rule 2 (WHAT TO LOOK FOR ON CLASS 2–6 / none): a pickup bed or pickup-proportion cab; Super Duty / F-450 / F-550 / Ram 3500 / Silverado 3500 / GMC C4500-style door badges; consumer bucket seats, a Ford/Chevy/Ram oval wheel with car-like cruise buttons, or a PRNDM gear display; a cargo van or step-van body; a cutaway or cab-over cube/box (Isuzu, Hino, UD, Ford E-series/Transit, Chevy Express); a wood-plank stake or short medium flatbed on a single rear axle with single (non-dual) wheels; a service/utility/mechanic body on a pickup chassis; an empty cargo-box interior (plywood walls, E-track, roll-up or barn rear doors) with no Class 7/8 cab or chassis in frame; a door-jamb sticker whose printed GVWR is below 26,001 lb; a car, SUV, motorcycle, equipment, or scenery with no truck cues. Rule 3 (HOW TO CHOOSE AMONG THE THREE VALID TYPES): use sleeper-truck when a sleeper box, raised bunk wall, sleeper side window, or sleeper-compartment interior (mattress, overhead cabinet, netted shelf) is visible. Use dump-truck when a dump, hopper, or grain body is visible, including a rear-only dump tailgate or hoist even if the wheels or cab are out of frame. Use day-cab-truck when the vehicle is a Class 7/8 highway tractor or heavy conventional cab whose cab ends at the rear wall with no sleeper bunk -- including a fifth-wheel day cab, a Class 7/8 conventional cab with a van/box body mounted (heavy straight truck, not a medium cutaway), and Class 7/8 part close-ups (dash, engine bay, 10-lug commercial wheel, riveted cab plate, diamond-quilt vinyl interior) that show no sleeper and no dump body. If more than one type cue is present, pick the body that the shot is composed around. Rule 4 (CLOSE-UPS ARE FIRST-CLASS EVIDENCE): listing photos of Class 7/8 trucks routinely crop to one part. Do NOT require a full exterior. Do NOT set truck_type to none merely because the shot is tight, interior-only, under-hood, or a single component. If any Rule 1 cue is present, you MUST pick day-cab-truck, dump-truck, or sleeper-truck -- never none. Rule 5 (A BOX BODY DOES NOT AUTOMATICALLY MEAN none): a cutaway, cab-over, or Super Duty/C4500-scale box is none. A full-size Class 7/8 conventional cab remains valid even with a van or box mounted; type that as day-cab-truck unless a sleeper or dump body is also visible. Rule 6 (PRIMARY SUBJECT ONLY): judge only the vehicle or vehicle-part the frame is composed around. Background trucks do not change the label. Rule 7 (WHEN UNCERTAIN): if any Rule 1 cue is present and no Rule 2 cue contradicts it, pick one of the three valid types (default day-cab-truck when sleeper and dump cues are absent). If a Rule 2 cue is present and no Rule 1 cue is present, use none. Never use none as a stand-in for 'I cannot tell which of the three Class 7/8 types this is.'",
+  "description": "MASTER structured output for a Sonnet 5 VLM agent that performs ALL truck image feature extraction in ONE call. On every call: write reasoning first (covering all stages below in order), then return output. STAGE ORDER (mandatory): (1) TRUCK TYPE / VALIDITY — using the Class 7/8 day-cab / dump / sleeper vs none rules from the filter schema. truck_type in {day-cab-truck, dump-truck, sleeper-truck} means VALID Class 7/8 input; truck_type=none means INVALID. (2) PRIMARY SUBJECT — center-weighted composition: front|side|back|engine|container|interior|dashboard|tires|unusable. (3) BRAND — only if truck_type is not none AND primary_subject is front or side; otherwise set has_brand false, brand_name null, needs_user_input false, user_prompt null, visible_identifier_type none, identifier_location null, brand_list_verified false, confidence low, and note skipped in brand.reasoning. (4) AGE — only if truck_type is not none AND primary_subject is front or side; read the model badge and apply lighting/DEF/aero/styling cues to pick the most likely era bucket; otherwise set model_series null, era unknown, era_confidence low. Age is the STRONGEST price signal available from a photo, so do not treat it as an afterthought. (5) CONDITION — only if truck_type is not none AND primary_subject is front or side; otherwise set every category score to null, penalty_percent 0, overall_score null, overall_condition_label null, total_penalty_percent 0, and explain skipped. PRICEABLE images (used by the pricing pipeline) require truck_type != none AND primary_subject in {front, side}. Do NOT guess brand from shape/paint. Do NOT infer condition for parts not visible. Background trucks are normal and do not by themselves invalidate an image. Filter rule summary: Required structured output for a Sonnet 5 VLM agent that filters invalid input images by naming the Class 7/8 truck type. On every call, return reasoning first, then output. The only allowed truck_type values are day-cab-truck, dump-truck, sleeper-truck, and none. day-cab-truck, dump-truck, or sleeper-truck means the image is VALID input (a Class 7/8 truck or a part of one). none means the image is INVALID input (Class 2–6, a non-truck, or a part that belongs only to those lighter vehicles). Do not emit any other type label and do not emit a separate validity boolean -- validity is exactly whether truck_type is not none. Class 7/8 means GVWR of 26,001 lb and up. Class 2–6 means pickups (including 3/4-ton and 1-ton Super Duty / Ram / Silverado chassis-cabs), cargo vans, step vans, cutaway cube trucks, moving and cargo straight box trucks on a medium chassis, medium-duty stake and flatbed trucks, and service/utility/mechanic bodies on a pickup or medium chassis. Rule 1 (WHAT TO LOOK FOR ON CLASS 7/8): a tall, deep commercial tractor cab; a long conventional hood and large grille; a sleeper bunk or raised sleeper box behind the cab; a fifth-wheel plate; a heavy dump/hopper/grain body on a commercial chassis; tandem or tridem rear axles; dual drive wheels; 22.5-inch commercial tires on a 10-lug hub; West Coast twin-arm mirrors; vertical exhaust/air-intake stacks; dual air-brake reservoirs; a large diesel (charge-air pipe with silicone coupler, air dryer, oversized intake); a commercial analog cluster (0–3000 RPM tach, dual primary/secondary AIR PSI gauges); a Class 7/8 OEM mark (Freightliner, Peterbilt, Kenworth, Mack, International/Navistar, Volvo, Western Star, Sterling); diamond-quilt commercial vinyl seats and door panels; a sleeper mattress with overhead cabinet/netted shelf; a driver-info LCD that shows gear as N (not PRND/PRNDM), a parking-brake telltale, and typically very high mileage. Rule 2 (WHAT TO LOOK FOR ON CLASS 2–6 / none): a pickup bed or pickup-proportion cab; Super Duty / F-450 / F-550 / Ram 3500 / Silverado 3500 / GMC C4500-style door badges; consumer bucket seats, a Ford/Chevy/Ram oval wheel with car-like cruise buttons, or a PRNDM gear display; a cargo van or step-van body; a cutaway or cab-over cube/box (Isuzu, Hino, UD, Ford E-series/Transit, Chevy Express); a wood-plank stake or short medium flatbed on a single rear axle with single (non-dual) wheels; a service/utility/mechanic body on a pickup chassis; an empty cargo-box interior (plywood walls, E-track, roll-up or barn rear doors) with no Class 7/8 cab or chassis in frame; a door-jamb sticker whose printed GVWR is below 26,001 lb; a car, SUV, motorcycle, equipment, or scenery with no truck cues. Rule 3 (HOW TO CHOOSE AMONG THE THREE VALID TYPES): use sleeper-truck when a sleeper box, raised bunk wall, sleeper side window, or sleeper-compartment interior (mattress, overhead cabinet, netted shelf) is visible. Use dump-truck when a dump, hopper, or grain body is visible, including a rear-only dump tailgate or hoist even if the wheels or cab are out of frame. Use day-cab-truck when the vehicle is a Class 7/8 highway tractor or heavy conventional cab whose cab ends at the rear wall with no sleeper bunk -- including a fifth-wheel day cab, a Class 7/8 conventional cab with a van/box body mounted (heavy straight truck, not a medium cutaway), and Class 7/8 part close-ups (dash, engine bay, 10-lug commercial wheel, riveted cab plate, diamond-quilt vinyl interior) that show no sleeper and no dump body. If more than one type cue is present, pick the body that the shot is composed around. Rule 4 (CLOSE-UPS ARE FIRST-CLASS EVIDENCE): listing photos of Class 7/8 trucks routinely crop to one part. Do NOT require a full exterior. Do NOT set truck_type to none merely because the shot is tight, interior-only, under-hood, or a single component. If any Rule 1 cue is present, you MUST pick day-cab-truck, dump-truck, or sleeper-truck -- never none. Rule 5 (A BOX BODY DOES NOT AUTOMATICALLY MEAN none): a cutaway, cab-over, or Super Duty/C4500-scale box is none. A full-size Class 7/8 conventional cab remains valid even with a van or box mounted; type that as day-cab-truck unless a sleeper or dump body is also visible. Rule 6 (PRIMARY SUBJECT ONLY): judge only the vehicle or vehicle-part the frame is composed around. Background trucks do not change the label. Rule 7 (WHEN UNCERTAIN): if any Rule 1 cue is present and no Rule 2 cue contradicts it, pick one of the three valid types (default day-cab-truck when sleeper and dump cues are absent). If a Rule 2 cue is present and no Rule 1 cue is present, use none. Never use none as a stand-in for 'I cannot tell which of the three Class 7/8 types this is.'",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,7 +13,7 @@
     "reasoning": {
       "type": "string",
       "minLength": 1,
-      "description": "Single consolidated step-by-step analysis written BEFORE output. Cover in order: (1) Class 7/8 vs Class 2-6 cues and chosen truck_type; (2) center-weighted primary_subject; (3) brand evidence or why brand was skipped/not found; (4) condition evidence per category or why condition was skipped. Do not skip this field."
+      "description": "Single consolidated step-by-step analysis written BEFORE output. Cover in order: (1) Class 7/8 vs Class 2-6 cues and chosen truck_type; (2) center-weighted primary_subject; (3) brand evidence or why brand was skipped/not found; (4) age evidence — model badge text if legible, headlight technology, DEF filler presence, aero hardware, and body styling — and the era bucket they imply; (5) condition evidence per category or why condition was skipped. Do not skip this field."
     },
     "output": {
       "type": "object",
@@ -24,6 +24,7 @@
         "primary_subject",
         "primary_subject_user_message",
         "brand",
+        "age",
         "condition"
       ],
       "description": "All feature-extraction results. Must follow from reasoning.",
@@ -249,6 +250,51 @@
               }
             }
           ]
+        },
+        "age": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "model_series",
+            "era",
+            "era_confidence",
+            "era_evidence"
+          ],
+          "description": "Estimate how OLD the truck is from the image alone. This is the single strongest price driver available from a photo -- a 2023 tractor and a 2006 tractor of the same brand and body style can differ 5x in price -- so spend real effort here. Only fill this in when truck_type is not none AND primary_subject is front or side; otherwise set model_series null, era unknown, era_confidence low, and say it was skipped in era_evidence. METHOD, in priority order. Step 1 (STRONGEST -- READ THE MODEL BADGE): heavy trucks wear their model designation on the hood side, door, or grille surround. Read it and use it, because a model series pins down the production window tightly. Pre-2010 series: Freightliner Century/Columbia/Classic XL/FLD, Peterbilt 379/378/385/357, Kenworth W900/T600/T800 (older square style)/T300, International 9400/9200/8600/4300/Eagle, Mack CH/Vision/Granite (early)/CV, Sterling Acterra/LT (Sterling as a brand ENDED in 2009, so ANY Sterling is pre-2010), Volvo VNL older square-headlight generation. 2010-2015 series: Freightliner Cascadia first generation, Peterbilt 386/387/388/389 (early)/579 (launched 2012), Kenworth T660/T700/T880 (early)/T680 (launched 2013), International ProStar/LoneStar/TranStar, Mack Pinnacle/Titan/Granite (later), Volvo VNL 670/730/780 of that generation. 2016-2020 series: Freightliner NEW Cascadia (the 2017+ restyle with swept wraparound headlights carrying an LED accent strip), Peterbilt 579 with LED headlamps/567, Kenworth T680 mid-generation/W990 (2018+), International LT/RH/HX (the LT replaced ProStar in 2017), Mack Anthem (launched 2018), Volvo VNL 2018 restyle. 2021+ series: Freightliner Cascadia 2022+ facelift, Kenworth T680 Next Generation (2021+, notably taller one-piece grille), International LT with the updated grille treatment, Mack Anthem later build, Volvo VNL 2024 full redesign (very rounded nose, full-LED signature). Step 2 (LIGHTING TECHNOLOGY): sealed-beam or plain halogen rectangular headlamps with a simple reflector bowl indicate pre-2010. Projector or multi-reflector composite lamps without LED strips suggest 2010-2015. Any LED daytime-running accent strip, LED signature bar, or full-LED headlamp cluster indicates 2016 or newer, and a large full-LED signature usually indicates 2021+. Step 3 (EMISSIONS AND AERO HARDWARE): a DEF (diesel exhaust fluid) filler door -- a second smaller blue-capped or blue-labeled fill point near the fuel tank -- means 2010 or newer, because SCR aftertreatment arrived with EPA 2010. A tall vertical chrome exhaust stack behind the cab with no aftertreatment canister suggests pre-2010. Full chassis side skirts, cab-to-trailer extenders, and wheel-well closeouts became common from roughly 2014 onward, and very smooth fully-enclosed aero packages indicate 2018+. Step 4 (BODY AND TRIM STYLE): squared-off cabs, heavy chrome bumpers, exposed hinges, and flat two-piece windshields read older. Rounded aerodynamic one-piece noses, flush-mounted glass, integrated mirrors, and body-colored bumpers read newer. Step 5 (VOCATIONAL TRUCKS): dump trucks hold their styling far longer than highway tractors and are often kept in service for decades, so weight the badge and lighting evidence more heavily than body smoothness, and prefer an older bucket when the cab is a classic square vocational design. IMPORTANT: choose the era bucket you consider MOST LIKELY, and only use unknown when the image genuinely shows no badge, no clear lighting detail, and no styling cue at all -- an honest best guess at a bucket is far more useful to the pricing model than unknown, so do not retreat to unknown merely because you cannot name the exact model year.",
+          "properties": {
+            "model_series": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The model series/designation read directly off the truck, normalized to uppercase, e.g. 'CASCADIA', '579', 'T680', 'W900', 'PROSTAR', 'LT', 'ANTHEM', 'VNL', '389', 'PINNACLE', 'GRANITE'. Read it from the hood side, door, or grille surround. Null when no model badge is legible. Do NOT guess a series from silhouette alone -- if you cannot read it, use null and rely on the styling cues for era instead."
+            },
+            "era": {
+              "type": "string",
+              "enum": [
+                "pre_2010",
+                "2010_2015",
+                "2016_2020",
+                "2021_plus",
+                "unknown"
+              ],
+              "description": "The production-era bucket you judge MOST LIKELY for this truck, using the badge, lighting, emissions, and styling method in the parent description. These four buckets are deliberately coarse so they can be judged from a photo; you are not being asked for an exact year. Use unknown only when there is genuinely no badge, no lighting detail, and no styling cue available."
+            },
+            "era_confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "description": "high = a legible model badge (or an unmistakable generation-defining styling cue) pins the era down. medium = styling, lighting, and emissions cues point consistently at one bucket but no badge was readable. low = only weak or conflicting cues were available, or the era is a coarse guess."
+            },
+            "era_evidence": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One or two sentences naming the SPECIFIC cues used, e.g. 'CASCADIA badge on hood side with swept wraparound LED-accent headlights and a DEF filler door, consistent with the 2017+ New Cascadia restyle.' State explicitly if the estimate rests on styling alone because no badge was legible."
+            }
+          }
         },
         "condition": {
           "type": "object",
@@ -478,9 +524,10 @@
   "process": [
     "1. Determine truck_type (day-cab-truck | dump-truck | sleeper-truck | none) using the filter rules.",
     "2. Determine primary_subject using center-weighted composition.",
-    "3. If truck_type is none OR primary_subject is not front/side: skip brand and condition with the null/skip rules in the top-level description; still fill required brand/condition fields with skip placeholders.",
-    "4. Otherwise extract brand (no guessing) and score condition per category rubrics; compute overall_score, overall_condition_label, total_penalty_percent.",
-    "5. Return reasoning then output as one JSON object matching this schema exactly."
+    "3. If truck_type is none OR primary_subject is not front/side: skip brand, age, and condition with the null/skip rules in the top-level description; still fill required brand/age/condition fields with skip placeholders.",
+    "4. Otherwise extract brand (no guessing), then estimate age: read the model badge if legible, then apply lighting / DEF / aero / styling cues to pick the most likely era bucket.",
+    "5. Score condition per category rubrics; compute overall_score, overall_condition_label, total_penalty_percent.",
+    "6. Return reasoning then output as one JSON object matching this schema exactly."
   ],
   "allOf": [
     {
@@ -555,6 +602,12 @@
           "needs_user_input": false,
           "user_prompt": null
         },
+        "age": {
+          "model_series": "579",
+          "era": "2016_2020",
+          "era_confidence": "high",
+          "era_evidence": "579 badge on the hood side with LED-accent headlamps and a DEF filler door behind the steps, consistent with a later 579 build rather than the 2012-2015 launch cars."
+        },
         "condition": {
           "categories": {
             "chassis_and_frame": {
@@ -602,6 +655,12 @@
           "reasoning": "Brand extraction skipped because truck_type is none.",
           "needs_user_input": false,
           "user_prompt": null
+        },
+        "age": {
+          "model_series": null,
+          "era": "unknown",
+          "era_confidence": "low",
+          "era_evidence": "Age estimation skipped because truck_type is none."
         },
         "condition": {
           "categories": {
