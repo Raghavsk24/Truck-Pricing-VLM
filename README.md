@@ -234,7 +234,7 @@ python -m venv .venv
 **Windows:** `.venv\Scripts\activate`
 
 ```bash
-pip install -r requirements.txt
+pip install -r image_scraper/requirements.txt
 ```
 
 ### 2. Scrape a dataset
