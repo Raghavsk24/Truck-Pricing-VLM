@@ -1,10 +1,20 @@
-import { CAT_KEYS, CAT_LABELS, type AnalyzeOk, type CatKey, type Contribution } from "./types";
+import {
+  CAT_KEYS,
+  CAT_LABELS,
+  PRICEABLE_SUBJECTS,
+  type AnalyzeOk,
+  type AnalyzeResponse,
+  type CatKey,
+  type Contribution,
+} from "./types";
 import { eraLabel, formatUsd, formatUsdSigned, typeLabel } from "./format";
 
 export type PhotoShot = {
   url: string;
   name: string;
   subject?: string;
+  used?: boolean;
+  reasoning?: string;
 };
 
 export type ChecklistItem = {
@@ -14,11 +24,20 @@ export type ChecklistItem = {
   status: string;
 };
 
-export type AreaRow = {
-  area: string;
-  grade: string;
-  note: string;
-  effect: string;
+export type ConditionCategoryRow = {
+  key: CatKey;
+  score: number | null;
+  weight: number;
+  penalty_percent: number;
+  reasoning: string;
+};
+
+export type ReportPhoto = {
+  url: string | null;
+  name: string;
+  subject: string;
+  used: boolean;
+  reasoning: string;
 };
 
 export type AppraisalView = {
@@ -29,15 +48,13 @@ export type AppraisalView = {
   high: number;
   center: number;
   asking: number;
-  tradeIn: number;
-  quickSale: number;
-  confidencePct: number;
-  conditionLabel: string;
+  brandName: string;
+  brandPricingReasoning: string;
+  conditionLabel: string | null;
   overallScore: number | null;
-  photosRead: number;
-  photosTotal: number;
-  areas: AreaRow[];
-  photos: { url: string | null; caption: string }[];
+  totalPenaltyPercent: number;
+  categories: ConditionCategoryRow[];
+  photos: ReportPhoto[];
   contributions: Contribution[];
   vehicleLine: string;
   specLine: string;
@@ -63,30 +80,30 @@ export const OEM_CHIPS = [
   "Volvo",
 ];
 
+const CATEGORY_HINTS: Record<CatKey, string[]> = {
+  chassis_and_frame: ["chassis", "frame", "leaf spring", "crossmember", "suspension hardware"],
+  front_end_engine_compartment_hood: ["front end", "front-end", "grille", "hood", "bumper", "engine"],
+  tires_wheels_suspension: ["tire", "tread", "rim", "wheel"],
+  cab_sleeper_aero_fairings: ["cab", "sleeper", "aero", "fairing", "interior", "skirt", "extender"],
+};
+
 function round100(n: number): number {
   return Math.round(n / 100) * 100;
 }
 
-function scoreGrade(score: number | null, fallback: string | null): string {
-  if (fallback) return fallback;
-  if (score == null) return "—";
-  const rounded = Math.round(score);
-  if (rounded >= 5) return "Excellent";
-  if (rounded === 4) return "Good";
-  if (rounded === 3) return "Fair";
-  if (rounded === 2) return "Poor";
-  return "Very Poor";
-}
-
 function snippetForCategory(explanation: string, key: CatKey): string {
   if (!explanation) return "No visual notes provided.";
-  const needles = [CAT_LABELS[key].toLowerCase(), key.replace(/_/g, " ")];
+  const needles = [
+    CAT_LABELS[key].toLowerCase(),
+    key.replace(/_/g, " "),
+    ...CATEGORY_HINTS[key],
+  ];
   const parts = explanation.split(/(?<=\.)\s+/);
   const hit = parts.find((p) => {
     const lower = p.toLowerCase();
     return needles.some((n) => lower.includes(n));
   });
-  return hit || explanation.slice(0, 160) + (explanation.length > 160 ? "…" : "");
+  return hit || explanation;
 }
 
 export function buildChecklist(photos: PhotoShot[]): ChecklistItem[] {
@@ -108,37 +125,84 @@ export function vehicleTitle(result: Pick<AnalyzeOk, "brand" | "era" | "model_se
   return `${result.brand}${series}`.trim() || typeLabel(String(result.truck_type));
 }
 
-export function liveAppraisal(result: AnalyzeOk, photos: PhotoShot[]): AppraisalView {
-  const asking = round100(result.center * 1.05);
-  const tradeIn = round100(result.low * 0.91);
-  const quickSale = round100((result.low + result.center) / 2);
-  const effectByKey = Object.fromEntries(result.contributions.map((c) => [c.key, c.usd]));
+export function isUsedSubject(subject: string | undefined): boolean {
+  return PRICEABLE_SUBJECTS.includes((subject || "").toLowerCase() as "front" | "side");
+}
 
-  const areas: AreaRow[] = CAT_KEYS.map((key) => {
-    const cat = result.condition.categories[key];
-    const unscored = cat?.score == null;
-    const usd = effectByKey[key];
+export function photoMetaFromResponse(data: AnalyzeResponse): Pick<PhotoShot, "subject" | "used" | "reasoning"> {
+  if (data.status === "ok" || data.status === "needs_brand") {
+    const subject = String(data.primary_subject || "unusable");
+    const used = isUsedSubject(subject);
     return {
-      area: CAT_LABELS[key],
-      grade: unscored ? "Not visible" : scoreGrade(cat.score, null),
-      note: unscored
-        ? "This part of the truck was not in frame and was excluded from the overall score."
-        : snippetForCategory(result.condition.explanation, key),
-      effect:
-        usd == null || Math.abs(usd) < 50 ? "—" : formatUsdSigned(usd),
+      subject,
+      used,
+      reasoning: used
+        ? `Primary subject is ${subject}. Front and side photographs are used for the appraisal.`
+        : data.primary_subject_user_message ||
+          `Primary subject is ${subject}. Only front and side photographs are used for pricing.`,
+    };
+  }
+  if (data.status === "rejected") {
+    const subject = String(data.primary_subject || "unusable");
+    return {
+      subject,
+      used: false,
+      reasoning:
+        data.truck_type_user_message ||
+        data.primary_subject_user_message ||
+        `Primary subject is ${subject}. ${data.user_message}`,
+    };
+  }
+  return {
+    subject: "unusable",
+    used: false,
+    reasoning: data.user_message,
+  };
+}
+
+function brandPricingReasoning(result: AnalyzeOk): string {
+  const brandUsd = result.contributions.find((c) => c.key === "brand")?.usd ?? 0;
+  const name = result.brand || "Unknown";
+  const type = typeLabel(String(result.truck_type));
+  const seen = result.brand_reasoning?.trim();
+  const effect =
+    Math.abs(brandUsd) < 50
+      ? `${name} listings for this ${type} sit near the type average, so brand did not move the midpoint.`
+      : brandUsd > 0
+        ? `${name} listings for this ${type} typically ask more than the type average, which raised the midpoint by ${formatUsd(brandUsd)}.`
+        : `${name} listings for this ${type} typically ask less than the type average, which lowered the midpoint by ${formatUsd(Math.abs(brandUsd))}.`;
+  return seen ? `${effect} ${seen}` : effect;
+}
+
+function categoryRows(result: AnalyzeOk): ConditionCategoryRow[] {
+  return CAT_KEYS.map((key) => {
+    const cat = result.condition.categories[key];
+    return {
+      key,
+      score: cat?.score ?? null,
+      weight: cat?.weight ?? 0,
+      penalty_percent: cat?.penalty_percent ?? 0,
+      reasoning: snippetForCategory(result.condition.explanation, key),
     };
   });
+}
 
-  const captions: Record<string, string> = {
-    front: "Front three-quarter",
-    side: "Driver side",
-    back: "Rear three-quarter",
-    engine: "Engine bay",
-    container: "Body / bed",
-    interior: "Interior",
-    dashboard: "Odometer / gauges",
-    tires: "Tires & wheels",
-  };
+function reportPhotos(photos: PhotoShot[]): ReportPhoto[] {
+  return photos.map((p) => ({
+    url: p.url,
+    name: p.name,
+    subject: p.subject || "unusable",
+    used: Boolean(p.used),
+    reasoning:
+      p.reasoning ||
+      (p.used
+        ? `Primary subject is ${p.subject}. Front and side photographs are used for the appraisal.`
+        : `Primary subject is ${p.subject || "unusable"}. This photograph was filtered out.`),
+  }));
+}
+
+export function liveAppraisal(result: AnalyzeOk, photos: PhotoShot[]): AppraisalView {
+  const asking = round100(result.center * 1.05);
 
   return {
     reportId: `RGL-${result.analysisId.slice(0, 4).toUpperCase()}`,
@@ -159,18 +223,13 @@ export function liveAppraisal(result: AnalyzeOk, photos: PhotoShot[]): Appraisal
     high: result.high,
     center: result.center,
     asking,
-    tradeIn,
-    quickSale,
-    confidencePct: Math.max(0, Math.min(99, Math.round(100 - result.error_bound_pct))),
-    conditionLabel: scoreGrade(result.overall_score, result.overall_condition_label),
+    brandName: result.brand,
+    brandPricingReasoning: brandPricingReasoning(result),
+    conditionLabel: result.overall_condition_label,
     overallScore: result.overall_score,
-    photosRead: photos.length,
-    photosTotal: 7,
-    areas,
-    photos: photos.slice(0, 4).map((p) => ({
-      url: p.url,
-      caption: captions[p.subject || ""] || p.name,
-    })),
+    totalPenaltyPercent: result.condition.total_penalty_percent,
+    categories: categoryRows(result),
+    photos: reportPhotos(photos),
     contributions: result.contributions,
     vehicleLine: vehicleTitle(result),
     specLine: `${typeLabel(String(result.truck_type))} · ${eraLabel(result.era)}`,
@@ -186,56 +245,71 @@ export const SAMPLE_APPRAISAL: AppraisalView = {
   high: 35600,
   center: 34100,
   asking: 35900,
-  tradeIn: 29300,
-  quickSale: 31500,
-  confidencePct: 86,
+  brandName: "RAM",
+  brandPricingReasoning:
+    "RAM listings for this class typically ask less than the type average, which lowered the midpoint by $1,400. RAM wordmark on the grille was readable and used as the brand cell in the price model.",
   conditionLabel: "Good",
-  overallScore: 3.8,
-  photosRead: 7,
-  photosTotal: 7,
-  areas: [
+  overallScore: 4,
+  totalPenaltyPercent: 0,
+  categories: [
     {
-      area: "Exterior & paint",
-      grade: "Good",
-      note: "Consistent gloss across panels, no repaint detected",
-      effect: "—",
+      key: "chassis_and_frame",
+      score: 4,
+      weight: 0.35,
+      penalty_percent: 0,
+      reasoning: "Chassis visible portion looks clean with only light suspension discoloration (4).",
     },
     {
-      area: "Rear bumper",
-      grade: "Fair",
-      note: "Palm-sized dent, passenger corner, unrepaired",
-      effect: "−$600",
+      key: "front_end_engine_compartment_hood",
+      score: 4,
+      weight: 0.25,
+      penalty_percent: 0,
+      reasoning: "Front end intact with minor scuffs (4).",
     },
     {
-      area: "Bed & liner",
-      grade: "Good",
-      note: "Spray-in liner, light scuffing, no rust",
-      effect: "+$300",
+      key: "tires_wheels_suspension",
+      score: 4,
+      weight: 0.2,
+      penalty_percent: 0,
+      reasoning: "Tires show deep tread (4).",
     },
     {
-      area: "Tires & wheels",
-      grade: "Good",
-      note: "Even wear, roughly 60% tread remaining",
-      effect: "—",
-    },
-    {
-      area: "Interior",
-      grade: "Good",
-      note: "Driver bolster wear normal for mileage",
-      effect: "−$250",
-    },
-    {
-      area: "Glass & lights",
-      grade: "Excellent",
-      note: "No chips or clouding visible",
-      effect: "+$150",
+      key: "cab_sleeper_aero_fairings",
+      score: 4,
+      weight: 0.2,
+      penalty_percent: 0,
+      reasoning: "Exterior cab/aero intact; interior not visible so scored on exterior only (4).",
     },
   ],
   photos: [
-    { url: null, caption: "Front three-quarter · paint consistent" },
-    { url: null, caption: "Rear three-quarter · bumper dent" },
-    { url: null, caption: "Interior · seat wear normal" },
-    { url: null, caption: "Odometer · 118,400 mi verified" },
+    {
+      url: null,
+      name: "front.jpg",
+      subject: "front",
+      used: true,
+      reasoning: "Primary subject is front. Front and side photographs are used for the appraisal.",
+    },
+    {
+      url: null,
+      name: "side.jpg",
+      subject: "side",
+      used: true,
+      reasoning: "Primary subject is side. Front and side photographs are used for the appraisal.",
+    },
+    {
+      url: null,
+      name: "interior.jpg",
+      subject: "interior",
+      used: false,
+      reasoning: "Primary subject is interior. Only front and side photographs are used for pricing.",
+    },
+    {
+      url: null,
+      name: "odometer.jpg",
+      subject: "dashboard",
+      used: false,
+      reasoning: "Primary subject is dashboard. Only front and side photographs are used for pricing.",
+    },
   ],
   contributions: [],
   vehicleLine: "2019 Ram 2500 Tradesman",

@@ -93,7 +93,14 @@ export async function persistAndRespond(
         user_message,
       });
     }
-    return { status: "rejected", user_message };
+    return {
+      status: "rejected",
+      user_message,
+      primary_subject: String(output.primary_subject),
+      primary_subject_user_message: output.primary_subject_user_message || "",
+      truck_type: String(output.truck_type),
+      truck_type_user_message: output.truck_type_user_message || "",
+    };
   }
 
   if (!brandOverride && needsBrand(output)) {
@@ -125,6 +132,7 @@ export async function persistAndRespond(
       era: output.age?.era ?? "unknown",
       model_series: output.age?.model_series ?? null,
       primary_subject: String(output.primary_subject),
+      primary_subject_user_message: output.primary_subject_user_message || "",
       condition: output.condition,
     };
   }
@@ -155,7 +163,9 @@ export async function persistAndRespond(
   return {
     status: "ok",
     analysisId: id,
-    primary_subject: String(output.primary_subject),
     ...priced,
+    primary_subject: String(output.primary_subject),
+    primary_subject_user_message: output.primary_subject_user_message || "",
+    brand_reasoning: output.brand?.reasoning || "",
   };
 }

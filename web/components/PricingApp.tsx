@@ -5,7 +5,7 @@ import { Landing } from "./Landing";
 import { Conversation, type ChatMessage } from "./Conversation";
 import { Report } from "./Report";
 import type { AnalyzeNeedsBrand, AnalyzeOk, AnalyzeResponse } from "@/lib/types";
-import { SAMPLE_APPRAISAL, liveAppraisal, type PhotoShot } from "@/lib/appraisal";
+import { SAMPLE_APPRAISAL, liveAppraisal, photoMetaFromResponse, type PhotoShot } from "@/lib/appraisal";
 import { isAllowedImage, MAX_UPLOAD_BYTES, resizeImageFile } from "@/lib/resize-client";
 
 type Screen = "landing" | "chat" | "report";
@@ -56,23 +56,12 @@ export function PricingApp() {
   };
 
   const applyResponse = useCallback((data: AnalyzeResponse, uploaded: PhotoShot[]) => {
-    const subject =
-      data.status === "ok" || data.status === "needs_brand" ? data.primary_subject : undefined;
-    if (subject) {
-      setPhotos((prev) => {
-        const copy = [...prev];
-        let left = uploaded.length;
-        for (let i = copy.length - 1; i >= 0 && left > 0; i -= 1) {
-          copy[i] = { ...copy[i], subject };
-          left -= 1;
-        }
-        return copy;
-      });
-    }
+    const meta = photoMetaFromResponse(data);
+    const urls = new Set(uploaded.map((p) => p.url));
+    setPhotos((prev) => prev.map((p) => (urls.has(p.url) ? { ...p, ...meta } : p)));
 
     if (data.status === "rejected" || data.status === "error") {
       setInputError(withRetry(data.user_message));
-      setPending(null);
       return;
     }
     setInputError(null);
@@ -142,16 +131,24 @@ export function PricingApp() {
       setPhotos((prev) => [...prev, ...shots]);
       setLoading(true);
       try {
-        const file = valid[0];
-        const blob = await resizeImageFile(file);
-        const body = new FormData();
-        body.append("image", blob, "truck.jpg");
-        const res = await fetch("/api/analyze", { method: "POST", body });
-        const data = (await res.json()) as AnalyzeResponse;
-        applyResponse(data, shots);
-      } catch (err) {
-        console.error(err);
-        setInputError("Could not inspect this photo. Please upload another image and try again.");
+        for (let i = 0; i < valid.length; i += 1) {
+          const file = valid[i];
+          const shot = shots[i];
+          try {
+            const blob = await resizeImageFile(file);
+            const body = new FormData();
+            body.append("image", blob, "truck.jpg");
+            const res = await fetch("/api/analyze", { method: "POST", body });
+            const data = (await res.json()) as AnalyzeResponse;
+            applyResponse(data, [shot]);
+          } catch (err) {
+            console.error(err);
+            applyResponse(
+              { status: "error", user_message: "Could not inspect this photo. Please upload another image." },
+              [shot],
+            );
+          }
+        }
       } finally {
         setLoading(false);
       }

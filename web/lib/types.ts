@@ -117,6 +117,8 @@ export type AnalyzeOk = {
   status: "ok";
   analysisId: string;
   previewHint?: string;
+  brand_reasoning?: string;
+  primary_subject_user_message?: string;
 } & PriceResult;
 
 export type AnalyzeNeedsBrand = {
@@ -127,12 +129,17 @@ export type AnalyzeNeedsBrand = {
   era: string;
   model_series: string | null;
   primary_subject?: string;
+  primary_subject_user_message?: string;
   condition: ConditionOutput;
 };
 
 export type AnalyzeRejected = {
   status: "rejected";
   user_message: string;
+  primary_subject?: string;
+  primary_subject_user_message?: string;
+  truck_type?: string;
+  truck_type_user_message?: string;
 };
 
 export type AnalyzeError = {
