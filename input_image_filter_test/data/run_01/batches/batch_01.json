@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_001",
+      "prediction": {
+        "reasoning": "The primary vehicle is a heavy commercial tractor cab shot with the driver door open, seen at close range against a dealer lot ('Southern Truck Sales'). The cab has a tall, deep commercial dash and door panel, chrome grab handle, large mirror, and a substantial step/frame height typical of a highway tractor rather than a pickup or medium-duty truck. Looking through the open door, the cab interior is shallow behind the seat with no visible sleeper bunk, indicating a day-cab layout. Background trucks on the lot are also large sleeper/day-cab tractors, consistent with a heavy-truck dealership. Overall scale, cab height, and door/step proportions match a Class 7/8 day-cab tractor.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_002",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white highway tractor with a raised-roof sleeper compartment clearly visible behind the cab (extended box shape with a window/vent on the side), matching a Freightliner-style sleeper tractor silhouette. The chassis rails are bare (no fifth wheel currently mounted, likely staged for sale/parts), but the cab-and-sleeper body, tall stack/cab height, and chrome dual wheels are unmistakably heavy-duty tractor scale, not a pickup or van. The presence of an obvious sleeper bunk behind the cab confirms this is a Class 7/8 sleeper tractor.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "sleeper_tractor",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_003",
+      "prediction": {
+        "reasoning": "This is a close-up underside/rear-chassis shot showing a tandem axle setup with large dual-mounted tires on both sides, a heavy differential/pumpkin housing, thick frame rails, and large air brake reservoir tanks. This is clearly a heavy commercial truck chassis, not a light or medium-duty pickup/van undercarriage -- the dual tandem axles and air-brake tanks are hallmark Class 7/8 cues. No cab or box body is visible to cleanly categorize as a tractor or dump truck specifically, so it best fits a general heavy Class 7/8 commercial truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_004",
+      "prediction": {
+        "reasoning": "The primary vehicle is a straight box truck viewed from the rear, with an aluminum cube/dry-van style cargo box, a Maxon liftgate mounted at the rear, and a cab visible in the distance ahead of the box. This is a classic cargo straight box truck body style used for local delivery/moving, which the schema explicitly calls out as an invalid Class 2-6 category regardless of the liftgate. There is no tractor fifth-wheel layout, sleeper, or dump body, and the box/cab proportions read as medium-duty rather than a heavy Class 7/8 tractor or dump chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a box truck with a liftgate, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_005",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white Peterbilt conventional truck shown head-on, with a large chrome grille and hood, tall cab, chrome exhaust/air-intake stack, and a raised black dump/stake body visible behind the cab topped with amber conspicuity marker lights -- a configuration typical of a heavy dump or flatbed dump truck rather than a passenger pickup. The cab scale relative to the stone retaining wall and surrounding trees, plus the heavy grille/hood proportions, are consistent with a Class 7/8 commercial chassis rather than a Class 2-6 pickup or medium-duty service truck. The visible dump body sides and marker lights support classifying this as a heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    }
+  ]
+}

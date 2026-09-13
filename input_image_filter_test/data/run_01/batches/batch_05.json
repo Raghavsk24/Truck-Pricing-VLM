@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_021",
+      "prediction": {
+        "reasoning": "The image shows the interior cab of a truck: gray cloth bucket seats with adjustable headrests, a black plastic door panel and dash, and a soft-touch steering wheel bearing a Ford blue-oval badge with integrated audio/cruise controls. The cab width, seat bolstering, and dash/door trim scale are consistent with a Ford Super Duty-class pickup interior rather than a Class 7/8 highway tractor or dump truck cab (no elevated commercial dash, no big-rig-scale engine tunnel/doghouse, no sleeper compartment visible). This reads as a light/medium pickup cab interior, not a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows the interior of a pickup-style cab, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_022",
+      "prediction": {
+        "reasoning": "The frame is a tight crop on a white truck's front door, front wheel/tire, and telescoping side mirror, with an 'Enterprise Truck Rental' watermark in the corner. The door height, window proportions, single front wheel with a light-truck-style tire and hubcap, and a front tow hook are consistent with a Ford Super Duty-class pickup/chassis-cab, not the elevated commercial cab, large tandem drive tires, or fifth-wheel/sleeper proportions of a Class 7/8 truck. No box, service body, dump body, or tractor cues are visible.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows a light/medium-duty truck cab and door, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_023",
+      "prediction": {
+        "reasoning": "This is an extreme close-up of a blank equipment/serial plate and a partially visible compliance-style label mounted on a dark frame/chassis component, with an orange corrugated conduit routed above it. No cab, wheels, axles, or overall body silhouette are visible, so there is no way to judge cab type, sleeper presence, dump body, or axle configuration. Without a visible primary vehicle or any Class 7/8 cues, this crop cannot be confirmed as a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is too close-cropped on a plate/label to identify a vehicle. Please upload a clear photo showing the full truck (cab and body) so it can be identified as a Class 7 or Class 8 truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_024",
+      "prediction": {
+        "reasoning": "The photo shows the empty interior of a cargo box: a wood-plank floor, metal E-track/shelf brackets along both side walls, a translucent roof panel, and a rear roll-up door. This is the cargo compartment of a straight box/moving truck rather than a tractor cab, dump body, or any view showing tractor/heavy-dump cues. Per the schema, cargo straight box truck interiors fall in the Class 2-6 invalid category, not Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows the cargo box interior of a box/moving truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_025",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white straight truck with a boxed cargo body mounted behind a medium-duty conventional cab (single-stage windshield, exposed fuel tank/battery box below the cab, no sleeper compartment, and no fifth-wheel/tractor coupling visible). The cab scale and box-body proportions read as a medium-duty cargo straight box truck rather than a Class 7/8 highway tractor or heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box/straight truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

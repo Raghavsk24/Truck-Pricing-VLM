@@ -1,0 +1,412 @@
+{
+  "seed": 2026,
+  "n_positive": 25,
+  "n_negative": 25,
+  "accuracy_threshold": 0.9,
+  "instructions_schema": "C:\\\\Users\\\\senth\\\\54hackathon\\\\vlm_instructions\\\\filter_invalid_input_images_instructions.json",
+  "dataset_positive_dir": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)",
+  "dataset_negative_dir": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)",
+  "excluded_prior_images": 50,
+  "items": [
+    {
+      "id": "pos_014",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_66\\dump_truck_66_image_15.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_66"
+    },
+    {
+      "id": "pos_024",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_121\\dump_truck_121_image_36.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_121"
+    },
+    {
+      "id": "pos_019",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_21\\sleeper_truck_21_image_12.webp",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_21"
+    },
+    {
+      "id": "pos_002",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_14\\dump_truck_14_image_04.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_14"
+    },
+    {
+      "id": "neg_018",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\1-ton-pickup-trucks\\1_ton_pickup_truck_09\\1_ton_pickup_truck_09_image_08.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "1-ton-pickup-trucks",
+      "listing_id": "1_ton_pickup_truck_09"
+    },
+    {
+      "id": "neg_012",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cutaway-cube-box-trucks\\cutaway_cube_box_truck_19\\cutaway_cube_box_truck_19_image_10.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cutaway-cube-box-trucks",
+      "listing_id": "cutaway_cube_box_truck_19"
+    },
+    {
+      "id": "neg_004",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_08\\service_trucks_utility_trucks_mechanic_truck_08_image_21.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "listing_id": "service_trucks_utility_trucks_mechanic_truck_08"
+    },
+    {
+      "id": "pos_005",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_03\\sleeper_truck_03_image_02.webp",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_03"
+    },
+    {
+      "id": "neg_016",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_16\\moving_box_truck_16_image_03.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "moving-box-trucks",
+      "listing_id": "moving_box_truck_16"
+    },
+    {
+      "id": "pos_010",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_149\\dump_truck_149_image_14.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_149"
+    },
+    {
+      "id": "pos_013",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_25\\dump_truck_25_image_07.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_25"
+    },
+    {
+      "id": "neg_008",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_08\\cargo_straight_box_truck_08_image_04.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cargo-straight-box-trucks",
+      "listing_id": "cargo_straight_box_truck_08"
+    },
+    {
+      "id": "pos_016",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_120\\day_cab_truck_120_image_08.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_120"
+    },
+    {
+      "id": "pos_006",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_111\\day_cab_truck_111_image_03.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_111"
+    },
+    {
+      "id": "pos_023",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_146\\dump_truck_146_image_02.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_146"
+    },
+    {
+      "id": "pos_004",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_35\\sleeper_truck_35_image_11.webp",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_35"
+    },
+    {
+      "id": "neg_005",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_09\\stake_truck_09_image_13.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "stake-trucks",
+      "listing_id": "stake_truck_09"
+    },
+    {
+      "id": "neg_003",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_06\\service_trucks_utility_trucks_mechanic_truck_06_image_10.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "listing_id": "service_trucks_utility_trucks_mechanic_truck_06"
+    },
+    {
+      "id": "neg_007",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_20\\flatbed_truck_20_image_19.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "flatbed-trucks",
+      "listing_id": "flatbed_truck_20"
+    },
+    {
+      "id": "neg_010",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_04\\step_van_04_image_04.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "step-vans",
+      "listing_id": "step_van_04"
+    },
+    {
+      "id": "pos_012",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_45\\dump_truck_45_image_17.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_45"
+    },
+    {
+      "id": "pos_021",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_13\\day_cab_truck_13_image_15.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_13"
+    },
+    {
+      "id": "pos_020",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_145\\dump_truck_145_image_04.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_145"
+    },
+    {
+      "id": "neg_022",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_04\\moving_box_truck_04_image_03.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "moving-box-trucks",
+      "listing_id": "moving_box_truck_04"
+    },
+    {
+      "id": "neg_021",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_20\\stake_truck_20_image_03.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "stake-trucks",
+      "listing_id": "stake_truck_20"
+    },
+    {
+      "id": "neg_009",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_01\\step_van_01_image_14.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "step-vans",
+      "listing_id": "step_van_01"
+    },
+    {
+      "id": "neg_001",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_25\\cargo_straight_box_truck_25_image_09.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cargo-straight-box-trucks",
+      "listing_id": "cargo_straight_box_truck_25"
+    },
+    {
+      "id": "pos_007",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_114\\day_cab_truck_114_image_66.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_114"
+    },
+    {
+      "id": "pos_025",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_30\\sleeper_truck_30_image_39.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_30"
+    },
+    {
+      "id": "neg_023",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_01\\stake_truck_01_image_04.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "stake-trucks",
+      "listing_id": "stake_truck_01"
+    },
+    {
+      "id": "pos_011",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_15\\sleeper_truck_15_image_22.webp",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_15"
+    },
+    {
+      "id": "neg_024",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_06\\flatbed_truck_06_image_02.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "flatbed-trucks",
+      "listing_id": "flatbed_truck_06"
+    },
+    {
+      "id": "pos_008",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_113\\day_cab_truck_113_image_17.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_113"
+    },
+    {
+      "id": "pos_015",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_72\\day_cab_truck_72_image_02.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_72"
+    },
+    {
+      "id": "pos_003",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_154\\dump_truck_154_image_35.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "dump-trucks",
+      "listing_id": "dump_truck_154"
+    },
+    {
+      "id": "neg_025",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_22\\flatbed_truck_22_image_05.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "flatbed-trucks",
+      "listing_id": "flatbed_truck_22"
+    },
+    {
+      "id": "neg_019",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_02\\stake_truck_02_image_11.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "stake-trucks",
+      "listing_id": "stake_truck_02"
+    },
+    {
+      "id": "neg_014",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\1-ton-pickup-trucks\\1_ton_pickup_truck_07\\1_ton_pickup_truck_07_image_01.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "1-ton-pickup-trucks",
+      "listing_id": "1_ton_pickup_truck_07"
+    },
+    {
+      "id": "neg_006",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_27\\cargo_straight_box_truck_27_image_13.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cargo-straight-box-trucks",
+      "listing_id": "cargo_straight_box_truck_27"
+    },
+    {
+      "id": "neg_002",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cutaway-cube-box-trucks\\cutaway_cube_box_truck_02\\cutaway_cube_box_truck_02_image_02.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cutaway-cube-box-trucks",
+      "listing_id": "cutaway_cube_box_truck_02"
+    },
+    {
+      "id": "neg_015",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-vans\\cargo_van_04\\cargo_van_04_image_24.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "cargo-vans",
+      "listing_id": "cargo_van_04"
+    },
+    {
+      "id": "neg_017",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_29\\flatbed_truck_29_image_24.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "flatbed-trucks",
+      "listing_id": "flatbed_truck_29"
+    },
+    {
+      "id": "neg_013",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_07\\service_trucks_utility_trucks_mechanic_truck_07_image_10.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "listing_id": "service_trucks_utility_trucks_mechanic_truck_07"
+    },
+    {
+      "id": "pos_022",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_91\\sleeper_truck_91_image_02.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_91"
+    },
+    {
+      "id": "pos_009",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_95\\day_cab_truck_95_image_28.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_95"
+    },
+    {
+      "id": "pos_017",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_03\\day_cab_truck_03_image_53.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_03"
+    },
+    {
+      "id": "neg_020",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_03\\moving_box_truck_03_image_06.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "moving-box-trucks",
+      "listing_id": "moving_box_truck_03"
+    },
+    {
+      "id": "neg_011",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_25\\step_van_25_image_09.jpg",
+      "label": "negative",
+      "is_valid_class_7_8": false,
+      "category": "step-vans",
+      "listing_id": "step_van_25"
+    },
+    {
+      "id": "pos_018",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_54\\day_cab_truck_54_image_15.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "day-cab-trucks",
+      "listing_id": "day_cab_truck_54"
+    },
+    {
+      "id": "pos_001",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_29\\sleeper_truck_29_image_37.jpg",
+      "label": "positive",
+      "is_valid_class_7_8": true,
+      "category": "sleeper-trucks",
+      "listing_id": "sleeper_truck_29"
+    }
+  ]
+}

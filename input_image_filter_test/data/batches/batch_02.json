@@ -1,0 +1,54 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_006",
+      "prediction": {
+        "reasoning": "Primary subject is a rear/underside close-up of a truck body: a rusted sheet-metal panel above, what looks like a cabin air filter or condenser coil, a black diamond-plate step or mud flap, and a riveted deck plate below. No ribbed dump-bed sides, swinging tailgate, or hoist are visible (no dump body), no bunk/sleeper box or window is visible (no sleeper), and no tractor cab, hood, or fifth-wheel plate is visible (no day-cab layout). This is only shared chassis/body hardware (frame area, step, fasteners) with no type-defining layout cue in frame, so per Rule 6 it must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a generic body/frame part and not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab or cargo body layout."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_007",
+      "prediction": {
+        "reasoning": "Primary subject is the interior of a vehicle door: a molded black door card with an armrest, chrome interior door handle, power window/lock switches, a lower storage pocket, and a door speaker grille, seen through an open door with a pickup-style body and step visible outside. This styling and door-panel shape matches a light-duty pickup (e.g., Chevrolet Silverado/GMC Sierra) crew cab, not a Class 7/8 highway tractor or vocational dump truck. No dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout is visible anywhere in frame, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows a pickup truck door interior, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of one of those truck types."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_008",
+      "prediction": {
+        "reasoning": "Primary subject is the full front elevation of a highway tractor: a chrome vertical-bar grille with a visible 'FREIGHTLINER' badge (Cascadia-style hood and grille), chrome front bumper, large West Coast-style mirrors mounted on both A-pillars, a tall single-piece windshield, and a low aerodynamic roof cap/visor with three cab marker lights -- consistent with a day-cab Cascadia (a raised/extended sleeper box would show as a much deeper, boxier cab profile with a side sleeper window, which is not present here). No dump body is visible, and no bunk/sleeper cues (side window, raised box, curtain) are visible. The unambiguous Class 7/8 tractor OEM grille/hood/mirror combination in a tractor-cab context is sufficient to identify the day-cab tractor layout even without a rear three-quarter view of the fifth-wheel area.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_009",
+      "prediction": {
+        "reasoning": "Primary subject is a white medium-duty conventional truck (Ford chassis-cab, F-650/F-750-style grille and crew cab) fitted with a large enclosed aluminum cargo/moving box body -- visible ribbed aluminum panels, a roll-up or barn-style door at the cab-to-box gap, and a step/liftgate area at the rear. This is an enclosed straight box/moving truck body on a medium-duty chassis, which Rule 5 explicitly classifies as none regardless of box size or liftgate. No dump bed, sleeper box, or tractor/fifth-wheel layout is present -- this is a chassis-cab with a van-type box, not a Class 7/8 tractor or vocational dump.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows an enclosed medium-duty box/moving truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of one of those truck types."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_010",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of an in-dash LCD display showing the time, odometer reading (425,276.3 mi), ambient temperature, and a 'Total Engine Hours' readout (19,551 HRS), framed by a chrome bezel. This is a generic instrument-cluster/high-mileage display, which the instructions explicitly call out as a shared part that is NOT a type on its own ('a generic high-mileage LCD... High mileage alone... is none'). No dump body, sleeper bunk, or tractor cab/fifth-wheel layout is visible in this crop, so per Rule 6 this must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a dashboard mileage/engine-hours display and not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab or cargo body."
+        }
+      }
+    }
+  ]
+}

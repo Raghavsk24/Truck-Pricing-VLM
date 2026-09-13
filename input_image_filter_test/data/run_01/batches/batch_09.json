@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_041",
+      "prediction": {
+        "reasoning": "This is an interior cab shot looking across a bench seat toward a fold-down center console/armrest with a cup holder, seatbelts, and a chain-link fence visible through the rear window. No exterior body panels, cab shape, wheels, or chassis are visible anywhere in the frame, so there are no cues (cab scale, duals, tractor layout, dump body, etc.) available to judge Class 7/8 vs. lighter classes. Because the primary subject is an interior detail rather than an identifiable exterior vehicle, this must be treated as too ambiguous to call.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is an interior close-up and doesn't show enough of the vehicle to confirm it's a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_042",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white pickup-style cab and chassis fitted with an aftermarket service/utility body with multiple side compartment doors, visible from the side/rear. Only a single wheel is visible at the rear axle position (no dual rear wheels), and the cab, hood, and overall proportions read as a light/medium-duty pickup chassis (roughly 3/4- to 1-ton class) rather than a heavy commercial tractor or dump chassis. There is no fifth wheel, sleeper, or tandem dual-axle heavy-duty layout. This matches a Class 2-6 service/utility body truck, not a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "service_or_utility_truck",
+          "user_message": "This photo shows a service/utility body truck on a medium-duty chassis, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_043",
+      "prediction": {
+        "reasoning": "This image is an extreme close-up of a dashboard instrument cluster showing a gear-position indicator (N), outside temperature (102F), and odometer reading (255,327 mi), with a finger partially in frame. No part of the vehicle's exterior, cab, body, or wheels is visible, so there is no way to assess cab size, body style, axle configuration, or overall scale to determine Class 7/8 status.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a dashboard close-up and doesn't show the vehicle itself, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_044",
+      "prediction": {
+        "reasoning": "The primary vehicle is a cab-over straight truck with a tall aluminum box/cube cargo body mounted behind the cab, seen from the rear-quarter. The cab is low and compact (Isuzu/Hino-style forward-control cab), the chassis has a single rear wheel/tire per side (no dual rear wheels visible), and there is no fifth wheel, sleeper, or tandem heavy-duty tractor layout. This scale and body style is consistent with a medium-duty cutaway/box truck (Class 2-6), not a Class 7/8 tractor or heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_045",
+      "prediction": {
+        "reasoning": "This is an extreme close-up of a single wheel/tire and axle assembly (a wide heavy-duty tire branded 'Goodyear Fuel Max SSD' with air-ride/leaf suspension hardware and a rusty chassis component in the background). No cab, body, or overall vehicle silhouette is visible, so it is impossible to judge cab type, body style, or whether this belongs to a Class 7/8 tractor/dump versus another heavy vehicle or piece of equipment. Without a view of the full vehicle, the Class 7/8 determination cannot be made confidently.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up of a tire/axle and doesn't show enough of the vehicle to confirm it's a Class 7/8 truck. Please upload a full exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

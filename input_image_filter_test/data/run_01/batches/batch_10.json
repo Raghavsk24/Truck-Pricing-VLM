@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_046",
+      "prediction": {
+        "reasoning": "This is an interior cabin shot looking rearward at the second-row bench seat of a pickup-style crew cab (visible seatbelt buckles, door panel with grab handle/storage bin, and rear headrests). No exterior body, chassis, cab exterior, or wheels are visible to judge vehicle class, and the interior styling (leather/cloth two-tone bench, compact rear door panel) reads as a consumer/light-truck crew cab rather than a heavy Class 7/8 tractor cab. There is no way to identify Class 7/8 cues (cab scale, sleeper, dump body, tandem axles) from this interior-only framing, so the primary subject cannot be confirmed as a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows a vehicle interior with no exterior view of the truck, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_047",
+      "prediction": {
+        "reasoning": "The primary vehicle is a flatbed truck viewed from the rear/side, with a wood-deck flatbed body, a low headboard, and a single rear axle fitted with dual wheels (only one axle set of duals is visible, not a tandem pair). The cab visible at the front-left is low and compact in scale compared to the flatbed length, more consistent with a medium-duty (Class 4-6) flatbed chassis than a heavy Class 7/8 tractor-scale cab. There is no fifth-wheel/tractor layout, sleeper, or dump body, and the single-axle rear end lacks the tandem dual-axle proportions typical of Class 7/8 trucks, so this reads as a medium-duty flatbed rather than a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_048",
+      "prediction": {
+        "reasoning": "This image is a close-up of an instrument cluster/dashboard gauges (speedometer, tachometer, fuel and oil pressure gauges) with an odometer reading, and no exterior body panels, cab, wheels, or chassis are visible anywhere in the frame. Without any view of the vehicle's exterior, there are no cues (cab scale, axle configuration, body style) available to determine whether the vehicle is a Class 7/8 truck or a lighter Class 2-6 vehicle, so this cannot be validated as a Class 7/8 truck image.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a dashboard gauge cluster with no view of the truck's exterior, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_049",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white conventional-cab truck with a large chrome grille and hood, tall commercial cab, and a heavy black dump body with red/white reflective striping mounted behind the cab. The rear axle group shows a tridem (three-axle) heavy-duty configuration with dual wheels on multiple axles, and the cab, hood, and frame scale relative to the surrounding warehouse are clearly heavy commercial tractor/chassis proportions, not a pickup or medium-duty service truck. No sleeper bunk is visible behind the cab. These cues -- heavy multi-axle dump body, tandem/tridem dual wheels, and large commercial cab -- are consistent with a Class 7/8 heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_050",
+      "prediction": {
+        "reasoning": "The primary vehicle is a black-and-white highway conventional tractor pulling a raised black dump body with red/white reflective striping, photographed from the rear-quarter in a gravel yard. The cab has a tall commercial hood/grille, extended cab area behind the seat, and rides on a heavy chassis with tandem dual rear drive axles plus a lift axle, all consistent with heavy-duty Class 7/8 proportions rather than a pickup or medium-duty flatbed. Another truck with a tanker trailer is visible in the background, which does not affect classification of the primary dump-body tractor in the foreground. The combination of a large commercial tractor cab and a heavy dump body on a tandem/lift-axle chassis identifies this as a Class 7/8 heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    }
+  ]
+}

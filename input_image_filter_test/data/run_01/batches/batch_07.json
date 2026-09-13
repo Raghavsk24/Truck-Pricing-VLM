@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_031",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white pickup-based chassis cab (Ford Super Duty style dual-rear-wheel pickup) fitted with an EBY service/utility body featuring side toolboxes, a headache rack, and a rear tailgate/ramp. The cab is a standard consumer/light-commercial pickup cab, not a large tractor cab, and there is no fifth-wheel or heavy tractor chassis. This is a medium-duty service/utility truck on a pickup chassis, which falls in Class 2-6, not Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "service_or_utility_truck",
+          "user_message": "This photo shows a service/utility truck on a pickup chassis, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_032",
+      "prediction": {
+        "reasoning": "This image is an interior shot looking from inside a sleeper/storage compartment toward the cab door and dashboard. No exterior body, cab shape, axles, or overall vehicle scale are visible, so there are no reliable cues to judge whether the exterior is a Class 7/8 tractor versus a smaller vehicle. Because the primary vehicle cannot be identified from pixels, this must be treated as unclear.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is an interior-only shot and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_033",
+      "prediction": {
+        "reasoning": "This is an extreme close-up of an instrument cluster/gear shifter display (PRNDM, odometer showing 100,693 mi, and a small truck icon logo). There is no visible exterior body, cab, axle configuration, or overall vehicle scale to confirm a Class 7/8 truck. The image gives no usable vehicle-class cues.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up of a dashboard display and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_034",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white flatbed/stake body truck (Scelzi Enterprises 'SE INC' body) with a diamond-plate headboard, photographed from the rear. Only a single rear wheel is visible per side (no dual drive wheels), and the chassis/cab scale reads as medium-duty rather than a heavy tractor or dump chassis. A heavier tractor is visible in the background, but it is not the primary/foreground subject. This is a medium-duty flatbed, which is Class 2-6.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_035",
+      "prediction": {
+        "reasoning": "This image is a tight close-up under an open hood showing engine components, a coolant reservoir, and an oil cap; a background building and tree are visible but no part of the vehicle's exterior body, cab, or wheels/axles is shown. Without cab shape, body style, or overall scale, the primary vehicle's class cannot be reliably determined from pixels alone.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up engine bay shot and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

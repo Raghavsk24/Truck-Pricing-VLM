@@ -1,0 +1,658 @@
+{
+  "instructions_schema": "C:\\\\Users\\\\senth\\\\54hackathon\\\\vlm_instructions\\\\filter_invalid_input_images_instructions.json",
+  "max_long_edge": 1568,
+  "jpeg_quality": 85,
+  "note": "Blind staged copies with opaque filenames, resized to the Sonnet standard vision long-edge cap. Classify from image pixels only. Do not infer labels from filenames.",
+  "items": [
+    {
+      "id": "pos_014",
+      "opaque_id": "img_001",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_001.jpg",
+      "source_size": [
+        768,
+        1024
+      ],
+      "staged_size": [
+        768,
+        1024
+      ]
+    },
+    {
+      "id": "pos_024",
+      "opaque_id": "img_002",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_002.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_019",
+      "opaque_id": "img_003",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_003.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_002",
+      "opaque_id": "img_004",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_004.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_018",
+      "opaque_id": "img_005",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_005.jpg",
+      "source_size": [
+        640,
+        427
+      ],
+      "staged_size": [
+        640,
+        427
+      ]
+    },
+    {
+      "id": "neg_012",
+      "opaque_id": "img_006",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_006.jpg",
+      "source_size": [
+        640,
+        480
+      ],
+      "staged_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "id": "neg_004",
+      "opaque_id": "img_007",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_007.jpg",
+      "source_size": [
+        1280,
+        960
+      ],
+      "staged_size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "id": "pos_005",
+      "opaque_id": "img_008",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_008.jpg",
+      "source_size": [
+        1200,
+        900
+      ],
+      "staged_size": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "neg_016",
+      "opaque_id": "img_009",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_009.jpg",
+      "source_size": [
+        588,
+        441
+      ],
+      "staged_size": [
+        588,
+        441
+      ]
+    },
+    {
+      "id": "pos_010",
+      "opaque_id": "img_010",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_010.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_013",
+      "opaque_id": "img_011",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_011.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_008",
+      "opaque_id": "img_012",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_012.jpg",
+      "source_size": [
+        960,
+        1280
+      ],
+      "staged_size": [
+        960,
+        1280
+      ]
+    },
+    {
+      "id": "pos_016",
+      "opaque_id": "img_013",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_013.jpg",
+      "source_size": [
+        2048,
+        1365
+      ],
+      "staged_size": [
+        1568,
+        1045
+      ]
+    },
+    {
+      "id": "pos_006",
+      "opaque_id": "img_014",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_014.jpg",
+      "source_size": [
+        1200,
+        800
+      ],
+      "staged_size": [
+        1200,
+        800
+      ]
+    },
+    {
+      "id": "pos_023",
+      "opaque_id": "img_015",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_015.jpg",
+      "source_size": [
+        1920,
+        1440
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_004",
+      "opaque_id": "img_016",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_016.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_005",
+      "opaque_id": "img_017",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_017.jpg",
+      "source_size": [
+        800,
+        600
+      ],
+      "staged_size": [
+        800,
+        600
+      ]
+    },
+    {
+      "id": "neg_003",
+      "opaque_id": "img_018",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_018.jpg",
+      "source_size": [
+        640,
+        480
+      ],
+      "staged_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "id": "neg_007",
+      "opaque_id": "img_019",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_019.jpg",
+      "source_size": [
+        640,
+        480
+      ],
+      "staged_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "id": "neg_010",
+      "opaque_id": "img_020",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_020.jpg",
+      "source_size": [
+        2000,
+        1500
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_012",
+      "opaque_id": "img_021",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_021.jpg",
+      "source_size": [
+        2000,
+        1500
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_021",
+      "opaque_id": "img_022",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_022.jpg",
+      "source_size": [
+        980,
+        1280
+      ],
+      "staged_size": [
+        980,
+        1280
+      ]
+    },
+    {
+      "id": "pos_020",
+      "opaque_id": "img_023",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_023.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_022",
+      "opaque_id": "img_024",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_024.jpg",
+      "source_size": [
+        800,
+        600
+      ],
+      "staged_size": [
+        800,
+        600
+      ]
+    },
+    {
+      "id": "neg_021",
+      "opaque_id": "img_025",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_025.jpg",
+      "source_size": [
+        1280,
+        960
+      ],
+      "staged_size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "id": "neg_009",
+      "opaque_id": "img_026",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_026.jpg",
+      "source_size": [
+        640,
+        480
+      ],
+      "staged_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "id": "neg_001",
+      "opaque_id": "img_027",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_027.jpg",
+      "source_size": [
+        1920,
+        1440
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_007",
+      "opaque_id": "img_028",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_028.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_025",
+      "opaque_id": "img_029",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_029.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_023",
+      "opaque_id": "img_030",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_030.jpg",
+      "source_size": [
+        333,
+        250
+      ],
+      "staged_size": [
+        333,
+        250
+      ]
+    },
+    {
+      "id": "pos_011",
+      "opaque_id": "img_031",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_031.jpg",
+      "source_size": [
+        1536,
+        2048
+      ],
+      "staged_size": [
+        1176,
+        1568
+      ]
+    },
+    {
+      "id": "neg_024",
+      "opaque_id": "img_032",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_032.jpg",
+      "source_size": [
+        2048,
+        1140
+      ],
+      "staged_size": [
+        1568,
+        873
+      ]
+    },
+    {
+      "id": "pos_008",
+      "opaque_id": "img_033",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_033.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_015",
+      "opaque_id": "img_034",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_034.jpg",
+      "source_size": [
+        1024,
+        768
+      ],
+      "staged_size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "pos_003",
+      "opaque_id": "img_035",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_035.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_025",
+      "opaque_id": "img_036",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_036.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_019",
+      "opaque_id": "img_037",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_037.jpg",
+      "source_size": [
+        640,
+        480
+      ],
+      "staged_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "id": "neg_014",
+      "opaque_id": "img_038",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_038.jpg",
+      "source_size": [
+        1600,
+        1200
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_006",
+      "opaque_id": "img_039",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_039.jpg",
+      "source_size": [
+        1200,
+        900
+      ],
+      "staged_size": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "neg_002",
+      "opaque_id": "img_040",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_040.jpg",
+      "source_size": [
+        1280,
+        960
+      ],
+      "staged_size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "id": "neg_015",
+      "opaque_id": "img_041",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_041.jpg",
+      "source_size": [
+        1024,
+        768
+      ],
+      "staged_size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "neg_017",
+      "opaque_id": "img_042",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_042.jpg",
+      "source_size": [
+        576,
+        768
+      ],
+      "staged_size": [
+        576,
+        768
+      ]
+    },
+    {
+      "id": "neg_013",
+      "opaque_id": "img_043",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_043.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_022",
+      "opaque_id": "img_044",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_044.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_009",
+      "opaque_id": "img_045",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_045.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "pos_017",
+      "opaque_id": "img_046",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_046.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_020",
+      "opaque_id": "img_047",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_047.jpg",
+      "source_size": [
+        2048,
+        1536
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    },
+    {
+      "id": "neg_011",
+      "opaque_id": "img_048",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_048.jpg",
+      "source_size": [
+        960,
+        1280
+      ],
+      "staged_size": [
+        960,
+        1280
+      ]
+    },
+    {
+      "id": "pos_018",
+      "opaque_id": "img_049",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_049.jpg",
+      "source_size": [
+        751,
+        563
+      ],
+      "staged_size": [
+        751,
+        563
+      ]
+    },
+    {
+      "id": "pos_001",
+      "opaque_id": "img_050",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_050.jpg",
+      "source_size": [
+        1600,
+        1200
+      ],
+      "staged_size": [
+        1568,
+        1176
+      ]
+    }
+  ]
+}

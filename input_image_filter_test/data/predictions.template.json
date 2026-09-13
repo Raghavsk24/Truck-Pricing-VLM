@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "id": "pos_001",
+      "prediction": {
+        "reasoning": "Replace this stub after the Sonnet 5 VLM assessment. Keep the exact schema fields.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    }
+  ]
+}

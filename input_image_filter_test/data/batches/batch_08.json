@@ -1,0 +1,54 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_036",
+      "prediction": {
+        "reasoning": "Primary subject is a Ford incomplete-vehicle manufacturer's data plate/sticker mounted on a red frame rail, showing VIN, front/rear GAWR, tire/rim specs, and GVWR 8845 KG (19500 LB). No dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout is visible -- only a data plate close-up. GVWR of 8845 kg (~19,500 lb) is well under the 26,001 lb Class 7/8 threshold, placing this in Class 2-6 territory (consistent with an incomplete Ford chassis-cab). Per Rule 4/6, a data-plate close-up with printed GVWR under 26,001 lb is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a data plate/sticker with a GVWR under 26,001 lb, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_037",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up looking down the wood-plank cargo floor of a flatbed/stake truck, with wood stake side rails and a headache rack/cab guard visible at the far end. No dump body (no ribbed steel sides, tailgate, or hoist), no sleeper box, and no day-cab tractor/fifth-wheel layout is visible -- this is an open wood-deck stake/flatbed cargo area, not a dump bed. Per Rule 4, wood-plank stake and medium flatbed bodies are explicitly listed as invalid input, and per Rule 5/6 an empty cargo body close-up with no type-specific layout cue is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a wood-plank stake/flatbed cargo area, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_038",
+      "prediction": {
+        "reasoning": "Primary subject is a white cab-and-chassis truck shown in a dealership stock/rendered photo (OC Welch Ford Lincoln), with a crew cab, chrome grille, dual rear wheels, and bare frame rails behind the cab with no body mounted -- consistent with a Ford Super Duty (F-450/F-550 class) chassis-cab. No dump body, sleeper box/bunk, or Class 7/8 tractor/fifth-wheel layout is visible; the bare frame is just an incomplete chassis-cab, not a fifth-wheel setup. Per Rule 4, Super Duty/F-450/F-550 chassis-cabs are explicitly invalid input regardless of body configuration.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a Ford Super Duty chassis-cab pickup/medium truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_039",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of an engine bay/compartment showing a turbocharger, intake piping, silicone charge-air couplers, hoses, and frame components, with a tire visible in the background. This is a shared mechanical part (engine bay) with no cab, no cargo body, and no fifth-wheel visible -- so no dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout can be confirmed. Per Rule 6, engine bay close-ups and silicone charge-air couplers are explicitly called out as shared parts that are NOT proof of any type, since they appear on both Class 7/8 and Class 2-6 vehicles.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like an engine bay close-up, which doesn't show a Class 7/8 day-cab, dump, or sleeper truck layout. Please upload a photo showing the truck's full cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_040",
+      "prediction": {
+        "reasoning": "Primary subject is a red medium-duty conventional truck (Freightliner Business Class/M2-style grille and cab) fitted with an enclosed maroon/red box body with a roll-up-style rear door, side access door, and a liftgate mechanism mounted on the back -- a classic enclosed cargo/moving straight box truck configuration. No dump body (no open top, ribbed dump sides, or tailgate hoist), no sleeper box/bunk, and no day-cab tractor/fifth-wheel layout is visible -- the cab is a short medium conventional cab directly attached to an enclosed box, not a tractor with open frame to a fifth-wheel. Per Rule 4/5, medium conventionals carrying an enclosed box body, and enclosed straight box/moving trucks in general, are explicitly invalid input even though the box is tall and the cab looks generically heavy-duty.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a medium-duty conventional truck with an enclosed straight box body, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 tractor or dump truck."
+        }
+      }
+    }
+  ]
+}

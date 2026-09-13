@@ -1,0 +1,1020 @@
+{
+  "n_total": 50,
+  "n_scored_correct": 40,
+  "accuracy": 0.8,
+  "accuracy_percent": 80.0,
+  "accuracy_threshold": 0.9,
+  "passes_threshold": false,
+  "n_schema_ok": 50,
+  "schema_ok_rate": 1.0,
+  "missing_prediction_ids": [],
+  "extra_prediction_ids": [],
+  "confusion": {
+    "true_positive": 15,
+    "true_negative": 25,
+    "false_positive": 0,
+    "false_negative": 10
+  },
+  "rows": [
+    {
+      "id": "pos_023",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_43\\day_cab_truck_43_image_25.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a heavy commercial tractor cab shot with the driver door open, seen at close range against a dealer lot ('Southern Truck Sales'). The cab has a tall, deep commercial dash and door panel, chrome grab handle, large mirror, and a substantial step/frame height typical of a highway tractor rather than a pickup or medium-duty truck. Looking through the open door, the cab interior is shallow behind the seat with no visible sleeper bunk, indicating a day-cab layout. Background trucks on the lot are also large sleeper/day-cab tractors, consistent with a heavy-truck dealership. Overall scale, cab height, and door/step proportions match a Class 7/8 day-cab tractor.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_018",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_11\\sleeper_truck_11_image_03.webp",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white highway tractor with a raised-roof sleeper compartment clearly visible behind the cab (extended box shape with a window/vent on the side), matching a Freightliner-style sleeper tractor silhouette. The chassis rails are bare (no fifth wheel currently mounted, likely staged for sale/parts), but the cab-and-sleeper body, tall stack/cab height, and chrome dual wheels are unmistakably heavy-duty tractor scale, not a pickup or van. The presence of an obvious sleeper bunk behind the cab confirms this is a Class 7/8 sleeper tractor.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "sleeper_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_005",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_98\\dump_truck_98_image_16.webp",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This is a close-up underside/rear-chassis shot showing a tandem axle setup with large dual-mounted tires on both sides, a heavy differential/pumpkin housing, thick frame rails, and large air brake reservoir tanks. This is clearly a heavy commercial truck chassis, not a light or medium-duty pickup/van undercarriage -- the dual tandem axles and air-brake tanks are hallmark Class 7/8 cues. No cab or box body is visible to cleanly categorize as a tractor or dump truck specifically, so it best fits a general heavy Class 7/8 commercial truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_025",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_03\\moving_box_truck_03_image_03.jpg",
+      "category": "moving-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a straight box truck viewed from the rear, with an aluminum cube/dry-van style cargo box, a Maxon liftgate mounted at the rear, and a cab visible in the distance ahead of the box. This is a classic cargo straight box truck body style used for local delivery/moving, which the schema explicitly calls out as an invalid Class 2-6 category regardless of the liftgate. There is no tractor fifth-wheel layout, sleeper, or dump body, and the box/cab proportions read as medium-duty rather than a heavy Class 7/8 tractor or dump chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a box truck with a liftgate, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_008",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_43\\dump_truck_43_image_08.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white Peterbilt conventional truck shown head-on, with a large chrome grille and hood, tall cab, chrome exhaust/air-intake stack, and a raised black dump/stake body visible behind the cab topped with amber conspicuity marker lights -- a configuration typical of a heavy dump or flatbed dump truck rather than a passenger pickup. The cab scale relative to the stone retaining wall and surrounding trees, plus the heavy grille/hood proportions, are consistent with a Class 7/8 commercial chassis rather than a Class 2-6 pickup or medium-duty service truck. The visible dump body sides and marker lights support classifying this as a heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_014",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-vans\\cargo_van_03\\cargo_van_03_image_25.jpg",
+      "category": "cargo-vans",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The frame is shot entirely from inside an empty cargo box/trailer, looking toward closed rear swing doors. Visible cues are insulated white interior walls, a blue non-slip floor, cargo tie-down rails with ratchet straps on both side walls, and an evaporator/fan unit mounted on the ceiling (consistent with a refrigerated van body). No cab, hood, wheels, or any exterior chassis/axle detail is visible anywhere in the shot, so there is no way to judge cab size, drive-axle configuration, or overall vehicle scale. Because the primary subject is an interior-only cargo compartment with no exterior vehicle cues, this cannot be confirmed as a Class 7/8 truck from pixels alone.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows the inside of a cargo box with no view of the truck's cab or chassis, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_010",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_67\\sleeper_truck_67_image_24.jpg",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The shot is taken entirely inside a truck cab, showing a small overhead/side storage cabinet, a metal shelf with a cargo net, wall paneling, and a mattress/bunk cushion in the lower right corner. This bunk-style interior suggests a sleeper compartment, but the photo shows no cab exterior, hood, grille, wheels, or axle configuration anywhere in frame, so there is no way to verify the vehicle's overall size, cab type, or drivetrain from pixels. Without any exterior chassis or scale reference, this cannot be confidently classified as a Class 7/8 sleeper tractor versus some other vehicle with a bunk area.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a cab/sleeper interior with no exterior view of the vehicle, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "pos_020",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_125\\day_cab_truck_125_image_05.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary and only subject is a highway tractor shown in full side profile in a truck yard. It has a tall, wide commercial cab with a raised roof marker light bar and roof-mounted light rack, a large exhaust stack and vertical air intake behind the cab, and a fifth-wheel plate visible at the rear of the frame with no trailer attached. There is no sleeper compartment bulge behind the cab, so it reads as a day cab. The chassis has tandem rear axles with dual wheels on each side (four rear wheels visible), consistent with commercial tractor proportions rather than a pickup or medium-duty truck. Overall cab height, wheelbase, and axle configuration are clearly heavy-duty Class 7/8 tractor scale.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_024",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_17\\moving_box_truck_17_image_02.jpg",
+      "category": "moving-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white GMC cab-over-style conventional truck with a factory door badge reading 'GMC C4500,' which is a medium-duty chassis. It has a single rear axle with single (non-dual) wheels, a compact conventional cab, and an aluminum box/cutaway cargo body mounted behind the cab. The cab size, single rear wheels, and overall proportions are consistent with a Class 4/5 medium-duty truck, not a heavy Class 7/8 tractor or dump truck. This is a box/cutaway-style truck and belongs in Class 2-6.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box truck (GMC C4500), not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_007",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cutaway-cube-box-trucks\\cutaway_cube_box_truck_04\\cutaway_cube_box_truck_04_image_14.jpg",
+      "category": "cutaway-cube-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This image shows only the interior cab of a Ford vehicle: a steering wheel with a Ford emblem, digital instrument cluster, center touchscreen, and gray leather bucket/bench-style front seats with red seatbelt buckles. The styling (modern digital dash, passenger-car-like console, bucket seats) reads as a light or medium-duty Ford cab such as a Transit or Super Duty pickup/chassis cab, not a heavy Class 7/8 tractor interior. There is no exterior view, cab-over-engine tractor layout, or sleeper area, and the interior finish level does not match a heavy commercial tractor. This cannot be confirmed as a Class 7/8 truck from the pixels shown.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a light/medium-duty cab interior with no exterior view, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_004",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_38\\day_cab_truck_38_image_10.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The frame is entirely an interior shot: steering wheel with a Freightliner center cap, instrument cluster with gauges, and dashboard, shot from the driver's seat looking through the windshield at a parking lot. No exterior body, cab shape, wheels, or chassis are visible, so there is no way to judge Class 7/8 vs Class 2-6 cues (cab size, duals, chassis scale) from this frame. Because the primary subject is an interior-only view with no vehicle exterior visible, this must be rejected as unclear regardless of the fact that Freightliner badging suggests a heavy truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows the interior/dashboard of a vehicle, not the exterior of a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_006",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_16\\step_van_16_image_27.jpg",
+      "category": "step-vans",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white walk-in/cutaway style delivery box truck viewed from the rear-side with its lift-gate ramp lowered. A separate cab section with a windshield and driver's door is visible ahead of the box body, roof vents/skylights sit on top of the cargo box, and only a single rear wheel (not dual/tandem) is visible per side. The overall scale of the cab and box reads as a medium-duty cutaway/parcel delivery truck, not a heavy tractor or dump body. There is no tractor cab, fifth wheel, sleeper, or tandem drive axle -- this is a Class 2-6 box/cutaway truck and must be rejected.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box/cutaway delivery truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_017",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_35\\sleeper_truck_35_image_04.webp",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a large Peterbilt highway tractor with a tall chrome grille, big hood, and a full-height sleeper compartment behind the cab (visible as the raised box section with a side window past the cab door). It has a tandem set of rear drive axles and a fifth-wheel tractor chassis with no cargo body, and the cab/hood scale relative to the person-height door handle and steps is clearly heavy-duty commercial tractor proportions. These are unmistakable Class 8 sleeper-tractor cues.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "sleeper_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_019",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_90\\dump_truck_90_image_27.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This is an extreme close-up of an engine bay: turbocharger, intercooler piping, air lines, and various under-hood components, with only a sliver of a blue cab structure visible at the top edge. No cab exterior, body style, wheels, or chassis proportions are visible, so there are no reliable cues to distinguish a heavy Class 7/8 tractor engine bay from a medium-duty Class 2-6 truck's engine bay. Per the filtering guidance, when the vehicle class cannot be judged from the primary subject, it should be treated as unclear/invalid rather than assumed to be Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows an engine bay close-up, not enough of the truck's exterior to confirm it is a Class 7/8 truck. Please upload a photo showing the full exterior of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "pos_012",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_08\\day_cab_truck_08_image_05.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary/foreground vehicle is a bright yellow conventional highway tractor cab (International LT badge visible on the fender) with a tall commercial cab, large side mirror, and hood scale consistent with a Class 8 tractor; the roofline shows no sleeper bunk bulge, indicating a day cab. In the background, a separate tandem-axle tractor chassis and other box trucks are visible, but per the instructions only the primary foreground vehicle is judged, and its cab/hood proportions and 'LT' badge match a Class 8 day-cab tractor rather than any medium-duty truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_001",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_14\\day_cab_truck_14_image_06.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "Rear view of a heavy commercial truck cab and bare chassis at what appears to be a heavy-truck equipment dealer lot (other conventional tractors visible in background). The cab is a small, square, flat-backed unit typical of a cabover/vocational tractor with no sleeper bunk bulge visible. Behind the cab is an exposed heavy frame with a tandem set of dual rear wheels (two axles, four tires per side) and visible air/hydraulic lines and a mudflap set branded for a heavy equipment dealer. The scale of the cab relative to the tires and frame, plus the tandem dual-wheel axle group, are consistent with a Class 7/8 day-cab tractor chassis rather than any medium-duty pickup or van.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_016",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_154\\dump_truck_154_image_04.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "Primary subject is a Freightliner conventional truck (badge visible on grille) with a tall day-cab (no sleeper bunk visible), large chrome grille, and a heavy dump body mounted directly behind the cab, visible tandem axle housing near the rear wheels. The cab height, hood length, and step/fuel tank proportions match a heavy Class 7/8 tractor/dump chassis, not a medium-duty pickup or box truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_003",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_55\\sleeper_truck_55_image_09.jpg",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "Rear-facing shot of a heavy chassis with an exposed fifth-wheel-style pivot plate and a blue dump/hopper body above it, sitting on a tandem set of dual rear wheels (four tires visible per side). The heavy frame rails, tandem duals, air lines, and dump body scale are consistent with a Class 7/8 heavy dump truck, not a medium-duty stake or flatbed truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_021",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_97\\sleeper_truck_97_image_07.webp",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "Rear view of a heavy truck showing a tall gray dump/hopper body mounted on a heavy chassis with a tandem set of dual rear wheels (four large commercial tires visible per side) and a fifth-wheel-style pivot area with hydraulic lines. The wheel/tire scale, dual-axle rear end, and heavy dump body are consistent with a Class 7/8 heavy dump truck rather than any medium-duty vehicle.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_014",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_56\\dump_truck_56_image_14.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "Rear view of a black stake/dump-style body with a rear tailgate, chains, and reflective conspicuity striping, sitting low to the ground with a compact rear bumper marked 'Sterling Trucks'. No dual rear wheels or tandem axle group are visible, the body width and bumper/step proportions read as a single rear axle, and the overall scale is noticeably smaller than a true Class 7/8 dump body. These cues point to a medium-duty (Class 2-6) stake or dump body rather than a Class 7/8 tractor or heavy dump truck, so per the guidance to prefer invalid when heavy-duty cues do not clearly dominate, this is classified as invalid.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty stake/dump body truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_004",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_25\\flatbed_truck_25_image_10.jpg",
+      "category": "flatbed-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The image shows the interior cab of a truck: gray cloth bucket seats with adjustable headrests, a black plastic door panel and dash, and a soft-touch steering wheel bearing a Ford blue-oval badge with integrated audio/cruise controls. The cab width, seat bolstering, and dash/door trim scale are consistent with a Ford Super Duty-class pickup interior rather than a Class 7/8 highway tractor or dump truck cab (no elevated commercial dash, no big-rig-scale engine tunnel/doghouse, no sleeper compartment visible). This reads as a light/medium pickup cab interior, not a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows the interior of a pickup-style cab, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_009",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_08\\flatbed_truck_08_image_13.jpg",
+      "category": "flatbed-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The frame is a tight crop on a white truck's front door, front wheel/tire, and telescoping side mirror, with an 'Enterprise Truck Rental' watermark in the corner. The door height, window proportions, single front wheel with a light-truck-style tire and hubcap, and a front tow hook are consistent with a Ford Super Duty-class pickup/chassis-cab, not the elevated commercial cab, large tandem drive tires, or fifth-wheel/sleeper proportions of a Class 7/8 truck. No box, service body, dump body, or tractor cues are visible.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows a light/medium-duty truck cab and door, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_024",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_31\\day_cab_truck_31_image_55.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This is an extreme close-up of a blank equipment/serial plate and a partially visible compliance-style label mounted on a dark frame/chassis component, with an orange corrugated conduit routed above it. No cab, wheels, axles, or overall body silhouette are visible, so there is no way to judge cab type, sleeper presence, dump body, or axle configuration. Without a visible primary vehicle or any Class 7/8 cues, this crop cannot be confirmed as a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is too close-cropped on a plate/label to identify a vehicle. Please upload a clear photo showing the full truck (cab and body) so it can be identified as a Class 7 or Class 8 truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_002",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_01\\step_van_01_image_09.jpg",
+      "category": "step-vans",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The photo shows the empty interior of a cargo box: a wood-plank floor, metal E-track/shelf brackets along both side walls, a translucent roof panel, and a rear roll-up door. This is the cargo compartment of a straight box/moving truck rather than a tractor cab, dump body, or any view showing tractor/heavy-dump cues. Per the schema, cargo straight box truck interiors fall in the Class 2-6 invalid category, not Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows the cargo box interior of a box/moving truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_015",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_54\\sleeper_truck_54_image_04.jpg",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white straight truck with a boxed cargo body mounted behind a medium-duty conventional cab (single-stage windshield, exposed fuel tank/battery box below the cab, no sleeper compartment, and no fifth-wheel/tractor coupling visible). The cab scale and box-body proportions read as a medium-duty cargo straight box truck rather than a Class 7/8 highway tractor or heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box/straight truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "pos_007",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_111\\day_cab_truck_111_image_07.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The frame is a close-up of a truck instrument cluster/dashboard. Key cues: a large diesel-scale tachometer reading 0-30 (x100 RPM, i.e. 0-3000 RPM) paired with a large 0-85 mph / 0-130+ km/h speedometer, flanked by analog oil-pressure (PSI) and water-temperature gauges, plus a digital odometer/trip module with reset knob. Critically, there are two separate round gauges both labeled 'PSI' under 'AIR' -- a dual primary/secondary air-brake pressure gauge pair, which is the classic heavy commercial truck air-brake system readout. This dual-air-gauge, large-analog-cluster layout is characteristic of a Class 7/8 conventional tractor dashboard, not a pickup, van, or light chassis-cab (which use simpler digital clusters and lack dual air-system gauges). No cab exterior or body is visible to distinguish day-cab vs. sleeper vs. dump, but the dashboard itself is a decisive heavy-truck cue.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_020",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\moving-box-trucks\\moving_box_truck_27\\moving_box_truck_27_image_11.jpg",
+      "category": "moving-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary subject is the empty interior of an enclosed cargo box, shot straight in through the open rear barn doors: aluminum corner posts, logistics/e-track rub rails along the side walls, a plywood/composite ceiling and walls, and a varnished wood floor. There is no cab, hood, chassis frame, wheels, or axles visible anywhere in the frame -- only the cargo box shell itself, with a yellow box truck and other vehicles visible only as small background elements in the parking lot outside. Because no tractor, dump body, or truck chassis is shown (just a box/trailer interior), there isn't enough visible vehicle structure to identify a Class 7/8 tractor or dump truck as the primary subject.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows only the inside of an empty cargo box, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_013",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_10\\day_cab_truck_10_image_08.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The frame is a close-up of an open cab door on a white truck, but the visible exterior details around the door are decisive: through the window, a large rectangular twin-arm 'West Coast' style mirror head is mounted on a substantial articulated bracket -- the long-arm, flat-glass mirror configuration used on highway tractors for sighting down the length of a trailer, not the compact single-arm mirrors found on pickups or medium-duty box trucks. Near the door hinge there is also a heavy grab-handle/step bracket with a black protective boot over a line (air/electrical), and an amber cab marker light is visible on the body -- both typical heavy-tractor cab furnishings. The door panel itself is tall and deep with a lower ventilated/non-slip kick panel, consistent with a large commercial cab rather than a light or medium-duty chassis-cab. No sleeper or full cab profile is visible, so it reads as a general Class 7/8 tractor rather than a specific day-cab/sleeper.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_008",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_11\\cargo_straight_box_truck_11_image_10.jpg",
+      "category": "cargo-straight-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The frame is a close-up of a manufacturer compliance/certification sticker mounted on a door pillar, reading 'INCOMPLETE VEHICLE MFD BY SPARTAN MOTORS CHASSIS INC' with an Isuzu logo, and explicitly printed weight ratings: GVWR 6,577 kg (14,500 LB), GAWR front 3,007 kg (6,630 LB), GAWR rear 4,998 kg (11,020 LB). A GVWR of 14,500 lb falls in the Class 4 medium-duty range, far below the 26,001+ lb threshold that defines Class 7/8. The shot itself is only a label/sticker close-up on a door edge -- no cab, body, or overall vehicle proportions are shown -- but the explicitly printed weight rating on the sticker directly rules out this vehicle being a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows a compliance sticker for a medium-duty (about 14,500 lb GVWR) chassis, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_011",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_33\\flatbed_truck_33_image_09.jpg",
+      "category": "flatbed-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white flatbed truck shot from the rear 3/4 angle, with a compact single-row conventional cab, a short vertical-slat headboard/rack directly behind the cab, and a long aluminum diamond-plate flatbed body. The visible rear wheel is a single wide tire on a polished aluminum rim -- there is no dual-wheel (twin-tire) rear axle, and no second (tandem) axle is visible. This single-wheel, single-axle rear end reads as a medium-duty (roughly Class 3-5) chassis rather than a heavy Class 7/8 truck, which almost always rides on dual rear wheels (single or tandem axle). For direct comparison, larger dump trucks visible in the background beyond the fence clearly show dual rear wheels and much larger cab/chassis scale, highlighting how much smaller and lighter this foreground flatbed truck is. The body style (flatbed with headboard rack) combined with the single-wheel medium-duty chassis places this in the invalid Class 2-6 flatbed category.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_016",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_25\\service_trucks_utility_trucks_mechanic_truck_25_image_04.jpg",
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white pickup-based chassis cab (Ford Super Duty style dual-rear-wheel pickup) fitted with an EBY service/utility body featuring side toolboxes, a headache rack, and a rear tailgate/ramp. The cab is a standard consumer/light-commercial pickup cab, not a large tractor cab, and there is no fifth-wheel or heavy tractor chassis. This is a medium-duty service/utility truck on a pickup chassis, which falls in Class 2-6, not Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "service_or_utility_truck",
+          "user_message": "This photo shows a service/utility truck on a pickup chassis, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_022",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cutaway-cube-box-trucks\\cutaway_cube_box_truck_05\\cutaway_cube_box_truck_05_image_05.jpg",
+      "category": "cutaway-cube-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This image is an interior shot looking from inside a sleeper/storage compartment toward the cab door and dashboard. No exterior body, cab shape, axles, or overall vehicle scale are visible, so there are no reliable cues to judge whether the exterior is a Class 7/8 tractor versus a smaller vehicle. Because the primary vehicle cannot be identified from pixels, this must be treated as unclear.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is an interior-only shot and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_023",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\1-ton-pickup-trucks\\1_ton_pickup_truck_06\\1_ton_pickup_truck_06_image_23.jpg",
+      "category": "1-ton-pickup-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This is an extreme close-up of an instrument cluster/gear shifter display (PRNDM, odometer showing 100,693 mi, and a small truck icon logo). There is no visible exterior body, cab, axle configuration, or overall vehicle scale to confirm a Class 7/8 truck. The image gives no usable vehicle-class cues.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up of a dashboard display and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_003",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_24\\stake_truck_24_image_04.jpg",
+      "category": "stake-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white flatbed/stake body truck (Scelzi Enterprises 'SE INC' body) with a diamond-plate headboard, photographed from the rear. Only a single rear wheel is visible per side (no dual drive wheels), and the chassis/cab scale reads as medium-duty rather than a heavy tractor or dump chassis. A heavier tractor is visible in the background, but it is not the primary/foreground subject. This is a medium-duty flatbed, which is Class 2-6.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_006",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\day-cab-trucks\\day_cab_truck_61\\day_cab_truck_61_image_41.jpg",
+      "category": "day-cab-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This image is a tight close-up under an open hood showing engine components, a coolant reservoir, and an oil cap; a background building and tree are visible but no part of the vehicle's exterior body, cab, or wheels/axles is shown. Without cab shape, body style, or overall scale, the primary vehicle's class cannot be reliably determined from pixels alone.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up engine bay shot and does not clearly show a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_017",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_19\\stake_truck_19_image_16.jpg",
+      "category": "stake-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The frame is filled by the side/rear of a truck body: vertical slatted stake/cattle-rack rails above a body-side toolbox with gas-strut supported lid, riding low over the wheel well. There is no cab visible, but the body style (open vertical-slat stake rack over a narrow chassis with a small underbody toolbox) reads as a light/medium-duty stake bed truck rather than a heavy Class 7/8 tractor or dump body -- the rail spacing, toolbox scale, and single visible wheel/tire size are consistent with a Class 2-6 stake or flatbed truck, not a tandem heavy-duty commercial chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a stake/flatbed body truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_012",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_12\\stake_truck_12_image_09.jpg",
+      "category": "stake-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This is a close-up of a red truck's front door and fender badging. The visible emblems read 'F450 XL' and '6.7L POWER STROKE TURBO DIESEL'. An F-450 is a Ford Super Duty chassis/pickup-cab truck (Class 3), well below the Class 7/8 GVWR threshold. The body-color painted door, chrome trim strip, and pickup-style badge placement confirm this is a heavy-duty pickup/chassis-cab, not a tractor or dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows a pickup (Ford F-450), not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_013",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_19\\cargo_straight_box_truck_19_image_15.jpg",
+      "category": "cargo-straight-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The photo is taken low, looking up under the rear of a truck body. Visible cues: a wood-plank stake/flatbed bed floor above, a single axle with a narrow front tire and a dual-tire set, leaf-spring style suspension, and a mud flap/guard. No cab or front of the vehicle is visible. The wood-plank stake bed and modest axle/tire scale (rather than a large heavy-duty tandem drive axle set with big commercial tractor proportions) point to a light/medium-duty stake or flatbed truck underside rather than a Class 7/8 tractor or dump chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows the underside of a stake/flatbed body truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_021",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\step-vans\\step_van_08\\step_van_08_image_11.jpg",
+      "category": "step-vans",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This image shows only an interior HVAC control panel (fan speed knob, temperature dial with blue/red gradient, mode knob, and two indicator buttons) mounted on a dashboard. There is no exterior vehicle body, cab shape, chassis, wheels, or any other cue that would identify the vehicle class. No primary vehicle exterior is visible at all, making this impossible to classify as Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo doesn't show a Class 7/8 truck (it's an interior control panel close-up). Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_002",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_100\\dump_truck_100_image_15.webp",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This image shows only a vehicle interior: a worn brown vinyl bench seat and a matching quilted vinyl door panel with a manual window crank and pull handle, plus a small rear side window. There is no exterior body, cab profile, chassis, or wheel information visible, so there are no cues (cab size, dual wheels, tractor/dump body) to determine whether the vehicle is a Class 7/8 truck or a lighter vehicle. This is an interior-only shot that is too ambiguous to call Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo doesn't show a Class 7/8 truck (it's an interior-only close-up). Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_010",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\flatbed-trucks\\flatbed_truck_18\\flatbed_truck_18_image_21.jpg",
+      "category": "flatbed-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This is an interior cab shot looking across a bench seat toward a fold-down center console/armrest with a cup holder, seatbelts, and a chain-link fence visible through the rear window. No exterior body panels, cab shape, wheels, or chassis are visible anywhere in the frame, so there are no cues (cab scale, duals, tractor layout, dump body, etc.) available to judge Class 7/8 vs. lighter classes. Because the primary subject is an interior detail rather than an identifiable exterior vehicle, this must be treated as too ambiguous to call.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is an interior close-up and doesn't show enough of the vehicle to confirm it's a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_015",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_16\\service_trucks_utility_trucks_mechanic_truck_16_image_04.jpg",
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white pickup-style cab and chassis fitted with an aftermarket service/utility body with multiple side compartment doors, visible from the side/rear. Only a single wheel is visible at the rear axle position (no dual rear wheels), and the cab, hood, and overall proportions read as a light/medium-duty pickup chassis (roughly 3/4- to 1-ton class) rather than a heavy commercial tractor or dump chassis. There is no fifth wheel, sleeper, or tandem dual-axle heavy-duty layout. This matches a Class 2-6 service/utility body truck, not a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "service_or_utility_truck",
+          "user_message": "This photo shows a service/utility body truck on a medium-duty chassis, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_009",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_07\\dump_truck_07_image_13.webp",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This image is an extreme close-up of a dashboard instrument cluster showing a gear-position indicator (N), outside temperature (102F), and odometer reading (255,327 mi), with a finger partially in frame. No part of the vehicle's exterior, cab, body, or wheels is visible, so there is no way to assess cab size, body style, axle configuration, or overall scale to determine Class 7/8 status.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a dashboard close-up and doesn't show the vehicle itself, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_005",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\cargo-straight-box-trucks\\cargo_straight_box_truck_10\\cargo_straight_box_truck_10_image_06.jpg",
+      "category": "cargo-straight-box-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a cab-over straight truck with a tall aluminum box/cube cargo body mounted behind the cab, seen from the rear-quarter. The cab is low and compact (Isuzu/Hino-style forward-control cab), the chassis has a single rear wheel/tire per side (no dual rear wheels visible), and there is no fifth wheel, sleeper, or tandem heavy-duty tractor layout. This scale and body style is consistent with a medium-duty cutaway/box truck (Class 2-6), not a Class 7/8 tractor or heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_011",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\sleeper-trucks\\sleeper_truck_14\\sleeper_truck_14_image_72.jpg",
+      "category": "sleeper-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "This is an extreme close-up of a single wheel/tire and axle assembly (a wide heavy-duty tire branded 'Goodyear Fuel Max SSD' with air-ride/leaf suspension hardware and a rusty chassis component in the background). No cab, body, or overall vehicle silhouette is visible, so it is impossible to judge cab type, body style, or whether this belongs to a Class 7/8 tractor/dump versus another heavy vehicle or piece of equipment. Without a view of the full vehicle, the Class 7/8 determination cannot be made confidently.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo is a close-up of a tire/axle and doesn't show enough of the vehicle to confirm it's a Class 7/8 truck. Please upload a full exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": false,
+      "status": "scored"
+    },
+    {
+      "id": "neg_001",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\service-trucks-utility-trucks-mechanic-trucks\\service_trucks_utility_trucks_mechanic_truck_06\\service_trucks_utility_trucks_mechanic_truck_06_image_13.jpg",
+      "category": "service-trucks-utility-trucks-mechanic-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This is an interior cabin shot looking rearward at the second-row bench seat of a pickup-style crew cab (visible seatbelt buckles, door panel with grab handle/storage bin, and rear headrests). No exterior body, chassis, cab exterior, or wheels are visible to judge vehicle class, and the interior styling (leather/cloth two-tone bench, compact rear door panel) reads as a consumer/light-truck crew cab rather than a heavy Class 7/8 tractor cab. There is no way to identify Class 7/8 cues (cab scale, sleeper, dump body, tandem axles) from this interior-only framing, so the primary subject cannot be confirmed as a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows a vehicle interior with no exterior view of the truck, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_019",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\stake-trucks\\stake_truck_29\\stake_truck_29_image_06.jpg",
+      "category": "stake-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "The primary vehicle is a flatbed truck viewed from the rear/side, with a wood-deck flatbed body, a low headboard, and a single rear axle fitted with dual wheels (only one axle set of duals is visible, not a tandem pair). The cab visible at the front-left is low and compact in scale compared to the flatbed length, more consistent with a medium-duty (Class 4-6) flatbed chassis than a heavy Class 7/8 tractor-scale cab. There is no fifth-wheel/tractor layout, sleeper, or dump body, and the single-axle rear end lacks the tandem dual-axle proportions typical of Class 7/8 trucks, so this reads as a medium-duty flatbed rather than a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "neg_018",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\negative (class 2 - 6)\\1-ton-pickup-trucks\\1_ton_pickup_truck_08\\1_ton_pickup_truck_08_image_15.jpg",
+      "category": "1-ton-pickup-trucks",
+      "label": "negative",
+      "ground_truth_is_valid": false,
+      "prediction": {
+        "reasoning": "This image is a close-up of an instrument cluster/dashboard gauges (speedometer, tachometer, fuel and oil pressure gauges) with an odometer reading, and no exterior body panels, cab, wheels, or chassis are visible anywhere in the frame. Without any view of the vehicle's exterior, there are no cues (cab scale, axle configuration, body style) available to determine whether the vehicle is a Class 7/8 truck or a lighter Class 2-6 vehicle, so this cannot be validated as a Class 7/8 truck image.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a dashboard gauge cluster with no view of the truck's exterior, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": false,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_022",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_151\\dump_truck_151_image_06.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a white conventional-cab truck with a large chrome grille and hood, tall commercial cab, and a heavy black dump body with red/white reflective striping mounted behind the cab. The rear axle group shows a tridem (three-axle) heavy-duty configuration with dual wheels on multiple axles, and the cab, hood, and frame scale relative to the surrounding warehouse are clearly heavy commercial tractor/chassis proportions, not a pickup or medium-duty service truck. No sleeper bunk is visible behind the cab. These cues -- heavy multi-axle dump body, tandem/tridem dual wheels, and large commercial cab -- are consistent with a Class 7/8 heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    },
+    {
+      "id": "pos_025",
+      "path": "C:\\Users\\senth\\54hackathon\\image_scraper\\truckpaper_scraped_images_dataset\\positive (class 7 - 8)\\dump-trucks\\dump_truck_102\\dump_truck_102_image_07.jpg",
+      "category": "dump-trucks",
+      "label": "positive",
+      "ground_truth_is_valid": true,
+      "prediction": {
+        "reasoning": "The primary vehicle is a black-and-white highway conventional tractor pulling a raised black dump body with red/white reflective striping, photographed from the rear-quarter in a gravel yard. The cab has a tall commercial hood/grille, extended cab area behind the seat, and rides on a heavy chassis with tandem dual rear drive axles plus a lift axle, all consistent with heavy-duty Class 7/8 proportions rather than a pickup or medium-duty flatbed. Another truck with a tanker trailer is visible in the background, which does not affect classification of the primary dump-body tractor in the foreground. The combination of a large commercial tractor cab and a heavy dump body on a tandem/lift-axle chassis identifies this as a Class 7/8 heavy dump truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      },
+      "schema_errors": [],
+      "schema_ok": true,
+      "predicted_is_valid": true,
+      "correct": true,
+      "status": "scored"
+    }
+  ]
+}

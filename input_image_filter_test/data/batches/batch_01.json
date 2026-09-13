@@ -1,0 +1,54 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_001",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up view looking up into the underside of a heavy truck at one wheel end: an axle housing/spring perch, U-bolts, a leaf spring or torque arm, an air-ride bag, and dual tires on either side. This is purely shared axle/suspension/tire hardware. No dump body (no ribbed sides, tailgate, or hoist), no sleeper box/bunk, and no day-cab tractor cab or fifth-wheel plate is visible anywhere in frame. Per Rule 6, a shared-part close-up like this does not establish any of the three valid layouts, so it must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only an axle/suspension close-up, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_002",
+      "prediction": {
+        "reasoning": "Primary subject is a frame rail cross-member with an air-ride suspension mount and an 'IMPORTANT' data plate bearing an International Truck 'IT' logo, flanked by tires on both sides. This is a frame/suspension/data-plate close-up -- a shared part per Rule 6. There is no dump bed, no sleeper box/bunk, and no tractor cab or fifth-wheel visible, and the data plate alone (even with a truck-brand logo) is not a tractor-cab context, so it cannot be promoted to day-cab-truck. No layout cue is present, so the correct label is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a frame/suspension close-up with a data plate, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_003",
+      "prediction": {
+        "reasoning": "Primary subject is an extreme close-up of a rear axle/differential area near a mounting bracket, with wiring harnesses (including an ABS sensor wire) routed across it. This is a shared mechanical-part close-up (axle/frame bracket/wiring), not a dump bed, sleeper box/bunk, or day-cab tractor/fifth-wheel layout. No cab, body panel, or bed structure is visible at all. Per Rule 6, shared parts like an axle housing and wiring are not sufficient to assign any truck type, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only an axle/wiring close-up, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_004",
+      "prediction": {
+        "reasoning": "Primary subject is the rear/side of a heavy vehicle body sitting over a tridem (three-axle) group with dual wheels and 'PSI COLD' tire pressure stickers, consistent with the tandem/tridem axle grouping Rule 2 associates with dump bodies. The body side above the axles shows a black panel with vertical ribbing typical of a reinforced dump-body side wall, and a rear marker/tail light is visible at the top edge where a tailgate would be. There is no van-style enclosed box, no flat stake deck, and no sleeper or day-cab cab structure in frame -- the ribbed side panel plus multi-axle group under an open cargo body matches the dump-truck body layout in Rule 2, so this is dump-truck.",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_005",
+      "prediction": {
+        "reasoning": "Primary subject is a white pickup-style chassis-cab truck viewed from the rear three-quarter angle, fitted with a service/utility body (side toolboxes) and an overhead ladder/headache rack, riding on a single rear axle with dual wheels. This body and cab style (regular/crew pickup cab with a service body) is explicitly called out in Rule 4 as none -- 'service/utility bodies on a pickup or medium chassis' -- and there is no dump bed, sleeper box, or Class 7/8 tractor/fifth-wheel layout visible. So this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows a pickup-style chassis-cab truck with a service body, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows one of those truck types."
+        }
+      }
+    }
+  ]
+}

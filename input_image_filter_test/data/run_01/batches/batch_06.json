@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_026",
+      "prediction": {
+        "reasoning": "The frame is a close-up of a truck instrument cluster/dashboard. Key cues: a large diesel-scale tachometer reading 0-30 (x100 RPM, i.e. 0-3000 RPM) paired with a large 0-85 mph / 0-130+ km/h speedometer, flanked by analog oil-pressure (PSI) and water-temperature gauges, plus a digital odometer/trip module with reset knob. Critically, there are two separate round gauges both labeled 'PSI' under 'AIR' -- a dual primary/secondary air-brake pressure gauge pair, which is the classic heavy commercial truck air-brake system readout. This dual-air-gauge, large-analog-cluster layout is characteristic of a Class 7/8 conventional tractor dashboard, not a pickup, van, or light chassis-cab (which use simpler digital clusters and lack dual air-system gauges). No cab exterior or body is visible to distinguish day-cab vs. sleeper vs. dump, but the dashboard itself is a decisive heavy-truck cue.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_027",
+      "prediction": {
+        "reasoning": "The primary subject is the empty interior of an enclosed cargo box, shot straight in through the open rear barn doors: aluminum corner posts, logistics/e-track rub rails along the side walls, a plywood/composite ceiling and walls, and a varnished wood floor. There is no cab, hood, chassis frame, wheels, or axles visible anywhere in the frame -- only the cargo box shell itself, with a yellow box truck and other vehicles visible only as small background elements in the parking lot outside. Because no tractor, dump body, or truck chassis is shown (just a box/trailer interior), there isn't enough visible vehicle structure to identify a Class 7/8 tractor or dump truck as the primary subject.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows only the inside of an empty cargo box, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_028",
+      "prediction": {
+        "reasoning": "The frame is a close-up of an open cab door on a white truck, but the visible exterior details around the door are decisive: through the window, a large rectangular twin-arm 'West Coast' style mirror head is mounted on a substantial articulated bracket -- the long-arm, flat-glass mirror configuration used on highway tractors for sighting down the length of a trailer, not the compact single-arm mirrors found on pickups or medium-duty box trucks. Near the door hinge there is also a heavy grab-handle/step bracket with a black protective boot over a line (air/electrical), and an amber cab marker light is visible on the body -- both typical heavy-tractor cab furnishings. The door panel itself is tall and deep with a lower ventilated/non-slip kick panel, consistent with a large commercial cab rather than a light or medium-duty chassis-cab. No sleeper or full cab profile is visible, so it reads as a general Class 7/8 tractor rather than a specific day-cab/sleeper.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "other_class_7_8",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_029",
+      "prediction": {
+        "reasoning": "The frame is a close-up of a manufacturer compliance/certification sticker mounted on a door pillar, reading 'INCOMPLETE VEHICLE MFD BY SPARTAN MOTORS CHASSIS INC' with an Isuzu logo, and explicitly printed weight ratings: GVWR 6,577 kg (14,500 LB), GAWR front 3,007 kg (6,630 LB), GAWR rear 4,998 kg (11,020 LB). A GVWR of 14,500 lb falls in the Class 4 medium-duty range, far below the 26,001+ lb threshold that defines Class 7/8. The shot itself is only a label/sticker close-up on a door edge -- no cab, body, or overall vehicle proportions are shown -- but the explicitly printed weight rating on the sticker directly rules out this vehicle being a Class 7/8 truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo shows a compliance sticker for a medium-duty (about 14,500 lb GVWR) chassis, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_030",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white flatbed truck shot from the rear 3/4 angle, with a compact single-row conventional cab, a short vertical-slat headboard/rack directly behind the cab, and a long aluminum diamond-plate flatbed body. The visible rear wheel is a single wide tire on a polished aluminum rim -- there is no dual-wheel (twin-tire) rear axle, and no second (tandem) axle is visible. This single-wheel, single-axle rear end reads as a medium-duty (roughly Class 3-5) chassis rather than a heavy Class 7/8 truck, which almost always rides on dual rear wheels (single or tandem axle). For direct comparison, larger dump trucks visible in the background beyond the fence clearly show dual rear wheels and much larger cab/chassis scale, highlighting how much smaller and lighter this foreground flatbed truck is. The body style (flatbed with headboard rack) combined with the single-wheel medium-duty chassis places this in the invalid Class 2-6 flatbed category.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty flatbed truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

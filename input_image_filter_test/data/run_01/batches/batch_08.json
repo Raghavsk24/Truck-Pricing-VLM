@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_036",
+      "prediction": {
+        "reasoning": "The frame is filled by the side/rear of a truck body: vertical slatted stake/cattle-rack rails above a body-side toolbox with gas-strut supported lid, riding low over the wheel well. There is no cab visible, but the body style (open vertical-slat stake rack over a narrow chassis with a small underbody toolbox) reads as a light/medium-duty stake bed truck rather than a heavy Class 7/8 tractor or dump body -- the rail spacing, toolbox scale, and single visible wheel/tire size are consistent with a Class 2-6 stake or flatbed truck, not a tandem heavy-duty commercial chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a stake/flatbed body truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_037",
+      "prediction": {
+        "reasoning": "This is a close-up of a red truck's front door and fender badging. The visible emblems read 'F450 XL' and '6.7L POWER STROKE TURBO DIESEL'. An F-450 is a Ford Super Duty chassis/pickup-cab truck (Class 3), well below the Class 7/8 GVWR threshold. The body-color painted door, chrome trim strip, and pickup-style badge placement confirm this is a heavy-duty pickup/chassis-cab, not a tractor or dump truck.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "pickup",
+          "user_message": "This photo shows a pickup (Ford F-450), not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_038",
+      "prediction": {
+        "reasoning": "The photo is taken low, looking up under the rear of a truck body. Visible cues: a wood-plank stake/flatbed bed floor above, a single axle with a narrow front tire and a dual-tire set, leaf-spring style suspension, and a mud flap/guard. No cab or front of the vehicle is visible. The wood-plank stake bed and modest axle/tire scale (rather than a large heavy-duty tandem drive axle set with big commercial tractor proportions) point to a light/medium-duty stake or flatbed truck underside rather than a Class 7/8 tractor or dump chassis.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows the underside of a stake/flatbed body truck, not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_039",
+      "prediction": {
+        "reasoning": "This image shows only an interior HVAC control panel (fan speed knob, temperature dial with blue/red gradient, mode knob, and two indicator buttons) mounted on a dashboard. There is no exterior vehicle body, cab shape, chassis, wheels, or any other cue that would identify the vehicle class. No primary vehicle exterior is visible at all, making this impossible to classify as Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo doesn't show a Class 7/8 truck (it's an interior control panel close-up). Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_040",
+      "prediction": {
+        "reasoning": "This image shows only a vehicle interior: a worn brown vinyl bench seat and a matching quilted vinyl door panel with a manual window crank and pull handle, plus a small rear side window. There is no exterior body, cab profile, chassis, or wheel information visible, so there are no cues (cab size, dual wheels, tractor/dump body) to determine whether the vehicle is a Class 7/8 truck or a lighter vehicle. This is an interior-only shot that is too ambiguous to call Class 7/8.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo doesn't show a Class 7/8 truck (it's an interior-only close-up). Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

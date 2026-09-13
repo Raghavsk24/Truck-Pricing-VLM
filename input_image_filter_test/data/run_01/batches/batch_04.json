@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_016",
+      "prediction": {
+        "reasoning": "Rear view of a heavy commercial truck cab and bare chassis at what appears to be a heavy-truck equipment dealer lot (other conventional tractors visible in background). The cab is a small, square, flat-backed unit typical of a cabover/vocational tractor with no sleeper bunk bulge visible. Behind the cab is an exposed heavy frame with a tandem set of dual rear wheels (two axles, four tires per side) and visible air/hydraulic lines and a mudflap set branded for a heavy equipment dealer. The scale of the cab relative to the tires and frame, plus the tandem dual-wheel axle group, are consistent with a Class 7/8 day-cab tractor chassis rather than any medium-duty pickup or van.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_017",
+      "prediction": {
+        "reasoning": "Primary subject is a Freightliner conventional truck (badge visible on grille) with a tall day-cab (no sleeper bunk visible), large chrome grille, and a heavy dump body mounted directly behind the cab, visible tandem axle housing near the rear wheels. The cab height, hood length, and step/fuel tank proportions match a heavy Class 7/8 tractor/dump chassis, not a medium-duty pickup or box truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_018",
+      "prediction": {
+        "reasoning": "Rear-facing shot of a heavy chassis with an exposed fifth-wheel-style pivot plate and a blue dump/hopper body above it, sitting on a tandem set of dual rear wheels (four tires visible per side). The heavy frame rails, tandem duals, air lines, and dump body scale are consistent with a Class 7/8 heavy dump truck, not a medium-duty stake or flatbed truck.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_019",
+      "prediction": {
+        "reasoning": "Rear view of a heavy truck showing a tall gray dump/hopper body mounted on a heavy chassis with a tandem set of dual rear wheels (four large commercial tires visible per side) and a fifth-wheel-style pivot area with hydraulic lines. The wheel/tire scale, dual-axle rear end, and heavy dump body are consistent with a Class 7/8 heavy dump truck rather than any medium-duty vehicle.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "heavy_dump_truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_020",
+      "prediction": {
+        "reasoning": "Rear view of a black stake/dump-style body with a rear tailgate, chains, and reflective conspicuity striping, sitting low to the ground with a compact rear bumper marked 'Sterling Trucks'. No dual rear wheels or tandem axle group are visible, the body width and bumper/step proportions read as a single rear axle, and the overall scale is noticeably smaller than a true Class 7/8 dump body. These cues point to a medium-duty (Class 2-6) stake or dump body rather than a Class 7/8 tractor or heavy dump truck, so per the guidance to prefer invalid when heavy-duty cues do not clearly dominate, this is classified as invalid.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "stake_or_flatbed_medium",
+          "user_message": "This photo shows a medium-duty stake/dump body truck, not a Class 7/8 truck. Please upload a Class 7 or Class 8 truck photo such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

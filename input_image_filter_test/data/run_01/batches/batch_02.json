@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "opaque_id": "img_006",
+      "prediction": {
+        "reasoning": "The frame is shot entirely from inside an empty cargo box/trailer, looking toward closed rear swing doors. Visible cues are insulated white interior walls, a blue non-slip floor, cargo tie-down rails with ratchet straps on both side walls, and an evaporator/fan unit mounted on the ceiling (consistent with a refrigerated van body). No cab, hood, wheels, or any exterior chassis/axle detail is visible anywhere in the shot, so there is no way to judge cab size, drive-axle configuration, or overall vehicle scale. Because the primary subject is an interior-only cargo compartment with no exterior vehicle cues, this cannot be confirmed as a Class 7/8 truck from pixels alone.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows the inside of a cargo box with no view of the truck's cab or chassis, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_007",
+      "prediction": {
+        "reasoning": "The shot is taken entirely inside a truck cab, showing a small overhead/side storage cabinet, a metal shelf with a cargo net, wall paneling, and a mattress/bunk cushion in the lower right corner. This bunk-style interior suggests a sleeper compartment, but the photo shows no cab exterior, hood, grille, wheels, or axle configuration anywhere in frame, so there is no way to verify the vehicle's overall size, cab type, or drivetrain from pixels. Without any exterior chassis or scale reference, this cannot be confidently classified as a Class 7/8 sleeper tractor versus some other vehicle with a bunk area.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a cab/sleeper interior with no exterior view of the vehicle, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_008",
+      "prediction": {
+        "reasoning": "The primary and only subject is a highway tractor shown in full side profile in a truck yard. It has a tall, wide commercial cab with a raised roof marker light bar and roof-mounted light rack, a large exhaust stack and vertical air intake behind the cab, and a fifth-wheel plate visible at the rear of the frame with no trailer attached. There is no sleeper compartment bulge behind the cab, so it reads as a day cab. The chassis has tandem rear axles with dual wheels on each side (four rear wheels visible), consistent with commercial tractor proportions rather than a pickup or medium-duty truck. Overall cab height, wheelbase, and axle configuration are clearly heavy-duty Class 7/8 tractor scale.",
+        "output": {
+          "is_valid_class_7_8": true,
+          "vehicle_cue": "day_cab_tractor",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "opaque_id": "img_009",
+      "prediction": {
+        "reasoning": "The primary vehicle is a white GMC cab-over-style conventional truck with a factory door badge reading 'GMC C4500,' which is a medium-duty chassis. It has a single rear axle with single (non-dual) wheels, a compact conventional cab, and an aluminum box/cutaway cargo body mounted behind the cab. The cab size, single rear wheels, and overall proportions are consistent with a Class 4/5 medium-duty truck, not a heavy Class 7/8 tractor or dump truck. This is a box/cutaway-style truck and belongs in Class 2-6.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "box_or_cutaway_truck",
+          "user_message": "This photo shows a medium-duty box truck (GMC C4500), not a Class 7/8 truck. Please upload a photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    },
+    {
+      "opaque_id": "img_010",
+      "prediction": {
+        "reasoning": "This image shows only the interior cab of a Ford vehicle: a steering wheel with a Ford emblem, digital instrument cluster, center touchscreen, and gray leather bucket/bench-style front seats with red seatbelt buckles. The styling (modern digital dash, passenger-car-like console, bucket seats) reads as a light or medium-duty Ford cab such as a Transit or Super Duty pickup/chassis cab, not a heavy Class 7/8 tractor interior. There is no exterior view, cab-over-engine tractor layout, or sleeper area, and the interior finish level does not match a heavy commercial tractor. This cannot be confirmed as a Class 7/8 truck from the pixels shown.",
+        "output": {
+          "is_valid_class_7_8": false,
+          "vehicle_cue": "non_truck_or_unclear",
+          "user_message": "This photo only shows a light/medium-duty cab interior with no exterior view, so it can't be confirmed as a Class 7/8 truck. Please upload an exterior photo of a Class 7 or Class 8 truck such as a day-cab tractor, sleeper tractor, or heavy dump truck."
+        }
+      }
+    }
+  ]
+}

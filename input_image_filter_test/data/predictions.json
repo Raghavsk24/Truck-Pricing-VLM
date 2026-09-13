@@ -1,0 +1,555 @@
+{
+  "instructions_schema": "C:\\\\Users\\\\senth\\\\54hackathon\\\\vlm_instructions\\\\filter_invalid_input_images_instructions.json",
+  "items": [
+    {
+      "id": "pos_014",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_001.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up view looking up into the underside of a heavy truck at one wheel end: an axle housing/spring perch, U-bolts, a leaf spring or torque arm, an air-ride bag, and dual tires on either side. This is purely shared axle/suspension/tire hardware. No dump body (no ribbed sides, tailgate, or hoist), no sleeper box/bunk, and no day-cab tractor cab or fifth-wheel plate is visible anywhere in frame. Per Rule 6, a shared-part close-up like this does not establish any of the three valid layouts, so it must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only an axle/suspension close-up, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "pos_024",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_002.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a frame rail cross-member with an air-ride suspension mount and an 'IMPORTANT' data plate bearing an International Truck 'IT' logo, flanked by tires on both sides. This is a frame/suspension/data-plate close-up -- a shared part per Rule 6. There is no dump bed, no sleeper box/bunk, and no tractor cab or fifth-wheel visible, and the data plate alone (even with a truck-brand logo) is not a tractor-cab context, so it cannot be promoted to day-cab-truck. No layout cue is present, so the correct label is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a frame/suspension close-up with a data plate, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "pos_019",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_003.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is an extreme close-up of a rear axle/differential area near a mounting bracket, with wiring harnesses (including an ABS sensor wire) routed across it. This is a shared mechanical-part close-up (axle/frame bracket/wiring), not a dump bed, sleeper box/bunk, or day-cab tractor/fifth-wheel layout. No cab, body panel, or bed structure is visible at all. Per Rule 6, shared parts like an axle housing and wiring are not sufficient to assign any truck type, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only an axle/wiring close-up, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "pos_002",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_004.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear/side of a heavy vehicle body sitting over a tridem (three-axle) group with dual wheels and 'PSI COLD' tire pressure stickers, consistent with the tandem/tridem axle grouping Rule 2 associates with dump bodies. The body side above the axles shows a black panel with vertical ribbing typical of a reinforced dump-body side wall, and a rear marker/tail light is visible at the top edge where a tailgate would be. There is no van-style enclosed box, no flat stake deck, and no sleeper or day-cab cab structure in frame -- the ribbed side panel plus multi-axle group under an open cargo body matches the dump-truck body layout in Rule 2, so this is dump-truck.",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_018",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_005.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white pickup-style chassis-cab truck viewed from the rear three-quarter angle, fitted with a service/utility body (side toolboxes) and an overhead ladder/headache rack, riding on a single rear axle with dual wheels. This body and cab style (regular/crew pickup cab with a service body) is explicitly called out in Rule 4 as none -- 'service/utility bodies on a pickup or medium chassis' -- and there is no dump bed, sleeper box, or Class 7/8 tractor/fifth-wheel layout visible. So this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows a pickup-style chassis-cab truck with a service body, not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that shows one of those truck types."
+        }
+      }
+    },
+    {
+      "id": "neg_012",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_006.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a rear/underside close-up of a truck body: a rusted sheet-metal panel above, what looks like a cabin air filter or condenser coil, a black diamond-plate step or mud flap, and a riveted deck plate below. No ribbed dump-bed sides, swinging tailgate, or hoist are visible (no dump body), no bunk/sleeper box or window is visible (no sleeper), and no tractor cab, hood, or fifth-wheel plate is visible (no day-cab layout). This is only shared chassis/body hardware (frame area, step, fasteners) with no type-defining layout cue in frame, so per Rule 6 it must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a generic body/frame part and not a full Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab or cargo body layout."
+        }
+      }
+    },
+    {
+      "id": "neg_004",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_007.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the interior of a vehicle door: a molded black door card with an armrest, chrome interior door handle, power window/lock switches, a lower storage pocket, and a door speaker grille, seen through an open door with a pickup-style body and step visible outside. This styling and door-panel shape matches a light-duty pickup (e.g., Chevrolet Silverado/GMC Sierra) crew cab, not a Class 7/8 highway tractor or vocational dump truck. No dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout is visible anywhere in frame, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows a pickup truck door interior, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of one of those truck types."
+        }
+      }
+    },
+    {
+      "id": "pos_005",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_008.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the full front elevation of a highway tractor: a chrome vertical-bar grille with a visible 'FREIGHTLINER' badge (Cascadia-style hood and grille), chrome front bumper, large West Coast-style mirrors mounted on both A-pillars, a tall single-piece windshield, and a low aerodynamic roof cap/visor with three cab marker lights -- consistent with a day-cab Cascadia (a raised/extended sleeper box would show as a much deeper, boxier cab profile with a side sleeper window, which is not present here). No dump body is visible, and no bunk/sleeper cues (side window, raised box, curtain) are visible. The unambiguous Class 7/8 tractor OEM grille/hood/mirror combination in a tractor-cab context is sufficient to identify the day-cab tractor layout even without a rear three-quarter view of the fifth-wheel area.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_016",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_009.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white medium-duty conventional truck (Ford chassis-cab, F-650/F-750-style grille and crew cab) fitted with a large enclosed aluminum cargo/moving box body -- visible ribbed aluminum panels, a roll-up or barn-style door at the cab-to-box gap, and a step/liftgate area at the rear. This is an enclosed straight box/moving truck body on a medium-duty chassis, which Rule 5 explicitly classifies as none regardless of box size or liftgate. No dump bed, sleeper box, or tractor/fifth-wheel layout is present -- this is a chassis-cab with a van-type box, not a Class 7/8 tractor or vocational dump.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows an enclosed medium-duty box/moving truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of one of those truck types."
+        }
+      }
+    },
+    {
+      "id": "pos_010",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_010.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of an in-dash LCD display showing the time, odometer reading (425,276.3 mi), ambient temperature, and a 'Total Engine Hours' readout (19,551 HRS), framed by a chrome bezel. This is a generic instrument-cluster/high-mileage display, which the instructions explicitly call out as a shared part that is NOT a type on its own ('a generic high-mileage LCD... High mileage alone... is none'). No dump body, sleeper bunk, or tractor cab/fifth-wheel layout is visible in this crop, so per Rule 6 this must be none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a dashboard mileage/engine-hours display and not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "pos_013",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_011.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a truck's cargo body seen from directly behind/inside, looking forward down the bed. The body has tall ribbed steel side walls with wood-capped rub rails, a rear headboard with a rolled-up black tarp and tarp roller mechanism mounted across the top front of the bed, and an open cargo floor showing aggregate/sand residue and debris. This is an open-top dump/hopper body layout (Rule 2): ribbed dump sides, tarp roller, open cargo volume with aggregate residue. No sleeper box or day-cab tractor layout is visible, and none is needed since the dump body itself is the clear layout cue. Body layout = dump.",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_008",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_012.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear of a truck showing a tall, flat, enclosed white panel body with barn-style swing doors, a license plate, and a Maxon hydraulic liftgate folded up at the bumper. There are no dump sides, no tailgate/hoist, and no sleeper box or fifth-wheel/tractor cab visible -- this is an enclosed dry-freight/moving straight box body (Rule 4 and Rule 5: enclosed moving/cargo straight box truck with a liftgate is none, even if the box is tall). No day-cab, dump, or sleeper layout is present, so this is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows an enclosed box truck body, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of one of those truck types."
+        }
+      }
+    },
+    {
+      "id": "pos_016",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_013.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the front of a Class 7/8 highway tractor: a long conventional Freightliner hood and grille with the Freightliner badge, chrome bumper with unit number 9376, tall single-piece windshield, dual West Coast mirrors on both sides, and roof-mounted marker/clearance lights. The cab roofline is low and flat with no raised or extended sleeper box, roof fairing, or side sleeper window visible -- consistent with a day-cab tractor rather than a sleeper. This is an unambiguous Class 7/8 tractor-cab context (Freightliner conventional grille/hood, tractor cab) with no sleeper cues, satisfying the day-cab layout per Rule 1/Rule 6.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "pos_006",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_014.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear three-quarter view of an orange conventional truck cab with the hood tilted forward for engine access. The cab is short, ending at a flat vertical rear wall directly behind the doors/seats -- no raised sleeper box, no bunk window, no roof fairing. Behind the cab is open frame with dangling air/electrical lines and exposed frame rails (no trailer currently attached, no dump body), consistent with a day-cab tractor whose fifth-wheel area is open frame. This matches Rule 1's day-cab layout: short cab with flat rear wall and open frame toward the fifth-wheel/coupling area.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "pos_023",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_015.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white Mack conventional truck with a black open-top dump body mounted behind the cab. The body has vertical ribbed dump side panels, a tarp roller assembly across the top front of the bed, exposed hydraulic hoist cylinder visible along the side, and a tandem/tridem rear axle group supporting the bed -- all classic dump-body cues per Rule 2. The cab is a day-cab style, but the body itself defines the type, so this is a dump-truck.",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "pos_004",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_016.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the full interior cab of a conventional highway tractor: an analog gauge cluster, wood-trim dash, a steering wheel bearing the 'Peterbilt' script/cap, and two bucket seats, viewed through the open driver door with the hood/windshield beyond. No dump body is visible anywhere in the frame. No sleeper bunk, overhead cabinet, curtain, or walk-back wall is visible behind the seats -- only the dark seat backs are shown -- so sleeper-truck is not supported per the rule that a seats-and-dash interior alone is insufficient for sleeper. The frame does, however, show an unambiguous Class 7/8 tractor OEM cue (Peterbilt steering-wheel cap) together with a full tractor-cab context (dash, gauges, seats), which escapes the shared-part 'none' default for analog-cluster close-ups. With no sleeper or dump evidence present, this tractor-cab context indicates a day-cab layout.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_005",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_017.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear three-quarter view of a vocational truck cargo body: tall ribbed steel lower panels topped with an expanded-metal mesh cage, a rear tailgate lowered flat to the ground doubling as a loading ramp and held by chains, a diamond-plate bed floor, a side-mounted toolbox, and a hoist/doghouse housing visible at the front of the bed near the cab bulkhead. These match the dump-body cues -- ribbed/caged sides, a swinging tailgate secured with chains, and a hoist at the bed front -- rather than a plain stake or flatbed. No sleeper box or tractor fifth-wheel layout is visible; the cab is only partially seen. Typing from the body per the rules: dump-truck.",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_003",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_018.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of a generic instrument cluster: an RPM gauge, a speedometer, small turbo-boost/coolant/fuel sub-gauges, and a digital trip readout showing 'PRNDM21' with 'ULTRA LOW SULFUR DIESEL FUEL ONLY' text. No dump body, no sleeper bunk/cabinet, and no tractor-cab or fifth-wheel layout is visible in this frame -- it is only a shared analog-cluster part. There is no unambiguous Class 7/8 tractor OEM branding (no Freightliner/Peterbilt/Kenworth/Mack/Volvo/Western Star/International LT-ProStar cue); the PRNDM21 automatic-shifter display is characteristic of a Ford Super Duty/medium-duty chassis-cab dash, not a heavy highway tractor. Per the shared-parts rule this defaults to none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo doesn't show a Class 7/8 day-cab, dump, or sleeper truck -- it's just an instrument cluster close-up. Please upload a photo that clearly shows the truck's dump body, sleeper box/bunk, or tractor cab/fifth-wheel layout."
+        }
+      }
+    },
+    {
+      "id": "neg_007",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_019.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is an open engine bay close-up: valve/rocker covers, hoses and clamps, an alternator, a coolant reservoir, and a red-primer air-intake component, with a partial glimpse of a cab and an enclosed box body in the background. No dump body, sleeper bunk/cabinet, or day-cab tractor/fifth-wheel layout is visible anywhere in this frame, and no unambiguous Class 7/8 tractor OEM branding is visible on any part. This is a shared engine-bay part that appears on both Class 7/8 and Class 2-6 trucks, so per the shared-parts rule it defaults to none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo doesn't show a Class 7/8 day-cab, dump, or sleeper truck -- it's just an engine bay close-up. Please upload a photo that clearly shows the truck's dump body, sleeper box/bunk, or tractor cab/fifth-wheel layout."
+        }
+      }
+    },
+    {
+      "id": "neg_010",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_020.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a full side view of a step van/walk-in delivery truck: a cutaway cab with a low step-in entry door, a tall enclosed rounded-roof box body running the length of the chassis, and a single rear axle beneath the box. This is an enclosed walk-in parcel/step-van box body, not a dump body, sleeper box, or tractor/fifth-wheel layout -- no such layout cue is visible anywhere in the frame. Per the rules, step vans and enclosed box bodies are explicitly none regardless of box size or condition.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo doesn't show a Class 7/8 day-cab, dump, or sleeper truck -- it's a step van/walk-in box truck. Please upload a photo that clearly shows the truck's dump body, sleeper box/bunk, or tractor cab/fifth-wheel layout."
+        }
+      }
+    },
+    {
+      "id": "pos_012",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_021.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is an engine bay close-up: a ribbed silicone charge-air cooler coupler hose, a coolant/surge tank, a radiator support corner, and a spin-on fuel/water separator filter. No dump body, no sleeper box/bunk, and no tractor cab or fifth-wheel layout is visible anywhere in the frame -- this is purely shared under-hood hardware. Per Rule 6, a charge-air coupler and engine-bay parts alone do not indicate any truck type.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only an engine bay close-up, not a full view of a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab and body."
+        }
+      }
+    },
+    {
+      "id": "pos_021",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_022.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear undercarriage of a chassis: a pusher/tag lift axle with visible hydraulic ram and pivot arm, a black subframe, and commercial tandem wheels/tires. No dump body sides, tailgate, or hoist-with-bed are visible, no sleeper box, and no cab or fifth-wheel is in frame. Per Rule 2, a lift axle and hydraulic ram by themselves are explicitly NOT proof of a dump body, and no other layout cue is present.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a lift-axle/frame close-up, not a full view of a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab and body."
+        }
+      }
+    },
+    {
+      "id": "pos_020",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_023.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a full side view of a Class 7/8 vocational truck with a white conventional day cab and a black open-top dump body with ribbed sides, a high tailgate, and tandem rear axles. The cargo body is clearly an open-top dump, satisfying Rule 2 (dump-truck is typed from the body, regardless of the day-cab-style cab).",
+        "output": {
+          "truck_type": "dump-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_022",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_024.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear three-quarter view of a truck with an enclosed white dry-freight/moving box body: flat aluminum-panel sides, barn-style rear with a roll-up-style closure and rub rail, and a liftgate/step area at the bottom rear. Per Rule 4 and Rule 5, an enclosed box (moving/cargo straight box) body is none even though it sits on a medium conventional cab and the box looks large -- no dump bed, sleeper box, or tractor/fifth-wheel layout is present.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows an enclosed box/moving truck body, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a day-cab, dump, or sleeper truck instead."
+        }
+      }
+    },
+    {
+      "id": "neg_021",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_025.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of a frame-mounted fuel tank and adjacent DEF tank with blue filler caps, a diamond-plate step, and a black frame rail beneath the cab door. No dump bed, sleeper box/bunk, or tractor-cab/fifth-wheel layout is visible in the frame. Per Rule 6, a fuel tank with diamond-plate steps alone is explicitly called out as none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a fuel/DEF tank close-up, not a full view of a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo that clearly shows the truck's cab and body."
+        }
+      }
+    },
+    {
+      "id": "neg_009",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_026.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of a digital instrument-panel LCD showing an odometer reading (227109.6 MI) and a voltage reading (14.0 VOLTS), surrounded by a gauge cluster bezel and a knob. This is a generic high-mileage LCD/gauge close-up -- a shared part per Rule 6 that appears on many Class 2-8 vehicles. No dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout is visible in the frame, and no tractor-cab OEM cues (grille, hood, steering wheel cap) are present. Per Rule 8, since none of the three valid layouts is visible, this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a dashboard gauge/odometer display, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a clear photo of the full truck."
+        }
+      }
+    },
+    {
+      "id": "neg_001",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_027.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the rear three-quarter view of a straight truck with an enclosed white box body (branded Wabash) featuring a roll-up rear door and a fold-down liftgate/step, mounted on a medium-duty cab-chassis, parked at a 'Rush Truck Centers' dealership lot. Per Rule 5, an enclosed box/liftgate-only rear view is none regardless of box size, and per Rule 4 enclosed moving/cargo straight box trucks on a medium conventional chassis are explicitly none. No dump bed (no ribbed open-top sides or tailgate with chains), no sleeper box, and no exposed fifth-wheel/tractor-cab layout is visible -- this is a fully enclosed dry-freight box, not a tractor. Therefore none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows an enclosed box/straight truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a clear photo of the full truck."
+        }
+      }
+    },
+    {
+      "id": "pos_007",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_028.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up photo of a Freightliner 'Component Information' data plate/sticker affixed to the frame rail, listing engine, transmission, axle, and paint codes. Rule 6 explicitly lists a data plate as a shared part that is NOT a type on its own, even though the specs listed (Detroit DD15, 40,000# tandem rear axle) indicate a Class 7/8 chassis. No dump body, sleeper box/bunk, or day-cab tractor cab/fifth-wheel layout is visible in this crop -- just the sticker and a sliver of frame rail/body panel. Per Rule 8, none of those layouts is visible, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a component/data plate sticker, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a clear photo of the full truck."
+        }
+      }
+    },
+    {
+      "id": "pos_025",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_029.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a tight close-up of a tandem set of commercial drive tires/wheels with visible tread, along with a sliver of frame rail and suspension hardware. Rule 6 explicitly lists 'one commercial tire' and 'frame rail' as shared parts that are NOT proof of any type, since they appear on both Class 7/8 and many Class 2-6 vehicles. There is no dump bed, sleeper box/bunk, or day-cab tractor cab/fifth-wheel layout visible anywhere in the frame. Per Rule 8, none of the three valid layouts is visible, so this is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows only a close-up of tires and frame hardware, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a clear photo of the full truck."
+        }
+      }
+    },
+    {
+      "id": "neg_023",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_030.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a yellow International medium-duty conventional (single rear axle) fitted with a flatbed/service body carrying tool boxes, a small hoist/boom, and rear chevron/arrow-board safety markings, consistent with a highway maintenance/utility truck. This matches Rule 4's none category: a medium-duty conventional on a single rear axle carrying a stake/flatbed or service body is Class 2-6, not a Class 7/8 vocational dump or tractor. There are no ribbed open-top dump sides, swinging dump tailgate, or hoist-with-bed visible (the flat body is a stake/service platform, not a tipping dump box), no sleeper box, and no fifth-wheel/tractor-cab layout. Therefore none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This photo shows a medium-duty flatbed/service truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a clear photo of the full truck."
+        }
+      }
+    },
+    {
+      "id": "pos_011",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_031.jpg",
+      "prediction": {
+        "reasoning": "Primary subject: a tire tread-depth gauge tool inserted into the tread grooves of a large commercial tire, shot in extreme close-up. Background is a blurred fender/mudflap and quarter panel. This is a shared-part close-up (one commercial tire plus a measuring tool) with no dump body, no sleeper box/bunk, and no day-cab tractor/fifth-wheel layout visible anywhere in frame. Per Rule 6/8, a single tire close-up does not establish any type.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a close-up of a tire tread gauge, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo showing the truck's cab or body."
+        }
+      }
+    },
+    {
+      "id": "neg_024",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_032.jpg",
+      "prediction": {
+        "reasoning": "Primary subject: a white pickup-style chassis-cab (Ford Super Duty grille/hood profile) with a single rear axle carrying a flat, steel-decked flatbed/stake body with a headboard rack. There is no dump body (no ribbed dump sides, tailgate, or hoist), no sleeper box, and no tractor/fifth-wheel layout -- this is a medium flatbed on a single rear axle on a Super Duty chassis-cab, which Rule 4 explicitly lists as invalid input (Class 2-6).",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This appears to be a Super Duty chassis-cab with a flatbed body, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck instead."
+        }
+      }
+    },
+    {
+      "id": "pos_008",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_033.jpg",
+      "prediction": {
+        "reasoning": "Primary subject: an underside/rear view of a truck's running gear -- frame rails, a differential/axle housing, air lines, suspension hardware, and two tires -- with no cab and no cargo body in frame at all. These are shared chassis parts (frame rail, axle, tires) per Rule 6, and no dump bed, sleeper compartment, or day-cab/fifth-wheel layout is visible anywhere in the shot.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is a close-up of the truck's underside/axle assembly with no cab or body visible, so it can't be identified as a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo showing the truck's cab or body."
+        }
+      }
+    },
+    {
+      "id": "pos_015",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_034.jpg",
+      "prediction": {
+        "reasoning": "Primary subject: a white International LT-series highway tractor shown front three-quarter. It has a tall tractor cab with a long conventional hood, West Coast-style mirrors, and the cab ends at a short vertical rear wall with open frame rails leading back to a tandem axle group -- no sleeper box/bunk and no dump bed are present. This matches Rule 1's day-cab-truck layout exactly, and International LT is one of the listed day-cab brands.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "pos_003",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_035.jpg",
+      "prediction": {
+        "reasoning": "Primary subject: the interior ceiling/corner area of a Class 7/8 tractor cab, viewed toward the passenger side. Visible is a large overhead storage cabinet spanning the width of the cab ceiling, a dome light, and a mounted accessory near the door pillar, with the seat back and door frame in the lower corners. Rule 3 lists an overhead cabinet as a valid sleeper-compartment interior cue (alongside bunk mattress, netted shelf, sleeper curtain, or walk-back space), and this large cabinet structure is consistent with a sleeper cab's overhead storage rather than a bare day-cab dash/visor.",
+        "output": {
+          "truck_type": "sleeper-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "neg_025",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_036.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a Ford incomplete-vehicle manufacturer's data plate/sticker mounted on a red frame rail, showing VIN, front/rear GAWR, tire/rim specs, and GVWR 8845 KG (19500 LB). No dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout is visible -- only a data plate close-up. GVWR of 8845 kg (~19,500 lb) is well under the 26,001 lb Class 7/8 threshold, placing this in Class 2-6 territory (consistent with an incomplete Ford chassis-cab). Per Rule 4/6, a data-plate close-up with printed GVWR under 26,001 lb is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a data plate/sticker with a GVWR under 26,001 lb, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "neg_019",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_037.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up looking down the wood-plank cargo floor of a flatbed/stake truck, with wood stake side rails and a headache rack/cab guard visible at the far end. No dump body (no ribbed steel sides, tailgate, or hoist), no sleeper box, and no day-cab tractor/fifth-wheel layout is visible -- this is an open wood-deck stake/flatbed cargo area, not a dump bed. Per Rule 4, wood-plank stake and medium flatbed bodies are explicitly listed as invalid input, and per Rule 5/6 an empty cargo body close-up with no type-specific layout cue is none.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a wood-plank stake/flatbed cargo area, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "neg_014",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_038.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white cab-and-chassis truck shown in a dealership stock/rendered photo (OC Welch Ford Lincoln), with a crew cab, chrome grille, dual rear wheels, and bare frame rails behind the cab with no body mounted -- consistent with a Ford Super Duty (F-450/F-550 class) chassis-cab. No dump body, sleeper box/bunk, or Class 7/8 tractor/fifth-wheel layout is visible; the bare frame is just an incomplete chassis-cab, not a fifth-wheel setup. Per Rule 4, Super Duty/F-450/F-550 chassis-cabs are explicitly invalid input regardless of body configuration.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a Ford Super Duty chassis-cab pickup/medium truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck showing its cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "neg_006",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_039.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of an engine bay/compartment showing a turbocharger, intake piping, silicone charge-air couplers, hoses, and frame components, with a tire visible in the background. This is a shared mechanical part (engine bay) with no cab, no cargo body, and no fifth-wheel visible -- so no dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout can be confirmed. Per Rule 6, engine bay close-ups and silicone charge-air couplers are explicitly called out as shared parts that are NOT proof of any type, since they appear on both Class 7/8 and Class 2-6 vehicles.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like an engine bay close-up, which doesn't show a Class 7/8 day-cab, dump, or sleeper truck layout. Please upload a photo showing the truck's full cab or cargo body."
+        }
+      }
+    },
+    {
+      "id": "neg_002",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_040.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a red medium-duty conventional truck (Freightliner Business Class/M2-style grille and cab) fitted with an enclosed maroon/red box body with a roll-up-style rear door, side access door, and a liftgate mechanism mounted on the back -- a classic enclosed cargo/moving straight box truck configuration. No dump body (no open top, ribbed dump sides, or tailgate hoist), no sleeper box/bunk, and no day-cab tractor/fifth-wheel layout is visible -- the cab is a short medium conventional cab directly attached to an enclosed box, not a tractor with open frame to a fifth-wheel. Per Rule 4/5, medium conventionals carrying an enclosed box body, and enclosed straight box/moving trucks in general, are explicitly invalid input even though the box is tall and the cab looks generically heavy-duty.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a medium-duty conventional truck with an enclosed straight box body, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 tractor or dump truck."
+        }
+      }
+    },
+    {
+      "id": "neg_015",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_041.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white van on a dealership turntable in front of a 'Stingray Chevrolet' backdrop. Body layout is a full-size cargo van (Chevrolet Express style) with sliding/hinged side cargo doors, a short hood, and van-shaped rear -- no dump bed, no sleeper box, and no tractor/fifth-wheel layout. This is a Class 2-6 cargo van, which is explicitly listed as invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a cargo van, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a Class 7/8 truck instead."
+        }
+      }
+    },
+    {
+      "id": "neg_017",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_042.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of a manufacturer data plate/sticker mounted on a frame rail, reading 'INCOMPLETE VEHICLE MANUFACTURED BY INTERNATIONAL MOTORS, LLC' with GVWR/PNBV listed as 10206 KG / 22500 LB. No dump body, sleeper box, or tractor/fifth-wheel layout is visible -- this is only a shared part (a data plate) and the printed GVWR of 22500 lb is under the 26,001 lb Class 7/8 threshold, which the rules explicitly call out as invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is a data plate showing a GVWR under 26,001 lb, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a qualifying truck."
+        }
+      }
+    },
+    {
+      "id": "neg_013",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_043.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a white pickup-chassis truck (Ford Super Duty style cab) fitted with a service/utility body carrying toolboxes and a mounted compressor/generator unit (Air N Arc) on the bed. This is a service/utility body on a pickup or medium chassis with a single rear axle -- no dump bed, no sleeper box, and no tractor/fifth-wheel layout are present. This matches the Rule 4 example of a service body on a pickup chassis, which is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This looks like a Super Duty service/utility truck, not a Class 7/8 day-cab, dump, or sleeper truck. Please upload a photo of a qualifying truck."
+        }
+      }
+    },
+    {
+      "id": "pos_022",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_044.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is the front of a Class 7/8 highway tractor with an unmistakable International diamond-logo grille, tall vertical grille bars, a long conventional hood, and extended West Coast mirrors mounted on the cab -- an unambiguous International LT/ProStar tractor-cab context. Only the front of the cab is visible, so no rear wall, fifth-wheel, or sleeper box/side window can be directly confirmed, but the tractor cab layout (high seating position, hood length, mirror style, marker lights across the cab roof edge) is a genuine tractor-cab layout rather than a medium-duty box-truck cab. No dump body or sleeper bunk/box is visible in frame. Per the OEM tractor-cab-context rule, this counts as a day-cab-truck identification.",
+        "output": {
+          "truck_type": "day-cab-truck",
+          "user_message": ""
+        }
+      }
+    },
+    {
+      "id": "pos_009",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_045.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a cab interior close-up showing a single driver's seat, seatbelt, steering wheel edge, and an open door with a VIN/data-plate sticker on the door jamb. This only shows a seat and door jamb -- shared interior parts -- with no bunk mattress, overhead cabinet, sleeper curtain, or sleeper wall visible, and no dump bed or fifth-wheel/tractor-cab layout is visible either. Per the rules, a cab interior showing only seats and dash (or door hardware) with no bunk or sleeper wall is not enough to call sleeper-truck, and no other layout cue is present, so this is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is just a seat/door interior close-up with no visible dump bed, sleeper bunk, or tractor cab layout. Please upload a clearer photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    },
+    {
+      "id": "pos_017",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_046.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a close-up of a steering-column control stalk showing an engine-brake dial (OFF/1/2/3), a directional pad with an 'OK' button, and a transmission range indicator (L/D/N/R). This is only a shared dash/control-stalk part -- no dump bed, sleeper box/bunk, or tractor-cab/fifth-wheel layout is visible anywhere in the frame, and this kind of control cluster appears on Class 7/8 and Class 2-6 vehicles alike. Per the rules, a shared control-part close-up with no layout cue is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is a close-up of a dashboard control stalk with no visible dump bed, sleeper bunk, or tractor cab/fifth-wheel layout. Please upload a photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    },
+    {
+      "id": "neg_020",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_047.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a truck cab interior viewed through an open driver door, showing a steering wheel, round analog gauge cluster, dashboard, and a single cloth seat with a black tubular frame visible behind it. No bunk mattress, overhead cabinet, sleeper curtain, or sleeper wall is present, so this cannot be called sleeper-truck. No fifth-wheel plate or open frame behind the cab is visible either, so the tractor-cab/day-cab layout cannot be confirmed -- this is essentially a seat-and-dash interior shot, which the rules explicitly say is not enough on its own to assign a type. No dump bed is visible. With no Rule 1, 2, or 3 layout cue actually visible in frame, this is invalid input.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This shows only a cab interior (seat and dashboard) with no visible dump bed, sleeper bunk, or fifth-wheel/tractor layout. Please upload a photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    },
+    {
+      "id": "neg_011",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_048.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is an engine bay close-up showing the diesel engine, hoses, charge-air coupler, frame rails, and a front tire, with other vehicles visible in the background. This is purely a shared mechanical part (engine/frame) -- no dump body, sleeper box/bunk, or tractor-cab/fifth-wheel layout is visible in the frame. Per the rules, an engine-bay shot alone is not evidence of any truck_type since this hardware appears on both Class 7/8 and Class 2-6 trucks.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is an engine bay close-up with no visible dump bed, sleeper bunk, or day-cab/fifth-wheel layout. Please upload a photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    },
+    {
+      "id": "pos_018",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_049.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is an engine bay/underhood close-up showing the diesel engine, an exhaust/muffler section with clamps, a DEF or coolant tank with a red cap, a frame rail, and a front tire. This is only shared mechanical hardware -- no dump bed, sleeper box/bunk, or tractor-cab/fifth-wheel layout is visible anywhere in the frame. Per the rules, engine bay and tank close-ups are explicitly called out as not being proof of any truck_type on their own.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is an engine bay/tank close-up with no visible dump bed, sleeper bunk, or day-cab/fifth-wheel layout. Please upload a photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    },
+    {
+      "id": "pos_001",
+      "path": "C:\\Users\\senth\\54hackathon\\input_image_filter_test\\data\\blind_images\\img_050.jpg",
+      "prediction": {
+        "reasoning": "Primary subject is a tight close-up of a truck's front end -- headlight, grille, and a damaged/hanging front bumper piece -- on a teal-colored truck with decorative graphics. No cab, roofline, sleeper box, dump bed, or fifth-wheel/frame area is in frame, so none of the required body/cab layout cues (dump body, sleeper box/bunk, or day-cab tractor/fifth-wheel layout) can be confirmed. A front bumper/grille/headlight close-up alone is not sufficient to determine truck_type under the rules.",
+        "output": {
+          "truck_type": "none",
+          "user_message": "This is a close-up of a front bumper/headlight with no visible dump bed, sleeper bunk, or day-cab/fifth-wheel layout. Please upload a photo of a Class 7/8 day-cab, dump, or sleeper truck."
+        }
+      }
+    }
+  ]
+}
