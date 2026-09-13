@@ -93,6 +93,32 @@ def append_label(labels_path: Path, row: dict) -> None:
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _normalize_truck_type(value: str | None) -> str | None:
+    """Map VLM vehicle_cue / truck_type strings to day_cab | sleeper | dump."""
+    if not value:
+        return None
+    v = value.strip().lower().replace(" ", "_").replace("-", "_")
+    mapping = {
+        "day_cab": "day_cab",
+        "day_cab_tractor": "day_cab",
+        "sleeper": "sleeper",
+        "sleeper_tractor": "sleeper",
+        "dump": "dump",
+        "dumper": "dump",
+        "heavy_dump_truck": "dump",
+        "dump_truck": "dump",
+    }
+    if v in mapping:
+        return mapping[v]
+    if "dump" in v:
+        return "dump"
+    if "sleeper" in v:
+        return "sleeper"
+    if "day" in v and "cab" in v:
+        return "day_cab"
+    return None
+
+
 def extract_fields(vlm_output: dict) -> dict:
     """Normalize master-schema (or nested) output into flat pricing fields."""
     out = vlm_output.get("output", vlm_output)
@@ -101,6 +127,7 @@ def extract_fields(vlm_output: dict) -> dict:
     primary = out.get("primary_subject") or out
     brand = out.get("brand") or out
     condition = out.get("condition") or out
+    truck = out.get("truck_type") or out.get("truck") or out
 
     if isinstance(primary, dict) and "primary_subject" in primary:
         primary_subject = primary.get("primary_subject")
@@ -114,6 +141,15 @@ def extract_fields(vlm_output: dict) -> dict:
         is_valid = out.get("is_valid_class_7_8")
 
     vehicle_cue = validity.get("vehicle_cue") or out.get("vehicle_cue")
+    raw_truck_type = None
+    if isinstance(truck, dict):
+        raw_truck_type = truck.get("truck_type") or truck.get("type") or truck.get("vehicle_cue")
+    if raw_truck_type is None:
+        raw_truck_type = out.get("truck_type") or vehicle_cue
+    truck_type = _normalize_truck_type(
+        raw_truck_type if isinstance(raw_truck_type, str) else None
+    )
+
     validity_msg = validity.get("user_message")
     if validity_msg is None:
         validity_msg = ""
@@ -141,6 +177,7 @@ def extract_fields(vlm_output: dict) -> dict:
     return {
         "is_valid_class_7_8": bool(is_valid) if is_valid is not None else None,
         "vehicle_cue": vehicle_cue,
+        "truck_type": truck_type,
         "validity_user_message": validity_msg or "",
         "primary_subject": primary_subject,
         "primary_user_message": primary_user_message or "",
@@ -239,20 +276,31 @@ def label_one_listing(
             }
             attempts.append(attempt)
             if is_priceable(fields):
+                truck_type = fields.get("truck_type") or listing.get("truck_type")
                 return {
                     "listing_id": listing_id,
                     "listing_brand": listing["brand"],
                     "brand_cell": listing["brand_cell"],
+                    "truck_type": truck_type,
                     "price": listing["price"],
                     "category": listing.get("category"),
                     "image_rel": cand.get("rel"),
                     "staged_path": str(staged),
                     "status": "ok",
                     **fields,
-                    "attempts": [{"rel": a.get("rel"), "error": a.get("error"),
-                                  "primary_subject": (a.get("fields") or {}).get("primary_subject"),
-                                  "is_valid_class_7_8": (a.get("fields") or {}).get("is_valid_class_7_8")}
-                                 for a in attempts],
+                    "truck_type": truck_type,  # listing fallback after fields spread
+                    "attempts": [
+                        {
+                            "rel": a.get("rel"),
+                            "error": a.get("error"),
+                            "primary_subject": (a.get("fields") or {}).get("primary_subject"),
+                            "is_valid_class_7_8": (a.get("fields") or {}).get(
+                                "is_valid_class_7_8"
+                            ),
+                            "truck_type": (a.get("fields") or {}).get("truck_type"),
+                        }
+                        for a in attempts
+                    ],
                 }
         except Exception as exc:  # noqa: BLE001 - resume-friendly labeling loop
             last_error = str(exc)

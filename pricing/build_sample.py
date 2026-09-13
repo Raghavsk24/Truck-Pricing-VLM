@@ -26,6 +26,11 @@ OUT_PATH = ROOT / "sample.json"
 MAJOR_BRANDS = ("FREIGHTLINER", "INTERNATIONAL", "KENWORTH", "PETERBILT", "MACK")
 OTHER = "OTHER"
 DEFAULT_N = 160
+CATEGORY_TO_TYPE = {
+    "day-cab-trucks": "day_cab",
+    "sleeper-trucks": "sleeper",
+    "dump-trucks": "dump",
+}
 
 
 def brand_cell(brand: str | None) -> str:
@@ -33,6 +38,10 @@ def brand_cell(brand: str | None) -> str:
         return OTHER
     b = brand.strip().upper()
     return b if b in MAJOR_BRANDS else OTHER
+
+
+def truck_type_from_category(category: str) -> str:
+    return CATEGORY_TO_TYPE.get(category, "other")
 
 
 def load_positive_listings(path: Path) -> list[dict]:
@@ -63,6 +72,7 @@ def load_positive_listings(path: Path) -> list[dict]:
                     "listing_id": listing["id"],
                     "brand": brand.strip().upper(),
                     "brand_cell": brand_cell(brand),
+                    "truck_type": truck_type_from_category(category),
                     "price": float(price),
                     "currency": listing.get("currency") or "USD",
                     "category": category,
