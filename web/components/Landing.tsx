@@ -110,11 +110,9 @@ export function Landing({
                 marginBottom: 20.4,
                 fontFamily: "var(--font-heading)",
                 fontWeight: 600,
-                fontSize: 22,
-                letterSpacing: "0.2em",
               }}
             >
-              BLUEOOP
+              TRUCK PRICING VLM
             </div>
             <h1
               style={{
@@ -167,7 +165,7 @@ export function Landing({
 
         <section style={{ position: "relative", padding: "88px 48px", maxWidth: 1120, margin: "0 auto", boxSizing: "border-box" }}>
           <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--color-accent-700)", marginBottom: 14 }}>
-            What Blueoop does
+            What Truck Pricing VLM does
           </div>
           <h2 style={{ fontSize: 38, lineHeight: 1.1, margin: "0 0 16px", maxWidth: "20ch" }}>
             Appraisals for your class 7 and 8 trucks based on your photographs

@@ -50,7 +50,7 @@ export function AppHeader({
             textTransform: "uppercase",
           }}
         >
-          Blueoop
+          Truck Pricing VLM
         </span>
         <span
           style={{

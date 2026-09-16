@@ -16,7 +16,7 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "Blueoop — Truck appraisal",
+  title: "Truck Pricing VLM — Truck appraisal",
   description:
     "Free Class 7 and 8 truck appraisal from photographs. A range, a condition breakdown, and an asking price you can defend.",
 };
