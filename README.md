@@ -33,7 +33,6 @@ Kamion (YC S22) is a marketplace that connects truck sellers with buyers. Howeve
 [![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
 [![Claude](https://img.shields.io/badge/Claude_Sonnet_4.6_API-D97757?style=for-the-badge&logo=anthropic&logoColor=white)](https://anthropic.com)
 [![Hugging Face](https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/Raghavsk24/truckpaper_scraped_images_dataset)
-[![matplotlib](https://img.shields.io/badge/matplotlib-11557C?style=for-the-badge&logo=plotly&logoColor=white)](https://matplotlib.org)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
 
 ## System Architecture
