@@ -7,12 +7,6 @@ Kamion (YC S22) is a marketplace that connects truck sellers with buyers. Howeve
   <em>Built by Raghav Senthil Kumar, Krishiv Nandakumar, Adhithya Kota and Akash.</em>
 </p>
 
-## The problem
-
-Kamion matches sellers who have a used truck with buyers who will actually pay for it. Pricing is the bottleneck. Sellers often copy a number from a neighboring listing, or ask for what they owe on the truck, not what the market will clear. Buyers bounce when the ask is outside a believable band. Kamion needs a pricing algorithm that can look at the same photos a buyer sees and return a range that is specific to **what the truck is** (day cab, sleeper, dump), **who built it** (Freightliner, Kenworth, Peterbilt, International, Mack), and **what shape it is in** (frame rust, front-end damage, tread, cab/aero).
-
-That is the only job of this engine: turn photos into a defensible `[low, high]` USD range so more trucks sell.
-
 ## Tech Stack
 
 ### Data collection
