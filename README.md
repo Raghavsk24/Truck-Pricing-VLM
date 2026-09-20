@@ -1,16 +1,13 @@
-# Kamion Pricing Engine
+# Truck-Pricing VLM
 
-**[Live app →](https://truck-pricing-vlm.vercel.app)** · **[Dataset →](https://huggingface.co/datasets/Raghavsk24/truckpaper_scraped_images_dataset)**
+Kamion (YC S22) is a marketplace that connects truck sellers with buyers. However, truck sellers are responsible for setting the price of their own trucks, and many sellers lie about the quality of their truck and price it higher than it's market value. Consequently, many buyers are scammed as they end up buying overpriced trucks with degraded quality. We built _**Truck-Pricing-VLM**_ to solve this. We use a heavily fine-tuned Claude Sonnet 4.6 Vision Language Model to extract features from the image of a truck (condition, brand, type, primary subject). Each features is mapped to a value, which aggregates to form a vector. The vector is run on a quantile regression model, which estimates the price range of the truck. Additionally, an appraisal report with a condition assessment and a statement of reasoning is prepared to back up the pricing valuation. 
 
-The Kamion Pricing Engine is a photo-in, price-range-out system for Class 7/8 trucks. A seller uploads listing photos; a vision-language model extracts truck type, brand, era, and condition; a statistical model turns those features into a USD asking range. Kamion is a marketplace that has to move trucks from sellers to buyers. A listing priced too high sits unsold. A listing priced too low leaves money on the table and trains the next seller to distrust the platform. The engine exists to replace guesswork with a range that is grounded in real TruckPaper asking prices, so more trucks actually clear.
+- **Live App:** https://truck-pricing-vlm.vercel.app/
 
-This repo is the full pipeline behind that range — a stratified TruckPaper image scrape, an audit that drops unusable listings, a supervised Class 7/8 filter, RLHF-style instruction loops for four VLM tasks, and a type + brand + era + condition price model — plus the Next.js web app (`web/`) that puts the whole pipeline behind a conversational upload-to-report UI, deployed on Vercel.
 
-## The problem
-
-Kamion matches sellers who have a used truck with buyers who will actually pay for it. Pricing is the bottleneck. Sellers often copy a number from a neighboring listing, or ask for what they owe on the truck, not what the market will clear. Buyers bounce when the ask is outside a believable band. Kamion needs a pricing algorithm that can look at the same photos a buyer sees and return a range that is specific to **what the truck is** (day cab, sleeper, dump), **who built it** (Freightliner, Kenworth, Peterbilt, International, Mack), **how old it is** (photo-estimated era, not just a listed year), and **what shape it is in** (frame rust, front-end damage, tread, cab/aero).
-
-That is the only job of this engine: turn photos into a defensible `[low, high]` USD range so more trucks sell.
+<p align="center">
+  <em>Built by Raghav Senthil Kumar, Krishiv Nandakumar, Adhithya Kota and Akash.</em>
+</p>
 
 ## Tech Stack
 
