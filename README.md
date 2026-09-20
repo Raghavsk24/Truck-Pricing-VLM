@@ -2,13 +2,6 @@
 
 Kamion (YC S22) is a marketplace that connects truck sellers with buyers. However, truck sellers are responsible for setting the price of their own trucks, and many sellers lie about the quality of their truck and price it higher than it's market value. Consequently, many buyers are scammed as they end up buying overpriced trucks with degraded quality. We built _**Truck-Pricing-VLM**_ to solve this. We use a heavily fine-tuned Claude Sonnet 4.6 Vision Language Model to extract features from the image of a truck (condition, brand, type, primary subject). Each features is mapped to a value, which aggregates to form a vector. The vector is run on a quantile regression model, which estimates the price range of the truck. Additionally, an appraisal report with a condition assessment and a statement of reasoning is prepared to back up the pricing valuation. 
 
-- **Live App:** https://truck-pricing-vlm.vercel.app/
-
-
-<p align="center">
-  <em>Built by Raghav Senthil Kumar, Krishiv Nandakumar, Adhithya Kota and Akash.</em>
-</p>
-
 ## Tech Stack
 
 ### Frontend
