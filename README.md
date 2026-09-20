@@ -1,8 +1,11 @@
-# Kamion Pricing Engine
+# Truck-Pricing VLM
 
-The Kamion Pricing Engine is a photo-in, price-range-out system for Class 7/8 trucks. A seller uploads listing photos; a vision-language model extracts truck type, brand, and condition; a statistical model turns those features into a USD asking range. Kamion is a marketplace that has to move trucks from sellers to buyers. A listing priced too high sits unsold. A listing priced too low leaves money on the table and trains the next seller to distrust the platform. The engine exists to replace guesswork with a range that is grounded in real TruckPaper asking prices, so more trucks actually clear.
+Kamion (YC S22) is a marketplace that connects truck sellers with buyers. However, truck sellers are responsible for setting the price of their own trucks, and many sellers lie about the quality of their truck and price it higher than it's market value. Consequently, many buyers are scammed as they end up buying overpriced trucks with degraded quality. We built _**Truck-Pricing-VLM**_ to solve this. We use a heavily fine-tuned Claude Sonnet 4.6 Vision Language Model to extract features from the image of a truck (condition, brand, type, primary subject). Each features is mapped to a value, which aggregates to form a vector. The vector is run on a quantile regression model, which estimates the price range of the truck. Additionally, an appraisal report with a condition assessment and a statement of reasoning is prepared to back up the pricing valuation. 
 
-This repo is the full pipeline behind that range: a stratified TruckPaper image scrape, an audit that drops unusable listings, a supervised Class 7/8 filter, RLHF-style instruction loops for four VLM tasks, and a type + brand + condition price model.
+
+<p align="center">
+  <em>Built by Raghav Senthil Kumar, Krishiv Nandakumar, Adhithya Kota and Akash.</em>
+</p>
 
 ## The problem
 
