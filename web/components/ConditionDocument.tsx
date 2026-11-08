@@ -229,7 +229,7 @@ export function ConditionDocument({
 
         <View style={styles.scoreRow}>
           <View style={styles.scoreBox}>
-            <Text style={styles.scoreNum}>{overall_score ?? "—"}</Text>
+            <Text style={styles.scoreNum}>{overall_score ?? "N/A"}</Text>
             <Text style={styles.scoreDenom}>out of 5</Text>
             <Text style={styles.scoreLabel}>{overall_condition_label || "Unscored"}</Text>
           </View>
@@ -253,7 +253,7 @@ export function ConditionDocument({
               <Text style={styles.catName}>{CAT_LABELS[key]}</Text>
               <Text style={styles.catMeta}>
                 {unscored
-                  ? "Not visible — excluded"
+                  ? "Not visible, excluded"
                   : `Score ${cat.score}/5   weight ${Math.round(cat.weight * 100)}%   penalty ${cat.penalty_percent}%`}
               </Text>
               <Text style={styles.catNotes}>

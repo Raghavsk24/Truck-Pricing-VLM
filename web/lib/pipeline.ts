@@ -106,7 +106,7 @@ export async function persistAndRespond(
   if (!brandOverride && needsBrand(output)) {
     const user_prompt =
       output.brand.user_prompt ||
-      "I couldn't find a visible logo, badge, or nameplate on this truck — do you know the brand/manufacturer?";
+      "I couldn't find a visible logo, badge, or nameplate on this truck. Do you know the brand/manufacturer?";
     if (!existingId) {
       await insertAnalysis({
         id,

@@ -1,7 +1,5 @@
 "use client";
 
-import { BrandMark } from "./ui";
-
 export function AppHeader({
   showNew,
   onLogo,
@@ -15,7 +13,6 @@ export function AppHeader({
     <header className="header no-print">
       <div className="container header-inner">
         <button type="button" className="brand" onClick={onLogo}>
-          <BrandMark />
           Truck Pricing VLM
         </button>
         {showNew && (

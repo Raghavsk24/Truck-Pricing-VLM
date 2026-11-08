@@ -172,7 +172,7 @@ export function PricingApp() {
         {
           id: uid(),
           role: "ai",
-          text: "Thanks — I'll hold that. Upload a front or side photo if you haven't already, and I'll fold it into the range.",
+          text: "Thanks, I'll hold that. Upload a front or side photo if you haven't already, and I'll fold it into the range.",
         },
       ]);
       return;
@@ -194,7 +194,7 @@ export function PricingApp() {
           {
             id: uid(),
             role: "ai",
-            text: `Noted — ${data.brand}. Open the full report when you're ready.`,
+            text: `Noted: ${data.brand}. Open the full report when you're ready.`,
           },
         ]);
       } else if (data.status === "rejected" || data.status === "error") {
@@ -230,7 +230,7 @@ export function PricingApp() {
         id: uid(),
         role: "ai",
         text: result
-          ? "Thanks — factored in. I'll hold the range until more photos land."
+          ? "Thanks, factored in. I'll hold the range until more photos land."
           : "Got it. Upload a front or side photo and I'll put a number on it.",
       },
     ]);

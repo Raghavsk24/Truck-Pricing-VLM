@@ -76,15 +76,3 @@ export function IconCircle() {
     </svg>
   );
 }
-
-export function BrandMark() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ alignSelf: "center", flex: "none" }}>
-      <path d="M10 9v17" />
-      <path d="M10 9h6.5a4.5 4.5 0 0 1 0 9H10" />
-      <path d="M10 18h8a4 4 0 0 1 0 8h-8" />
-      <path d="M10 9V3.5" />
-      <path d="m6.6 6.4 3.4-3 3.4 3" />
-    </svg>
-  );
-}

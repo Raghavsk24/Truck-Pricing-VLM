@@ -83,8 +83,8 @@ export function Report({
         <section className="report-section">
           <h2>Condition assessment</h2>
           <div className="stats">
-            <Stat label="Overall condition" value={view.conditionLabel ?? "—"} />
-            <Stat label="Overall score" value={view.overallScore == null ? "—" : String(view.overallScore)} />
+            <Stat label="Overall condition" value={view.conditionLabel ?? "N/A"} />
+            <Stat label="Overall score" value={view.overallScore == null ? "N/A" : String(view.overallScore)} />
             <Stat label="Total penalty" value={`${view.totalPenaltyPercent}%`} />
           </div>
           <div className="table-wrap">
@@ -102,7 +102,7 @@ export function Report({
                 {view.categories.map((a) => (
                   <tr key={a.key}>
                     <td style={{ fontWeight: 600 }}>{CAT_LABELS[a.key]}</td>
-                    <td className="num">{a.score == null ? "—" : a.score}</td>
+                    <td className="num">{a.score == null ? "N/A" : a.score}</td>
                     <td className="num">{pct(a.weight)}</td>
                     <td className="num">{a.penalty_percent}%</td>
                     <td className="muted">{a.reasoning}</td>

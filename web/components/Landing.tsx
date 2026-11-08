@@ -39,7 +39,7 @@ export function Landing({
               {formatUsd(s.low)} – {formatUsd(s.high)}
             </div>
             <PreviewRow label="Suggested asking price" value={formatUsd(s.asking)} />
-            <PreviewRow label="Overall condition" value={s.conditionLabel ?? "—"} />
+            <PreviewRow label="Overall condition" value={s.conditionLabel ?? "N/A"} />
             <PreviewRow label="Areas graded" value={String(s.categories.length)} />
           </div>
         </section>
@@ -48,7 +48,7 @@ export function Landing({
           <div className="eyebrow">How it works</div>
           <h2 style={{ marginTop: 10, fontSize: 30 }}>From photos to a number, with the reasoning attached.</h2>
           <div className="features">
-            <Feature icon={<IconCamera />} title="Reads your photos" body="Panel damage, rust, tire tread, cab and aero — graded area by area." />
+            <Feature icon={<IconCamera />} title="Reads your photos" body="Panel damage, rust, tire tread, cab and aero, graded area by area." />
             <Feature icon={<IconChat />} title="Asks what it cannot see" body="If a badge is unreadable, it asks for the brand. A short conversation, not a form." />
             <Feature icon={<IconChart />} title="Prices against the market" body="Comparable asking prices, weighted by type, brand, era and condition." />
           </div>
