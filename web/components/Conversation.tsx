@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import type { AnalyzeOk } from "@/lib/types";
 import { type PhotoShot } from "@/lib/appraisal";
-import { AiAvatar, Blueprint, IconUpload } from "./ui";
+import { IconUpload } from "./ui";
 
 export type ChatMessage = {
   id: string;
@@ -38,90 +38,61 @@ export function Conversation({
   onOpenReport: () => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const pick = () => fileRef.current?.click();
 
   return (
-    <main className="chat-grid">
-      <section className="chat-thread">
-        <div
-          className="scrollthin"
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "24px 40px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 30,
-            maxWidth: 780,
-            width: "100%",
-            margin: "0 auto",
-            boxSizing: "border-box",
-          }}
-        >
+    <main className="chat">
+      <div className="thread scrollthin">
+        <div className="thread-inner">
+          {messages.length === 0 && !loading && (
+            <div className="empty">
+              <h2>Upload photos of your truck</h2>
+              <p className="muted">
+                Front and side shots work best. Rear, interior and odometer shots help too.
+              </p>
+              <button type="button" className="btn btn-primary btn-lg" onClick={pick}>
+                Upload photos <IconUpload />
+              </button>
+              <p className="muted small">JPEG, PNG or WebP · up to 8 MB each</p>
+            </div>
+          )}
           {messages.map((m) =>
             m.role === "user" ? (
-              <UserBubble key={m.id} message={m} />
+              <UserMessage key={m.id} message={m} />
             ) : (
-              <AiBubble key={m.id} message={m} onChip={onChip} />
+              <AiMessage key={m.id} message={m} onChip={onChip} />
             ),
           )}
-          {loading && (
-            <div style={{ display: "flex", gap: 13.6 }}>
-              <AiAvatar />
-              <div style={{ fontSize: 15, lineHeight: 1.6, color: "color-mix(in srgb, var(--color-text) 65%, transparent)" }}>
-                Reading those now…
-              </div>
-            </div>
-          )}
+          {loading && <p className="muted">Reading those now…</p>}
         </div>
+      </div>
 
-        <div style={{ borderTop: "1px solid var(--color-divider)", padding: "17px 34px 20.4px" }}>
-          <div style={{ maxWidth: 780, margin: "0 auto" }}>
-            <div
-              style={{
-                minHeight: inputError ? undefined : 0,
-                marginBottom: inputError ? 10.2 : 0,
-                fontSize: 14,
-                lineHeight: 1.55,
-                color: "var(--color-accent-800)",
+      <div className="composer">
+        <div className="composer-inner">
+          {inputError && <div className="composer-error" role="alert">{inputError}</div>}
+          <div className="composer-row">
+            <input
+              className="input"
+              type="text"
+              placeholder="Type a message…"
+              aria-label="Message"
+              value={draft}
+              onChange={(e) => onDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onSend();
               }}
-            >
-              {inputError}
-            </div>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 10.2 }}>
-              <input
-                className="input"
-                type="text"
-                placeholder="Upload your photographs to get your appraisal"
-                value={draft}
-                onChange={(e) => onDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") onSend();
-                }}
-                style={{ flex: 1, minHeight: 40 }}
-              />
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => fileRef.current?.click()}
-                style={{ flex: "none", height: 40, paddingInline: 17 }}
-              >
-                Upload
-                <IconUpload />
+            />
+            <button type="button" className="btn btn-primary" onClick={pick}>
+              Upload <IconUpload />
+            </button>
+            {result && (
+              <button type="button" className="btn btn-secondary" onClick={onOpenReport}>
+                Open report
               </button>
-              {result && (
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onOpenReport}
-                  style={{ flex: "none", height: 40, paddingInline: 17 }}
-                >
-                  Open report
-                </button>
-              )}
-            </div>
+            )}
           </div>
         </div>
-      </section>
+      </div>
 
       <input
         ref={fileRef}
@@ -138,46 +109,30 @@ export function Conversation({
   );
 }
 
-function UserBubble({ message }: { message: ChatMessage }) {
+function UserMessage({ message }: { message: ChatMessage }) {
   if (message.photos?.length) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6.8 }}>
-        <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(3, message.photos.length)}, 116px)`, gap: 10.2 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <div className="thumbs" style={{ gridTemplateColumns: `repeat(${Math.min(3, message.photos.length)}, auto)` }}>
           {message.photos.map((p) => (
-            <Blueprint key={p.url} duotone>
-              <div style={{ position: "relative", height: 86, overflow: "hidden", borderRadius: 14 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.url} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
-            </Blueprint>
+            // eslint-disable-next-line @next/next/no-img-element
+            <img key={p.url} className="thumb" src={p.url} alt={p.name} />
           ))}
         </div>
-        <div style={{ fontSize: 12, color: "color-mix(in srgb, var(--color-text) 55%, transparent)" }}>
-          {message.photos.length} photo{message.photos.length === 1 ? "" : "s"} · uploaded
+        <div className="muted small">
+          {message.photos.length} photo{message.photos.length === 1 ? "" : "s"} uploaded
         </div>
       </div>
     );
   }
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-      <div
-        style={{
-          maxWidth: "72%",
-          background: "var(--color-accent-100)",
-          border: "1px solid color-mix(in srgb, var(--color-accent) 22%, transparent)",
-          borderRadius: "18px 18px 4px 18px",
-          padding: "12px 16px",
-          fontSize: 15,
-          lineHeight: 1.65,
-        }}
-      >
-        {message.text}
-      </div>
+      <div className="bubble-user">{message.text}</div>
     </div>
   );
 }
 
-function AiBubble({
+function AiMessage({
   message,
   onChip,
 }: {
@@ -185,45 +140,23 @@ function AiBubble({
   onChip: (label: string) => void;
 }) {
   return (
-    <div style={{ display: "flex", gap: 13.6 }}>
-      <AiAvatar />
-      <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 13.6 }}>
-        {message.text && (
-          <div style={{ fontSize: 15, lineHeight: 1.6, textWrap: "pretty" }}>{message.text}</div>
-        )}
-        {message.questions && (
-          <div style={{ display: "grid", gap: 10 }}>
-            {message.questions.map((q) => (
-              <div
-                key={q.tag}
-                style={{
-                  background: "#fff",
-                  border: "1px solid var(--color-divider)",
-                  borderRadius: 14,
-                  padding: "11px 13.6px",
-                  display: "flex",
-                  gap: 10.2,
-                  alignItems: "flex-start",
-                }}
-              >
-                <span className="tag tag-outline" style={{ flex: "none" }}>
-                  {q.tag}
-                </span>
-                <span style={{ fontSize: 14, lineHeight: 1.5 }}>{q.text}</span>
-              </div>
-            ))}
-          </div>
-        )}
-        {message.chips && (
-          <div style={{ display: "flex", gap: 6.8, flexWrap: "wrap" }}>
-            {message.chips.map((c) => (
-              <button key={c} type="button" className="btn btn-secondary" style={{ fontSize: 13 }} onClick={() => onChip(c)}>
-                {c}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+    <div className="msg-ai">
+      {message.text && <p style={{ textWrap: "pretty" }}>{message.text}</p>}
+      {message.questions?.map((q) => (
+        <div key={q.tag} className="note">
+          <span className="tag tag-accent">{q.tag}</span>
+          <span>{q.text}</span>
+        </div>
+      ))}
+      {message.chips && (
+        <div className="chips">
+          {message.chips.map((c) => (
+            <button key={c} type="button" className="btn btn-secondary btn-sm" onClick={() => onChip(c)}>
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

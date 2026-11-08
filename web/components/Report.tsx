@@ -1,7 +1,10 @@
 "use client";
 
-import { Blueprint, IconPrinter } from "./ui";
+import { IconPrinter } from "./ui";
 import { type AppraisalView, axisBounds, formatUsd } from "@/lib/appraisal";
+import { CAT_LABELS } from "@/lib/types";
+
+const pct = (n: number) => `${Math.round(n * 100)}%`;
 
 export function Report({
   view,
@@ -19,237 +22,119 @@ export function Report({
   const filteredPhotos = view.photos.filter((p) => !p.used);
 
   return (
-    <main className="scrollthin" style={{ flex: 1, overflowY: "auto", padding: "40.8px 27.2px 68px" }}>
-      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: 20.4,
-            flexWrap: "wrap",
-            paddingBottom: 20.4,
-            borderBottom: "1px solid var(--color-divider)",
-          }}
-        >
+    <main className="page scrollthin">
+      <div className="container report">
+        <div className="report-head">
           <div>
-            {!view.isSample && (
-              <div
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "var(--color-accent-700)",
-                  marginBottom: 6.8,
-                }}
-              >
-                Appraisal report · {view.reportId}
-              </div>
-            )}
-            <h1 style={{ fontSize: 42, margin: 0, lineHeight: 1.05 }}>{view.title}</h1>
-            {!view.isSample && (
-              <div
-                style={{
-                  fontSize: 14,
-                  color: "color-mix(in srgb, var(--color-text) 60%, transparent)",
-                  marginTop: 3.4,
-                }}
-              >
-                {view.subtitle}
-              </div>
-            )}
+            <div className="eyebrow">
+              {view.isSample ? "Sample report" : `Appraisal report · ${view.reportId}`}
+            </div>
+            <h1>{view.title}</h1>
+            {!view.isSample && <p className="muted" style={{ marginTop: 6 }}>{view.subtitle}</p>}
           </div>
-          <div style={{ display: "flex", gap: 6.8 }}>
-            <button type="button" className="btn btn-secondary no-print" onClick={onBack}>
+          <div style={{ display: "flex", gap: 8 }} className="no-print">
+            <button type="button" className="btn btn-secondary" onClick={onBack}>
               {view.isSample ? "Back" : "Back to conversation"}
             </button>
-            <button type="button" className="btn btn-primary no-print" onClick={() => window.print()}>
+            <button type="button" className="btn btn-primary" onClick={() => window.print()}>
               Print report <IconPrinter />
             </button>
           </div>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1.6fr) minmax(0, 1fr)",
-            gap: 27.2,
-            marginTop: 34,
-            alignItems: "start",
-          }}
-        >
-          <Blueprint className="p-report-value">
-            <div style={{ padding: 27.2 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: "color-mix(in srgb, var(--color-text) 55%, transparent)",
-                }}
-              >
-                Estimated private-party value
-              </div>
-              <div style={{ fontFamily: "var(--font-heading)", fontSize: 58, lineHeight: 1, margin: "10.2px 0 17px" }}>
-                {formatUsd(view.low)} – {formatUsd(view.high)}
-              </div>
-              <div style={{ position: "relative", height: 42, marginBottom: 10.2 }}>
-                <div style={{ position: "absolute", top: 19, left: 0, right: 0, height: 1, background: "var(--color-divider)" }} />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 14,
-                    left: `${leftPct}%`,
-                    width: `${widthPct}%`,
-                    height: 11,
-                    background: "var(--color-accent)",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 6,
-                    left: `${midPct}%`,
-                    width: 1,
-                    height: 27,
-                    background: "var(--color-accent-900)",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 34,
-                    left: `${midPct}%`,
-                    transform: "translateX(-50%)",
-                    fontSize: 11,
-                    whiteSpace: "nowrap",
-                    color: "var(--color-accent-900)",
-                  }}
-                >
-                  {formatUsd(view.center)} midpoint
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: 11.5,
-                  color: "color-mix(in srgb, var(--color-text) 50%, transparent)",
-                }}
-              >
-                <span>{formatUsd(min)}</span>
-                <span>{formatUsd(max)}</span>
+        <div className="report-grid">
+          <div className="card">
+            <div className="label">Estimated private-party value</div>
+            <div className="big num">
+              {formatUsd(view.low)} – {formatUsd(view.high)}
+            </div>
+            <div style={{ position: "relative", height: 44 }}>
+              <div style={{ position: "absolute", top: 8, left: 0, right: 0, height: 6, borderRadius: 3, background: "#eceded" }} />
+              <div style={{ position: "absolute", top: 8, left: `${leftPct}%`, width: `${widthPct}%`, height: 6, borderRadius: 3, background: "var(--accent)" }} />
+              <div style={{ position: "absolute", top: 2, left: `${midPct}%`, width: 2, height: 18, background: "var(--text)" }} />
+              <div className="small num" style={{ position: "absolute", top: 26, left: `${midPct}%`, transform: "translateX(-50%)", whiteSpace: "nowrap" }}>
+                {formatUsd(view.center)} midpoint
               </div>
             </div>
-          </Blueprint>
+            <div className="small muted num" style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+              <span>{formatUsd(min)}</span>
+              <span>{formatUsd(max)}</span>
+            </div>
+          </div>
 
-          <Blueprint>
-            <div style={{ padding: 27.2, background: "var(--color-accent-900)", color: "var(--color-bg)", borderRadius: 14 }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", opacity: 0.75 }}>
-                Suggested asking price
-              </div>
-              <div style={{ fontFamily: "var(--font-heading)", fontSize: 52, lineHeight: 1, margin: "10.2px 0" }}>
-                {formatUsd(view.asking)}
-              </div>
-              <p style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.85, margin: 0 }}>
-                Listed about 5% above the midpoint, which leaves room to negotiate down to the range
-                without going under it.
-              </p>
-            </div>
-          </Blueprint>
-        </div>
-
-        <h2 style={{ fontSize: 24, margin: "40.8px 0 13.6px" }}>Brand</h2>
-        <Blueprint>
-          <div style={{ padding: 24 }}>
-            <div
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: "color-mix(in srgb, var(--color-text) 55%, transparent)",
-                marginBottom: 6,
-              }}
-            >
-              Brand name
-            </div>
-            <div style={{ fontFamily: "var(--font-heading)", fontSize: 32, lineHeight: 1.1, marginBottom: 12 }}>
-              {view.brandName}
-            </div>
-            <p style={{ fontSize: 15, lineHeight: 1.6, margin: 0, color: "color-mix(in srgb, var(--color-text) 72%, transparent)" }}>
-              {view.brandPricingReasoning}
+          <div className="card card-accent">
+            <div className="label">Suggested asking price</div>
+            <div className="big num" style={{ marginBottom: 12 }}>{formatUsd(view.asking)}</div>
+            <p className="muted" style={{ fontSize: 14 }}>
+              Listed about 5% above the midpoint, which leaves room to negotiate down to the range
+              without going under it.
             </p>
           </div>
-        </Blueprint>
-
-        <h2 style={{ fontSize: 24, margin: "40.8px 0 13.6px" }}>Condition Assessment</h2>
-        <div
-          style={{
-            display: "flex",
-            gap: 28,
-            flexWrap: "wrap",
-            marginBottom: 16,
-            fontSize: 13.5,
-            color: "color-mix(in srgb, var(--color-text) 68%, transparent)",
-          }}
-        >
-          <span>
-            <strong>overall_score</strong>: {view.overallScore ?? "null"}
-          </span>
-          <span>
-            <strong>overall_condition_label</strong>: {view.conditionLabel ?? "null"}
-          </span>
-          <span>
-            <strong>total_penalty_percent</strong>: {view.totalPenaltyPercent}
-          </span>
         </div>
-        <table className="table" style={{ width: "100%" }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "left" }}>categories</th>
-              <th style={{ textAlign: "left" }}>score</th>
-              <th style={{ textAlign: "left" }}>weight</th>
-              <th style={{ textAlign: "left" }}>penalty_percent</th>
-              <th style={{ textAlign: "left" }}>reasoning</th>
-            </tr>
-          </thead>
-          <tbody>
-            {view.categories.map((a) => (
-              <tr key={a.key}>
-                <td style={{ fontFamily: "var(--font-heading)", fontSize: 16 }}>{a.key}</td>
-                <td>
-                  <span className="tag tag-outline">{a.score == null ? "null" : a.score}</span>
-                </td>
-                <td>{a.weight}</td>
-                <td>{a.penalty_percent}</td>
-                <td style={{ fontSize: 13.5, color: "color-mix(in srgb, var(--color-text) 72%, transparent)" }}>
-                  {a.reasoning}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
 
-        <h2 style={{ fontSize: 24, margin: "40.8px 0 13.6px" }}>Photos</h2>
-        <PhotoGroup title="Used" photos={usedPhotos} empty="No photographs were used." />
-        <PhotoGroup title="Filtered out" photos={filteredPhotos} empty="No photographs were filtered out." />
+        <section className="report-section">
+          <h2>Brand</h2>
+          <div className="card">
+            <div className="stat-value" style={{ fontSize: 24 }}>{view.brandName}</div>
+            <p className="muted" style={{ marginTop: 8 }}>{view.brandPricingReasoning}</p>
+          </div>
+        </section>
 
-        <div
-          style={{
-            marginTop: 40.8,
-            paddingTop: 20.4,
-            borderTop: "1px solid var(--color-divider)",
-            fontSize: 12.5,
-            color: "color-mix(in srgb, var(--color-text) 55%, transparent)",
-            maxWidth: "70ch",
-          }}
-        >
+        <section className="report-section">
+          <h2>Condition assessment</h2>
+          <div className="stats">
+            <Stat label="Overall condition" value={view.conditionLabel ?? "—"} />
+            <Stat label="Overall score" value={view.overallScore == null ? "—" : String(view.overallScore)} />
+            <Stat label="Total penalty" value={`${view.totalPenaltyPercent}%`} />
+          </div>
+          <div className="table-wrap">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Score</th>
+                  <th>Weight</th>
+                  <th>Penalty</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {view.categories.map((a) => (
+                  <tr key={a.key}>
+                    <td style={{ fontWeight: 600 }}>{CAT_LABELS[a.key]}</td>
+                    <td className="num">{a.score == null ? "—" : a.score}</td>
+                    <td className="num">{pct(a.weight)}</td>
+                    <td className="num">{a.penalty_percent}%</td>
+                    <td className="muted">{a.reasoning}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="report-section">
+          <h2>Photos</h2>
+          <PhotoGroup title="Used" photos={usedPhotos} empty="No photographs were used." />
+          <PhotoGroup title="Filtered out" photos={filteredPhotos} empty="No photographs were filtered out." />
+        </section>
+
+        <p className="disclaimer">
           This appraisal is generated by a model from the photos and answers you provided. It is an
           estimate of market value, not an offer to buy, and does not account for mechanical faults
           that are not visible in the images.
-        </div>
+        </p>
       </div>
     </main>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="label">{label}</div>
+      <div className="stat-value num">{value}</div>
+    </div>
   );
 }
 
@@ -263,62 +148,25 @@ function PhotoGroup({
   empty: string;
 }) {
   return (
-    <div style={{ marginBottom: 24 }}>
-      <div
-        style={{
-          fontSize: 11,
-          letterSpacing: "0.16em",
-          textTransform: "uppercase",
-          color: "color-mix(in srgb, var(--color-text) 55%, transparent)",
-          marginBottom: 12,
-        }}
-      >
-        {title}
-      </div>
+    <div style={{ marginBottom: 28 }}>
+      <h3 style={{ marginBottom: 12 }}>{title}</h3>
       {photos.length === 0 ? (
-        <div style={{ fontSize: 14, color: "color-mix(in srgb, var(--color-text) 55%, transparent)" }}>{empty}</div>
+        <p className="muted small">{empty}</p>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20.4 }}>
+        <div className="photo-grid">
           {photos.map((p, i) => (
             <div key={`${p.url ?? p.name}-${p.subject}-${i}`}>
-              <Blueprint duotone className="photo-frame">
-                <div style={{ position: "relative", aspectRatio: "4 / 3", overflow: "hidden", borderRadius: 14 }}>
-                  {p.url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.url} alt={p.subject} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  ) : (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "grid",
-                        placeItems: "center",
-                        fontSize: 12,
-                        color: "color-mix(in srgb, var(--color-text) 45%, transparent)",
-                        background: "var(--color-accent-100)",
-                      }}
-                    >
-                      {p.subject}
-                    </div>
-                  )}
-                </div>
-              </Blueprint>
-              <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                <span className="tag tag-outline">{p.subject}</span>
-                <span
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: p.used ? "var(--color-accent-700)" : "color-mix(in srgb, var(--color-text) 50%, transparent)",
-                  }}
-                >
-                  {p.used ? "Used" : "Filtered"}
-                </span>
+              {p.url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="photo" src={p.url} alt={p.subject} />
+              ) : (
+                <div className="photo-empty">{p.subject}</div>
+              )}
+              <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8 }}>
+                <span className="tag" style={{ textTransform: "capitalize" }}>{p.subject}</span>
+                <span className={`tag ${p.used ? "tag-accent" : ""}`}>{p.used ? "Used" : "Filtered"}</span>
               </div>
-              <div style={{ fontSize: 12.5, marginTop: 6, lineHeight: 1.5, color: "color-mix(in srgb, var(--color-text) 65%, transparent)" }}>
-                {p.reasoning}
-              </div>
+              <p className="muted small" style={{ marginTop: 6 }}>{p.reasoning}</p>
             </div>
           ))}
         </div>

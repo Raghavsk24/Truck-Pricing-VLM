@@ -1,39 +1,8 @@
-import type { ReactNode } from "react";
-
-export function Blueprint({
-  children,
-  className = "",
-  duotone = false,
-}: {
-  children: ReactNode;
-  className?: string;
-  duotone?: boolean;
-}) {
-  return (
-    <div className={`blueprint ${duotone ? "duotone" : ""} ${className}`.trim()}>
-      <i className="corner tl" />
-      <i className="corner tr" />
-      <i className="corner bl" />
-      <i className="corner br" />
-      {children}
-    </div>
-  );
-}
-
 export function ArrowRight() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M5 12h14" />
       <path d="m12 5 7 7-7 7" />
-    </svg>
-  );
-}
-
-export function ArrowDown() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 5v14" />
-      <path d="m19 12-7 7-7-7" />
     </svg>
   );
 }
@@ -94,7 +63,7 @@ export function IconPrinter() {
 
 export function IconCheck() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 6 9 17l-5-5" />
     </svg>
   );
@@ -110,34 +79,12 @@ export function IconCircle() {
 
 export function BrandMark() {
   return (
-    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="var(--color-accent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ alignSelf: "center", flex: "none" }}>
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ alignSelf: "center", flex: "none" }}>
       <path d="M10 9v17" />
       <path d="M10 9h6.5a4.5 4.5 0 0 1 0 9H10" />
       <path d="M10 18h8a4 4 0 0 1 0 8h-8" />
       <path d="M10 9V3.5" />
       <path d="m6.6 6.4 3.4-3 3.4 3" />
     </svg>
-  );
-}
-
-export function AiAvatar() {
-  return (
-    <div
-      style={{
-        flex: "none",
-        width: 30,
-        height: 30,
-        borderRadius: 999,
-        background: "var(--color-accent-100)",
-        border: "1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)",
-        display: "grid",
-        placeItems: "center",
-        fontFamily: "var(--font-heading)",
-        fontSize: 12,
-        color: "var(--color-accent-700)",
-      }}
-    >
-      AI
-    </div>
   );
 }

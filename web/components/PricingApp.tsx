@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { AppHeader } from "./AppHeader";
 import { Landing } from "./Landing";
 import { Conversation, type ChatMessage } from "./Conversation";
 import { Report } from "./Report";
@@ -243,6 +244,18 @@ export function PricingApp() {
 
   return (
     <div className="app-shell">
+      <AppHeader
+        showNew={screen !== "landing"}
+        onLogo={() => {
+          // Don't silently drop an in-progress appraisal.
+          if (messages.length && !window.confirm("Leave this appraisal? Your photos and results will be cleared.")) return;
+          reset();
+        }}
+        onNew={() => {
+          reset();
+          setScreen("chat");
+        }}
+      />
       {screen === "landing" && <Landing onStart={goChat} onSample={goSample} />}
       {screen === "chat" && (
         <Conversation
